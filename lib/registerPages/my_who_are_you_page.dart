@@ -10,8 +10,7 @@ class UserTypeController extends GetxController {
 
   void abrirTelaDeDados(String tela) {
     //Get.toNamed(tela, arguments: [Get.arguments[0],Get.arguments[1],Get.arguments[2]]);
-    Get.toNamed(tela, arguments: ["allan","millerallan17@gmail.com",'senha']);
-
+    Get.toNamed(tela, arguments: ["allan", "millerallan17@gmail.com", 'senha']);
   }
 }
 
@@ -56,7 +55,9 @@ class MyWhoAreYouPage extends StatelessWidget {
                               children: [
                                 const Text(
                                   'Bem vindo ao',
-                                  style: TextStyle(fontSize: 18,color: Color.fromARGB(255, 0, 0, 0)),
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Color.fromARGB(255, 0, 0, 0)),
                                 ),
                                 Image.asset(
                                   'assets/minhaLogo.png',
@@ -69,28 +70,27 @@ class MyWhoAreYouPage extends StatelessWidget {
                         ),
                         Column(
                           children: [
-
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                            
-                                 Padding(
-                                   padding: const EdgeInsets.fromLTRB(0,0,0,8),
-                                   child: CustomIconButton(
-                                        label: 'Sou ONG',
-                                        icon: Transform.scale(
-                                            scale: 1.5,
-                                            child: const Icon(
-                                              Icons.person,
-                                              color: Color.fromARGB(
-                                                  255, 255, 255, 255),
-                                            )),
-                                        onPressed: () {
-                                          userTypeController.abrirTelaDeDados('dataOngPage');
-                                              
-                                        },width: 150),
-                                 ),
-                                
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                                  child: CustomIconButton(
+                                      label: 'Sou ONG',
+                                      icon: Transform.scale(
+                                          scale: 1.5,
+                                          child: const Icon(
+                                            Icons.person,
+                                            color: Color.fromARGB(
+                                                255, 255, 255, 255),
+                                          )),
+                                      onPressed: () {
+                                        userTypeController
+                                            .abrirTelaDeDados('dataOngPage');
+                                      },
+                                      width: 150),
+                                ),
                                 CustomIconButton(
                                     label: 'Sou usuário',
                                     icon: Transform.scale(
@@ -100,8 +100,11 @@ class MyWhoAreYouPage extends StatelessWidget {
                                           color: Color.fromARGB(
                                               255, 255, 255, 255),
                                         )),
-                                    onPressed: () {userTypeController.abrirTelaDeDados('/dataPage');},
-                                    width: 150)    
+                                    onPressed: () {
+                                      userTypeController
+                                          .abrirTelaDeDados('/dataPage');
+                                    },
+                                    width: 150)
                               ],
                             ),
                           ],

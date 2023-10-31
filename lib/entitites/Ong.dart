@@ -29,6 +29,7 @@ class Ong {
 
   Map<String, String> toMap() {
     return {
+      'Tipo': '2',
       "nomeOng": nomeOng,
       "cnpj": cnpj,
       "rua": rua,

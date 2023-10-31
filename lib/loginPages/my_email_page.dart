@@ -7,13 +7,10 @@ import 'package:get/get.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class EmailController extends GetxController {
-  static EmailController get to =>
-      Get.find(); // serve para acessar a variável de forma mais simples
+  static EmailController get to =>Get.find(); // serve para acessar a variável de forma mais simples
+      
 
   String email = '';
-
-  
-  
 
   Future<void> emailfunc(BuildContext context) async {
     showLoad(context);

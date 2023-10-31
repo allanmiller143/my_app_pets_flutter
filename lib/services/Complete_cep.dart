@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> buscaCep(String cep) async {
   
-  final url = Uri.parse(
-      'https://viacep.com.br/ws/$cep/json/'); // passo 1 - difinir a url de dados
+  final url = Uri.parse('https://viacep.com.br/ws/$cep/json/'); // passo 1 - difinir a url de dados
+
 
   http.Response response; //passo 2 - armazenar a resposta da requisição
 

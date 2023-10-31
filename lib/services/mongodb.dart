@@ -2,18 +2,13 @@
 
 import 'package:mongo_dart/mongo_dart.dart';
 
-
 class MongoDataBase {
-  //Isso define uma classe chamada MongoDataBase.
-  static Db?db; 
-      // Esta linha declara uma variável estática db do tipo Db (a partir da biblioteca mongo_dart) que pode ser nula (?). O uso do static significa que essa variável pertence à classe em vez de a uma instância específica. Essa variável será usada para armazenar a conexão com o banco de dados MongoDB.
-
+  static Db? db;
   static late DbCollection collection;
-  //Esta linha declara uma variável estática collection do tipo DbCollection (também da biblioteca mongo_dart) usando a palavra-chave late. O uso de late indica que essa variável será inicializada posteriormente no código, antes de ser usada. Essa variável será usada para acessar uma coleção específica no banco de dados.
-
   static Future<void> connect() async {
     try {
-      db = await Db.create("mongodb+srv://allanmiller:32172528@cluster0.d8cxwn6.mongodb.net/");
+      db = await Db.create(
+          "mongodb+srv://allanmiller:32172528@cluster0.d8cxwn6.mongodb.net/");
       await db!.open();
       collection = db!.collection('users');
       print('Conexão com o MongoDB estabelecida com sucesso.');
@@ -32,7 +27,8 @@ class MongoDataBase {
       'userName': nome,
       'email': email,
       'password': password,
-      'data': false
+      'data': false,
+      'petList': []
     });
   }
 
@@ -91,7 +87,9 @@ class MongoDataBase {
       });
       user['data'] = true;
       await collection.update(consultaEmail, user);
-    } else {}
+    } else {
+      print('nao achei!');
+    }
   }
 
   static Future<bool> verificaUserData(String email) async {
@@ -100,6 +98,73 @@ class MongoDataBase {
     if (user!['data'] == false) {
       return false;
     }
-    return true; 
+    return true;
   }
+
+  static Future<void> inserePet(
+    String ongCnpj,
+    Map<String, dynamic> petData,
+  ) async {
+    try {
+      // Encontre a Ong com base no CNPJ fornecido
+      var consultaOng = where.eq('cnpj', ongCnpj);
+      var ong = await collection.findOne(consultaOng);
+
+      if (ong != null) {
+        // Obtenha a lista atual de pets da Ong
+        List<dynamic> petList = ong['petList'] ?? [];
+
+        // Adicione o pet inteiro à lista de pets
+        petList.add(petData);
+
+        // Atualize a lista de pets da Ong no documento
+        ong['petList'] = petList;
+
+        // Atualize o documento da Ong na coleção
+        await collection.update(consultaOng, ong);
+
+        print('Pet inserido com sucesso na lista de pets da Ong.');
+      } else {
+        print('Ong não encontrada com o CNPJ fornecido.');
+        // Lide com a situação onde a Ong não é encontrada com o CNPJ.
+      }
+    } catch (e) {
+      print('Erro ao inserir o pet na lista de pets da Ong: $e');
+      // Você pode lidar com o erro aqui.
+    }
+  }
+
+  static Future<List<Map<String, dynamic>>> retornaListaPets() async {
+  final ongs = await collection.find(where.eq('Tipo', '2')).toList();
+  final List<Map<String, dynamic>> allPets = [];
+
+  for (var ong in ongs) {
+    final petList = ong['petList'] as List<dynamic>;
+    String endereco = '${ong['cidade']}, ${ong['estado']}';
+
+    for (var pet in petList) {
+      Map<String, dynamic> petInfo = {
+        'nomeOng': ong['nomeOng'],
+        'email': ong['email'],
+        'localizacao': endereco,
+        'tipo': pet['tipo'],
+        'nome': pet['nome'],
+        'idade': pet['idade'],
+        'sexo': pet['sexo'],
+        'porte': pet['porte'],
+        'raca': pet['raca'],
+        'imagem': pet['imagem'],
+      };
+
+      allPets.add(petInfo);
+    }
+  }
+
+  for (var p in allPets) {
+    print(p['nome']);
+  }
+
+  return allPets;
+}
+
 }

@@ -38,6 +38,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   page_transition: ^2.1.0
   search_cep: ^4.0.2
+  image_picker: ^1.0.4
+  flutter_vector_icons: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -70,9 +72,68 @@ flutter:
      - assets/dataPagebackground.png
      - assets/minhaLogo.png
      - assets/ongIcone.png
+     - assets/cachorro.png
+     - assets/gato.png
+     - assets/passaro.png
+     - assets/exemplo1.png
+     - assets/exemplo2.png
+     - assets/fundoListView.png 
+     - assets/5.png 
+     - assets/menu-lateral.png
+     - assets/outros.png
+     - assets/fundo2.png
+     - assets/doguinho.png
+     - assets/gatinho.png
+     - assets/passarinho.png
+     - assets/fundo3.png
+     - assets/mulher.png
+     - assets/masculino.png
+     - assets/letra-p.png
+     - assets/banner.png
+     - assets/banner2.png
+     - assets/coracao.png
+     - assets/fundoDetalhes.png
+     - assets/card1.png
+     - assets/card2.png
+     - assets/card3.png
+     - assets/card4.png
+     - assets/fundoCadastro.png
+     - assets/fundoCadastro2.png
+     - assets/model1.png
+     - assets/model2.png
+     
 
-    
-fonts:
-    - family: space
-      fonts:
-        - asset: assets/space.ttf
+     
+
+     
+   
+  fonts:
+      - family: AsapCondensed-Medium
+        fonts:
+          - asset: assets/fonts/AsapCondensed-Medium.ttf
+
+      - family: AsapCondensed-Light
+        fonts:
+          - asset: assets/fonts/AsapCondensed-ExtraLight.ttf
+
+      - family: AsapCondensed-Bold
+        fonts:
+          - asset: assets/fonts/AsapCondensed-Bold.ttf
+
+      - family: Pacifico-Regular
+        fonts:
+          - asset: assets/fonts/Pacifico-Regular.ttf
+
+      - family: ArefRuqaa-Regular
+        fonts:
+          - asset: assets/fonts/ArefRuqaa-Regular.ttf    
+
+      - family: ArefRuqaa-Bold
+        fonts:
+          - asset: assets/fonts/ArefRuqaa-Bold.ttf       
+
+          
+          
+          
+        
+

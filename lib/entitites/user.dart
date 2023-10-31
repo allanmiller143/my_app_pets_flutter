@@ -10,6 +10,7 @@ class Usuario {
   String telefone;
   String dataNascimento;
   String cpf;
+  dynamic petList = [];
 
   Usuario({
     required this.primeiroNome,
@@ -27,6 +28,7 @@ class Usuario {
 
   Map<String, String> toMap() {
     return {
+      "Tipo": '1',
       "primeiroNome": primeiroNome,
       "sobrenome": sobrenome,
       "rua": rua,
@@ -38,6 +40,7 @@ class Usuario {
       "telefone": telefone,
       "dataNascimento": dataNascimento,
       "cpf": cpf,
+      
     };
   }
 
@@ -102,8 +105,7 @@ class Usuario {
     return true; // O teelfone é válido
   }
 
-  
-  String validaCampos(cpf,cep,telefone) {
+  String validaCampos(cpf, cep, telefone) {
     List<String> camposInvalidos = [];
 
     if (!validarCPF(cpf)) {
@@ -124,5 +126,4 @@ class Usuario {
 
     return '';
   }
-
 }

@@ -45,5 +45,10 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string> preciso de uma foto do animal  </string>
+	<key>NSCameraUsageDescription</key>
+	<string> preciso de uma foto do animal  </string>
+
 </dict>
 </plist>
