@@ -2,16 +2,17 @@
 
 import 'dart:convert';
 import 'dart:typed_data';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 
 class AnimalInsertPageController extends GetxController {
   static AnimalInsertPageController get to => Get.find();
-  bool isChecked = false;
+  String imagemFavorito = (Get.arguments[1].contains(Get.arguments[0]['id'])) ? 'assets/ame.png': 'assets/ame2.png';  
   dynamic imagem = Get.arguments[0]['imagem'];
-
+  String imagemPadrao = Get.arguments[0]['tipo']  == '1' ? 'assets/exemplo1.png':'assets/exemplo2.png';
+  int tipo = Get.arguments[2]; 
+ 
   ImageProvider<Object> convertBase64ToImageProvider(dynamic base64Image) {
     final Uint8List bytes = base64.decode(base64Image);
     return MemoryImage(Uint8List.fromList(bytes));
@@ -24,11 +25,10 @@ class AnimalInsertPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final imageProvider = animalInsertPageController.imagem != null
-        ? animalInsertPageController
-            .convertBase64ToImageProvider(animalInsertPageController.imagem)
-        : AssetImage('assets/exemplo1.png');
-
+        ? animalInsertPageController.convertBase64ToImageProvider(animalInsertPageController.imagem)
+        : AssetImage(animalInsertPageController.imagemPadrao);
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return MaterialApp(
@@ -52,10 +52,7 @@ class AnimalInsertPage extends StatelessWidget {
                   width: screenWidth,
                   height: screenHeight * 0.47,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
-                    ),
+                    image: DecorationImage(image: imageProvider,fit: BoxFit.cover,), 
                   ),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(25, 30, 25, 10),
@@ -69,15 +66,8 @@ class AnimalInsertPage extends StatelessWidget {
                               height: 40,
                               child: IconButton(
                                 padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                icon: Icon(
-                                  Icons.arrow_back_ios,
-                                  size: 30,
-                                  color:
-                                      const Color.fromARGB(255, 255, 255, 255),
-                                ),
+                                onPressed: () {Get.back();},
+                                icon: Icon( size: 30,color:const Color.fromARGB(255, 255, 255, 255),Icons.arrow_back_ios,), 
                               ),
                             ),
                           ],
@@ -110,26 +100,18 @@ class AnimalInsertPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                  padding:const EdgeInsets.fromLTRB(5, 0, 5, 0),    
                                   child: Text(
                                     Get.arguments[0]['nome'],
-                                    style: TextStyle(
-                                        fontFamily: 'AsapCondensed-Bold',
-                                        fontSize: 28),
+                                    style: TextStyle(fontFamily: 'AsapCondensed-Bold',fontSize: 28),
+   
                                   ),
                                 ),
                                 Row(
                                   children: [
-                                    Icon(
-                                      Icons.place_outlined,
-                                      color: Color.fromARGB(255, 255, 94, 0),
-                                      size: 15,
-                                    ),
+                                    Icon(Icons.place_outlined,color: Color.fromARGB(255, 255, 94, 0),size: 15,),
                                     Text(Get.arguments[0]['localizacao'],
-                                        style: TextStyle(
-                                            fontFamily: 'AsapCondensed-Medium',
-                                            fontSize: 15))
+                                    style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontSize: 15))      
                                   ],
                                 )
                               ],
@@ -137,11 +119,11 @@ class AnimalInsertPage extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
                               child: Container(
-                                width: 25,
-                                height: 25,
+                                width: 30,
+                                height: 30,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage('assets/coracao.png'),
+                                    image: AssetImage(animalInsertPageController.imagemFavorito),
                                   ),
                                 ),
                               ),
@@ -181,93 +163,71 @@ class AnimalInsertPage extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Card(
-                                elevation: 8,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                child: Container(
-                                  width: screenWidth * 0.875,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15)),
+                              GestureDetector(
+                                onTap: (){
+                                  Get.toNamed('/ongProfilePage',arguments: [Get.arguments[0]['email'],animalInsertPageController.tipo]);
+                                },
+                                child: Card(
+                                  elevation: 8,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              width: 60,
-                                              height: 60,
-                                              decoration: BoxDecoration(
-                                                color: Color.fromARGB(
-                                                    255, 211, 248, 247),
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(50),
-                                                ),
-                                                image: DecorationImage(
-                                                  image: AssetImage(
-                                                      'assets/menu-lateral.png'),
-                                                  fit: BoxFit.cover,
+                                  child: Container(
+                                    width: screenWidth * 0.875,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      borderRadius:BorderRadius.all(Radius.circular(15)),   
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 60,
+                                                height: 60,
+                                                decoration: BoxDecoration(
+                                                  color: Color.fromARGB(255, 211, 248, 247),   
+                                                  borderRadius: BorderRadius.all(Radius.circular(50),),
+                                                  image: DecorationImage(
+                                                    image: AssetImage('assets/menu-lateral.png'),fit: BoxFit.cover,),
                                                 ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      10, 0, 0, 0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  Text(
-                                                      Get.arguments[0]
-                                                          ['nomeOng'],
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'AsapCondensed-Bold',
-                                                          fontSize: 13)),
-                                                  Text(
-                                                      Get.arguments[0]['email'],
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'AsapCondensed-Medium',
-                                                          fontSize: 13)),
-                                                  Row(
-                                                    children: [
-                                                      Icon(
-                                                        Icons.verified,
-                                                        size: 15,
-                                                      ),
-                                                      Text('verificado',
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'AsapCondensed-Medium',
-                                                              fontSize: 13))
-                                                    ],
-                                                  )
-                                                ],
+                                              Padding(
+                                                padding:const EdgeInsets.fromLTRB(10, 0, 0, 0),    
+                                                child: Column(
+                                                  crossAxisAlignment:CrossAxisAlignment.start,
+                                                  mainAxisAlignment:MainAxisAlignment.spaceEvenly,        
+                                                  children: [
+                                                    Text(
+                                                        Get.arguments[0]['nomeOng'],
+                                                        style: TextStyle(fontFamily:'AsapCondensed-Bold',fontSize: 13)),      
+                                                    Text(
+                                                        Get.arguments[0]['email'],
+                                                        style: TextStyle(fontFamily:'AsapCondensed-Medium',fontSize: 13)),    
+                                                    Row(
+                                                      children: [
+                                                        Icon(Icons.verified,size: 15,),
+                                                        Text('verificado',style: TextStyle( fontFamily:'AsapCondensed-Medium',fontSize: 13))       
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            Icons.message,
-                                            color: Color.fromARGB(
-                                                255, 252, 116, 5),
-                                          ))
-                                    ],
+                                        IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              Icons.message,
+                                              color: Color.fromARGB(
+                                                  255, 252, 116, 5),
+                                            ))
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

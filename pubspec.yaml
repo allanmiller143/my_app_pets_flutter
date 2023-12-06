@@ -101,12 +101,12 @@ flutter:
      - assets/fundoCadastro2.png
      - assets/model1.png
      - assets/model2.png
+     - assets/ame.png
+     - assets/ame2.png
+     - assets/eu.png
+     - assets/fundoOngProfile.png
      
 
-     
-
-     
-   
   fonts:
       - family: AsapCondensed-Medium
         fonts:

@@ -6,13 +6,10 @@ import '../services/mongodb.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class ConfirmController extends GetxController {
-  static ConfirmController get to =>
-      Get.find(); // serve para acessar a variável de forma mais simples
-  List<TextEditingController> codigoControllers = List.generate(
-      4,
-      (index) =>
-          TextEditingController()); // Lista de controladores para os TextFields
-
+  static ConfirmController get to => Get.find(); // serve para acessar a variável de forma mais simples
+     
+  List<TextEditingController> codigoControllers = List.generate(4,(index) =>TextEditingController()); // Lista de controladores para os TextFields
+  
   String codigo = "";
   String tela = Get.arguments[0].toString();
   String codigoCorreto = Get.arguments[1];

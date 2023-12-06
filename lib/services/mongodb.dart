@@ -1,20 +1,20 @@
 // ignore_for_file: avoid_print, unused_catch_clause
 
 import 'package:mongo_dart/mongo_dart.dart';
+import 'package:replica_google_classroom/entitites/user.dart';
 
 class MongoDataBase {
   static Db? db;
   static late DbCollection collection;
   static Future<void> connect() async {
-    try {
-      db = await Db.create(
-          "mongodb+srv://allanmiller:32172528@cluster0.d8cxwn6.mongodb.net/");
+    try{
+      db = await Db.create( "mongodb+srv://allanmiller:32172528@cluster0.d8cxwn6.mongodb.net/"); 
       await db!.open();
       collection = db!.collection('users');
       print('Conexão com o MongoDB estabelecida com sucesso.');
-    } catch (e) {
+    }catch (e){
       print('Erro ao conectar ao MongoDB: $e');
-      // Você pode lidar com o erro de conexão aqui.
+      //Você pode lidar com o erro de conexão aqui.
     }
   }
 
@@ -28,7 +28,8 @@ class MongoDataBase {
       'email': email,
       'password': password,
       'data': false,
-      'petList': []
+      'petList': [],
+      'preferedPetsList':[]
     });
   }
 
@@ -65,18 +66,23 @@ class MongoDataBase {
     return user!['userName'].toString();
   }
 
+  static Future<String> retornaCpf(email) async {
+    var consultaEmail = where.eq('email', email);
+    var user = await collection.findOne(consultaEmail);
+    return user!['cpf'].toString();
+  }
+
   static Future<void> trocaSenha(email, novaSenha) async {
     var consultaEmail = where.eq('email', email);
     var user = await collection.findOne(consultaEmail);
 
     var updatedUser = user;
-    updatedUser!['password'] =
-        novaSenha; // Substitua 'password' pelo campo apropriado em seu documento de usuário.
+    updatedUser!['password'] = novaSenha; // Substitua 'password' pelo campo apropriado em seu documento de usuário.
+    
     await collection.update(consultaEmail, updatedUser);
   }
 
-  static Future<void> insertUserData(
-      String email, Map<String, dynamic> newData) async {
+  static Future<void> insertUserData(String email, Map<String, dynamic> newData) async {
     var consultaEmail = where.eq('email', email);
     var user = await collection.findOne(consultaEmail);
 
@@ -101,40 +107,33 @@ class MongoDataBase {
     return true;
   }
 
-  static Future<void> inserePet(
-    String ongCnpj,
-    Map<String, dynamic> petData,
-  ) async {
-    try {
-      // Encontre a Ong com base no CNPJ fornecido
-      var consultaOng = where.eq('cnpj', ongCnpj);
-      var ong = await collection.findOne(consultaOng);
+static Future<void> inserePet(String ongCnpj, Map<String, dynamic> petData) async {
+  try {
+    var uuid = Uuid(); // Crie uma instância de Uuid para gerar IDs únicos.
+    String petId = uuid.v4(); // Gere um novo ID único para o pet.
 
-      if (ong != null) {
-        // Obtenha a lista atual de pets da Ong
-        List<dynamic> petList = ong['petList'] ?? [];
+    // Adicione o ID único ao objeto de dados do pet.
+    petData['id'] = petId;
 
-        // Adicione o pet inteiro à lista de pets
-        petList.add(petData);
+    var consultaOng = where.eq('cnpj', ongCnpj);
+    var ong = await collection.findOne(consultaOng);
 
-        // Atualize a lista de pets da Ong no documento
-        ong['petList'] = petList;
-
-        // Atualize o documento da Ong na coleção
-        await collection.update(consultaOng, ong);
-
-        print('Pet inserido com sucesso na lista de pets da Ong.');
-      } else {
-        print('Ong não encontrada com o CNPJ fornecido.');
-        // Lide com a situação onde a Ong não é encontrada com o CNPJ.
-      }
-    } catch (e) {
-      print('Erro ao inserir o pet na lista de pets da Ong: $e');
-      // Você pode lidar com o erro aqui.
+    if (ong != null) {
+      List<dynamic> petList = ong['petList'] ?? [];
+      petList.add(petData);
+      ong['petList'] = petList;
+      await collection.update(consultaOng, ong);
+      print('Pet inserido com sucesso na lista de pets da Ong. ID: $petId');
+    } else {
+      print('Ong não encontrada com o CNPJ fornecido.');
     }
+  } catch (e) {
+    print('Erro ao inserir o pet na lista de pets da Ong: $e');
   }
+}
 
-  static Future<List<Map<String, dynamic>>> retornaListaPets() async {
+
+static Future<List<Map<String, dynamic>>> retornaListaPets() async {
   final ongs = await collection.find(where.eq('Tipo', '2')).toList();
   final List<Map<String, dynamic>> allPets = [];
 
@@ -154,17 +153,206 @@ class MongoDataBase {
         'porte': pet['porte'],
         'raca': pet['raca'],
         'imagem': pet['imagem'],
+        'id':pet['id']
+      };
+
+      allPets.add(petInfo);
+    }
+  }
+  return allPets;
+}
+
+
+
+static Future<void> favoritaPet(cpf,inserir_retirar,petId) async {
+  var consultaCpf = where.eq('cpf', cpf);
+  var user = await collection.findOne(consultaCpf);
+
+  if(inserir_retirar){
+    if (user != null) {
+        List<dynamic> petList = user['preferedPetsList'] ?? []; // Obtenha a lista atual de pets ids
+        petList.add(petId);// Adicione o pet id à lista
+        user['preferedPetsList'] = petList;// Atualize a lista de pets 
+        await collection.update(consultaCpf, user);// Atualize o documento 
+        print('Pet inserido com sucesso na lista de pets preferido.');
+      } else {
+        print('usuario nao encontrato ou falta de informcacos');
+        // Lide com a situação onde a Ong não é encontrada com o CNPJ.
+      }
+  }
+  else{
+     if (user != null) {
+      List<dynamic> petList = user['preferedPetsList'] ?? [];
+      petList.remove(petId); // Remove o petId da lista
+      user['preferedPetsList'] = petList;
+      await collection.update(consultaCpf, user);
+      print('Pet removido com sucesso da lista de pets preferidos.');
+    } else {
+      print('Usuário não encontrado ou falta de informações');
+      // Lide com a situação onde o usuário não é encontrado.
+    }
+  }
+
+}
+
+
+static Future<List<String>> retornaPetIds(cpf) async {
+   var consultaCpf = where.eq('cpf', cpf);
+   var user = await collection.findOne(consultaCpf);
+   var petIds = user!['preferedPetsList'];
+   List<String> allPetsIds = [];
+
+   for(var id in petIds){
+      String novoId = id;
+      allPetsIds.add(novoId);
+   }
+  print(allPetsIds);
+  return allPetsIds;
+}
+
+static Future<List<Map<String, dynamic>>> retornaListaPetsOng(String cnpj) async {
+  final ong = await collection.findOne(where.eq('cnpj', cnpj)); // Use findOne para obter apenas uma ONG com o CNPJ fornecido
+  final List<Map<String, dynamic>> allPets = [];
+
+  if (ong != null) { // Verifique se a ONG foi encontrada
+    final petList = ong['petList'] as List<dynamic>;
+    String endereco = '${ong['cidade']}, ${ong['estado']}';
+
+    for (var pet in petList) {
+      Map<String, dynamic> petInfo = {
+        'nomeOng': ong['nomeOng'],
+        'email': ong['email'],
+        'localizacao': endereco,
+        'tipo': pet['tipo'],
+        'nome': pet['nome'],
+        'idade': pet['idade'],
+        'sexo': pet['sexo'],
+        'porte': pet['porte'],
+        'raca': pet['raca'],
+        'imagem': pet['imagem'],
+        'id': pet['id']
       };
 
       allPets.add(petInfo);
     }
   }
 
-  for (var p in allPets) {
-    print(p['nome']);
-  }
-
   return allPets;
 }
+
+
+static Future<void> insereImagemPerfil(email,imagem) async {
+  var consultaEmail = where.eq('email', email);
+  var ong = await collection.findOne(consultaEmail);
+  ong!['imagemPerfil'] = imagem;
+  await collection.update(consultaEmail, ong);
+
+}
+
+static Future<void> insereBioPerfil(email,bio) async {
+  var consultaEmail = where.eq('email', email);
+  var ong = await collection.findOne(consultaEmail);
+  ong!['bio'] = bio;
+  await collection.update(consultaEmail, ong);
+
+}
+
+
+
+static Future<String> retornaOng(email) async {
+  var consultaEmail = where.eq('email', email);
+  var ong = await collection.findOne(consultaEmail);
+  return ong!['imagemPerfil'];
+}
+
+
+static Future<Map<String,dynamic>> retornaOngCompleta(email) async {
+  var consultaEmail = where.eq('email', email);
+  var ong = await collection.findOne(consultaEmail);
+
+   var ongInfo = {
+    'userName' : ong!['userName'],
+    'email' : ong['email'],
+    'password' : ong['password'],
+    'data' : ong['data'],
+    'petList' : ong['petList'],
+    'preferedPetsList' : ong['preferedPetsList'],
+    'Tipo' : ong['Tipo'],
+    'nomeOng' : ong['nomeOng'],
+    'cnpj' : ong['cnpj'],
+    'rua' : ong['rua'],
+    'numero' : ong['numero'],
+    'estado' : ong['estado'],
+    'cidade' : ong['cidade'],
+    'bairro' : ong['bairro'],
+    'cep' : ong['cep'],
+    'telefone' : ong['telefone'],
+    'nome representante' : ong['nome representante'],
+    'email representante' : ong['email representante'],
+    'cpf representante' : ong['cpf representante'],
+    'imagemPerfil' : ong['imagemPerfil'],
+    'bio' : ong['bio'],
+   };
+   
+  return ongInfo;
+}
+
+static Future<Map<String,dynamic>> retornaUsuarioCompleto(email) async {
+  var consultaEmail = where.eq('email', email);
+  var user = await collection.findOne(consultaEmail);
+
+  Map<String,dynamic> usuario = {};
+  if(user!['tipo'] == 2){
+    usuario = {
+      'userName' : user['userName'],
+      'email' : user['email'],
+      'password' : user['password'],
+      'data' : user['data'],
+      'petList' : user['petList'],
+      'preferedPetsList' : user['preferedPetsList'],
+      'Tipo' : user['Tipo'],
+      'nomeOng' : user['nomeOng'],
+      'cnpj' : user['cnpj'],
+      'rua' : user['rua'],
+      'numero' : user['numero'],
+      'estado' : user['estado'],
+      'cidade' : user['cidade'],
+      'bairro' : user['bairro'],
+      'cep' : user['cep'],
+      'telefone' : user['telefone'],
+      'nome representante' : user['nome representante'],
+      'email representante' : user['email representante'],
+      'cpf representante' : user['cpf representante'],
+      'imagemPerfil' : user['imagemPerfil'],
+      'bio' : user['bio'],
+    };
+  }
+  else{
+    usuario = {
+      'userName' : user['userName'],
+      'email' : user['email'],
+      'password' : user['password'],
+      'data' : user['data'],
+      'petList' : user['petList'],
+      'preferedPetsList' : user['preferedPetsList'],
+      'Tipo' : user['Tipo'],
+      'primeiroNome' : user['primeiroNome'],
+      'sobrenome' : user['sobrenome'],
+      'rua' : user['rua'],
+      'numero' : user['numero'],
+      'estado' : user['estado'],
+      'cidade' : user['cidade'],
+      'bairro' : user['bairro'],
+      'cep' : user['cep'],
+      'telefone' : user['telefone'],
+      'dataNascimento' : user['dataNascimento'],
+      'cpf' : user['cpf'],
+    };
+
+  }
+   
+  return usuario;
+}
+
 
 }

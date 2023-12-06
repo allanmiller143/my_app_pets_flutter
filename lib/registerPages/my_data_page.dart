@@ -36,8 +36,8 @@ class DataController extends GetxController {
   }
 
   Future<void> fazerCadastro(BuildContext context) async {
-    String email =
-        Get.arguments[1]; // pegar o email que vou receber da outra tela.
+    String email = Get.arguments[1]; // pegar o email que vou receber da outra tela.
+        
     showLoad(context);
 
     var usuario = Usuario(
@@ -72,6 +72,7 @@ class DataController extends GetxController {
         await MongoDataBase.insertUserData(email, userDataMap);
         Navigator.of(context).pop();
         mySnackBar('Cadastro bem sucedido', true);
+        Get.toNamed('/principalAppPage',arguments: [cpf.text]);
       } else {
         Navigator.of(context).pop();
         mySnackBar(retorno, false);
@@ -92,9 +93,9 @@ class DataController extends GetxController {
 
     if (picked != null) {
       // Formate a data selecionada como "dd/mm/aaaa"
-      String formattedDate =
-          "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
+      String formattedDate ="${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
       dataNascimento.text = formattedDate;
+      
     }
   }
 }

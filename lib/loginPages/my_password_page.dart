@@ -23,8 +23,9 @@ class SenhaController extends GetxController {
     if (senha != '') {
       if (await MongoDataBase.verificaUserESenha(email, senha)) { 
         if(await MongoDataBase.verificaUserData(email)){
+          var cpf = await MongoDataBase.retornaCpf(email);
           Navigator.of(context).pop();
-          Get.toNamed('/principalAppPage'); 
+          Get.toNamed('/principalAppPage',arguments: [cpf]); 
         }else{
           Get.toNamed('/whoAreYouPage',arguments: [nome,email,senha]);
           mySnackBar('Conclua seu cadastro!',true);

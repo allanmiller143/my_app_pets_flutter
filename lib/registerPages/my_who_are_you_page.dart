@@ -9,8 +9,8 @@ class UserTypeController extends GetxController {
   static UserTypeController get to => Get.find();
 
   void abrirTelaDeDados(String tela) {
-    //Get.toNamed(tela, arguments: [Get.arguments[0],Get.arguments[1],Get.arguments[2]]);
-    Get.toNamed(tela, arguments: ["allan", "millerallan17@gmail.com", 'senha']);
+    Get.toNamed(tela, arguments: [Get.arguments[0],Get.arguments[1],Get.arguments[2]]);
+    //Get.toNamed(tela, arguments: ["allan", "millerallan17@gmail.com", 'senha']);
   }
 }
 
