@@ -7,15 +7,16 @@ import '../app_widgets/my_animal_card.dart';
 class FavoritsController extends GetxController {
   static FavoritsController get to => Get.find(); 
   List<Map<String, dynamic>> pets = [];
-  List<String> favoritPetIds = [];
-
+  List<dynamic> favoritPetIds = [];
   List<Map<String, dynamic>> petsInfo = [];
   List<Map<String, dynamic>> petsInfo2 = [];
-  
+  Map<String,dynamic>? usuario;
+
   Future<List<Map<String,dynamic>>> alteraLista() async {
     pets = await MongoDataBase.retornaListaPets();
+    usuario = await MongoDataBase.retornaUsuarioCompleto(Get.arguments[1]);
     favoritPetIds = [];
-    favoritPetIds = await MongoDataBase.retornaPetIds('12678032400');
+    favoritPetIds = await MongoDataBase.retornaPetIds(Get.arguments[0]);
     return pets;
   }
 
@@ -29,7 +30,7 @@ class FavoritsController extends GetxController {
             pet: petInfo,
             onPressed: () {
               int p = petInfo['posicao']; 
-               Get.toNamed('/animalDetail', arguments: [pets[p],favoritPetIds]); 
+               Get.toNamed('/animalDetail', arguments: [pets[p],usuario]); 
             },
             petIds: favoritPetIds,
             cpf: ''
@@ -78,7 +79,7 @@ class FavoritsPage extends StatelessWidget {
             appBar: AppBar(
               forceMaterialTransparency: true,
               toolbarHeight: 85,
-              leading: GestureDetector( onTap: () {  Get.back();}, child: Icon(Icons.arrow_back_ios)),
+              leading: GestureDetector( onTap: () {  Get.back();}, child: Icon(Icons.arrow_back_ios,color: const Color.fromARGB(255, 255, 255, 255),)),
             ),
             body:FutureBuilder(
             future: favoritsController.alteraLista(), // Remova os parênteses para não executar a função aqui
@@ -162,7 +163,7 @@ class FavoritsPage extends StatelessWidget {
                                 ),
                              Container(
                                   width:MediaQuery.of(context).size.width - 40,
-                                  height: 560,
+                                  height: 550,
                                   child: SingleChildScrollView(
                                     child: Column(
                                       mainAxisAlignment:MainAxisAlignment.spaceBetween,   

@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:ui';
+import 'package:replica_google_classroom/widgets/mybutton.dart';
+
 import '../services/mongodb.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -98,24 +100,17 @@ class MyEmailPage extends StatelessWidget {
                                 ),
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 236, 71, 6),
-                                        padding: const EdgeInsets.fromLTRB(
-                                            10, 20, 10, 20),
-                                      ),
-                                      child: Text(
-                                        'Confirmar',
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                      onPressed: () async {
-                                        emailController.emailfunc(context);
+                                  child:
+                                    CustomIconButton(
+                                      label: 'Confirmar',
+                                      onPressed: () {
+                                        emailController.emailfunc(context);  
                                       },
-                                    ),
-                                  ),
+                                      width: double.infinity,
+                                      height: 60,
+                                      raio: 5,
+                                      alinhamento: MainAxisAlignment.center),
+                                    
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,

@@ -42,8 +42,7 @@ class InsertAnimalController extends GetxController {
     if (imageFile != null) {
       Uint8List imageBytes = await imageFile!.readAsBytes(); // Converta a imagem em um array de bytes  
       String base64Image = base64Encode(imageBytes); // Codifique os bytes em formato base64 (opcional)
-      animal.imagem = base64Image; // Adicione a imagem codificada ao mapa de dados do animal
-          
+      animal.imagem = base64Image; // Adicione a imagem codificada ao mapa de dados do animal    
     }
 
     Map<String, dynamic> animalData = animal.toMap();
@@ -257,6 +256,7 @@ class InsertAnimalPage extends StatelessWidget {
                                                 insertAnimalController.showBottomSheet(context);   
                                               },
                                               image:insertAnimalController.imageFile,
+                                              tipo: 2
                                                   
                                             ),
 

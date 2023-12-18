@@ -83,6 +83,7 @@ class MySignUpPage extends StatelessWidget {
                               Icons.arrow_back_ios,
                               size: 30,
                               weight: 80,
+                              color: Color.fromARGB(255, 255, 255, 255),
                             ),
                           ),
                         ],
@@ -129,7 +130,7 @@ class MySignUpPage extends StatelessWidget {
                                     TextField(
                                       onChanged: (text) {
                                         controller.nome = text;
-                                        print('${controller.nome}');
+                                        print(controller.nome);
                                       },
                                       decoration: const InputDecoration(
                                         contentPadding:
@@ -147,7 +148,7 @@ class MySignUpPage extends StatelessWidget {
                                     TextField(
                                       onChanged: (text) {
                                         controller.email = text;
-                                        print('${controller.email}');
+                                        print(controller.email);
                                       },
                                       decoration: const InputDecoration(
                                         contentPadding:
@@ -195,7 +196,7 @@ class MySignUpPage extends StatelessWidget {
                                             ),
                                             child: const Text(
                                               "Continuar",
-                                              style: TextStyle(fontSize: 20),
+                                              style: TextStyle(fontSize: 20,color: const Color.fromARGB(255, 255, 255, 255)),
                                             ),
                                             onPressed: () async {               
                                               await controller.validarLogin(context);

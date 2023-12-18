@@ -13,7 +13,7 @@ class PhotoContainer extends StatelessWidget {
   dynamic imagembd;
   int? tipo;
 
-  PhotoContainer({required this.onPressed, required this.image,this.imagembd,tipo});
+  PhotoContainer({required this.onPressed, required this.image,this.imagembd, this.tipo});
 
 
   ImageProvider<Object> convertBase64ToImageProvider(String base64Image) {

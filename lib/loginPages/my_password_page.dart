@@ -206,7 +206,7 @@ class MyPasswordPage extends StatelessWidget {
                                             ),
                                             child: Text(
                                               'Continue',
-                                              style: TextStyle(fontSize: 20),
+                                              style: TextStyle(fontSize: 20,color: const Color.fromARGB(255, 255, 255, 255)),
                                             ),
                                             onPressed: () async {
                                               await senhaController.login(context);

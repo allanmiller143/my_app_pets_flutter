@@ -3,6 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/componentesOngPerfil/OngInfoEditPage.dart';
+import 'App_pages/componentesOngPerfil/ImageViewerPage.dart';
 import 'loginPages/my_email_page.dart';
 import 'loginPages/my_password_page.dart';
 import 'loginPages/my_sign_up_page.dart';
@@ -17,12 +19,12 @@ import 'App_pages/usuarioPages/pets_page.dart';
 import 'App_pages/ongPages/ongProfilePage.dart';
 import 'App_pages/ong&user/animal_detail_page.dart';
 import 'App_pages/usuarioPages/favorits.dart';
-import 'App_pages/ongPages/ongEditBioProfilePage.dart';
+import 'App_pages/componentesOngPerfil/ongEditBioProfilePage.dart';
 
 //import 'exemplo_botao_desativado.dart';
 
 void main() async {
-  await MongoDataBase.connect();
+  //await MongoDataBase.connect();
   runApp(const MyApp());
 }
 
@@ -36,8 +38,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => MyPrincipalAppPage()),
-        //GetPage(name: '/', page: () => MyEmailPage()),
+       // GetPage(name: '/', page: () => MyPrincipalAppPage()),
+        GetPage(name: '/', page: () => MyEmailPage()),
         // GetPage(name: '/', page: () => AnimalInsertPage()),
         GetPage(name: '/password', page: () => MyPasswordPage()),
         GetPage(name: '/signUp', page: () => MySignUpPage()),
@@ -53,6 +55,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/ongProfilePage', page: () => OngProfilePage()),
         //GetPage(name: '/', page: () => OngProfilePage()),
         GetPage(name: '/ongEditBioProfilePage', page: () => OngEditBioProfilePage()),
+        GetPage(name: '/imageViewerPage', page: () => ImageViewerPage(),transition: Transition.downToUp,transitionDuration: const Duration(milliseconds: 400)),
+        GetPage(name: '/OngInfoEditPage',page: () => OngInfoEditPage(),transition: Transition.zoom,transitionDuration: const Duration(milliseconds: 400))
+
       ],
     );
   }

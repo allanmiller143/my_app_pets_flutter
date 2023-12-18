@@ -11,7 +11,7 @@ class AnimalCard extends StatelessWidget {
   final VoidCallback onPressed;
   Map<String,dynamic> pet;
   RxBool preferido = false.obs;
-  List<String> petIds;
+  List<dynamic> petIds;
   String cpf;
 
   AnimalCard({
@@ -132,26 +132,19 @@ class AnimalCard extends StatelessWidget {
                         preferido.value = !preferido.value;
                         await MongoDataBase.favoritaPet(cpf, preferido.value, pet['id']);
                       },
-                      child: Container(
-                        width: 55,
-                        height: 39,
-                        decoration:const  BoxDecoration(
-                            color: Color.fromARGB(255, 255, 255, 255) ,
-                            borderRadius:  BorderRadius.only(
-                              bottomRight: Radius.circular(15),
-                              topLeft: Radius.circular(15),
-                            )),
-                        child:Padding(
-                          padding: const EdgeInsets.fromLTRB(14,7,14,7),
-                          child: Container(
-                            width: 20,
-                            height: 20,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              image: DecorationImage(image: preferido.value ? const  AssetImage('assets/ame.png'): const AssetImage('assets/ame2.png'),fit: BoxFit.cover)
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0,0,5,0),
+                        child: Container(
+                          width: 25,
+                          height: 25,
+                          decoration:  BoxDecoration(
+                              color:const  Color.fromARGB(255, 255, 255, 255) ,
+                              borderRadius: const  BorderRadius.all(
+                                Radius.circular(15),
+                              ),
+                            image: DecorationImage(image: preferido.value ? const  AssetImage('assets/ame.png'): const AssetImage('assets/ame2.png'),fit: BoxFit.cover)
                             ),
-                          ),
-                        )
+                        ),
                       ),
                     ),
                   ],

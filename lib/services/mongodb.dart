@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print, unused_catch_clause
 
 import 'package:mongo_dart/mongo_dart.dart';
-import 'package:replica_google_classroom/entitites/user.dart';
 
 class MongoDataBase {
   static Db? db;
@@ -143,9 +142,28 @@ static Future<List<Map<String, dynamic>>> retornaListaPets() async {
 
     for (var pet in petList) {
       Map<String, dynamic> petInfo = {
-        'nomeOng': ong['nomeOng'],
-        'email': ong['email'],
-        'localizacao': endereco,
+        // ong info 
+        'userName' : ong['userName'],
+        'email' : ong['email'],
+        'password' : ong['password'],
+        'data' : ong['data'],
+        'nomeOng' : ong['nomeOng'],
+        'cnpj' : ong['cnpj'],
+        'rua' : ong['rua'],
+        'numero' : ong['numero'],
+        'estado' : ong['estado'],
+        'cidade' : ong['cidade'],
+        'bairro' : ong['bairro'],
+        'cep' : ong['cep'],
+        'telefone' : ong['telefone'],
+        'nome representante' : ong['nome representante'],
+        'email representante' : ong['email representante'],
+        'cpf representante' : ong['cpf representante'],
+        'imagemPerfil' : ong['imagemPerfil'],
+        'bio' : ong['bio'],
+        'localizacao' : endereco,
+        'petList' : ong['petList'],
+        //pet info
         'tipo': pet['tipo'],
         'nome': pet['nome'],
         'idade': pet['idade'],
@@ -192,7 +210,6 @@ static Future<void> favoritaPet(cpf,inserir_retirar,petId) async {
       // Lide com a situação onde o usuário não é encontrado.
     }
   }
-
 }
 
 
@@ -220,9 +237,27 @@ static Future<List<Map<String, dynamic>>> retornaListaPetsOng(String cnpj) async
 
     for (var pet in petList) {
       Map<String, dynamic> petInfo = {
-        'nomeOng': ong['nomeOng'],
-        'email': ong['email'],
-        'localizacao': endereco,
+        'userName' : ong['userName'],
+        'email' : ong['email'],
+        'password' : ong['password'],
+        'data' : ong['data'],
+        'nomeOng' : ong['nomeOng'],
+        'cnpj' : ong['cnpj'],
+        'rua' : ong['rua'],
+        'numero' : ong['numero'],
+        'estado' : ong['estado'],
+        'cidade' : ong['cidade'],
+        'bairro' : ong['bairro'],
+        'cep' : ong['cep'],
+        'telefone' : ong['telefone'],
+        'nome representante' : ong['nome representante'],
+        'email representante' : ong['email representante'],
+        'cpf representante' : ong['cpf representante'],
+        'imagemPerfil' : ong['imagemPerfil'],
+        'bio' : ong['bio'],
+        'localizacao' : endereco,
+        'petList' : ong['petList'],
+        //pet info
         'tipo': pet['tipo'],
         'nome': pet['nome'],
         'idade': pet['idade'],
@@ -230,7 +265,8 @@ static Future<List<Map<String, dynamic>>> retornaListaPetsOng(String cnpj) async
         'porte': pet['porte'],
         'raca': pet['raca'],
         'imagem': pet['imagem'],
-        'id': pet['id']
+        'id':pet['id']
+        
       };
 
       allPets.add(petInfo);
@@ -246,8 +282,23 @@ static Future<void> insereImagemPerfil(email,imagem) async {
   var ong = await collection.findOne(consultaEmail);
   ong!['imagemPerfil'] = imagem;
   await collection.update(consultaEmail, ong);
-
 }
+
+static Future<void> insereImagemFeed(String email, dynamic imagem) async {
+  
+ 
+  var consultaEmail = where.eq('email', email);
+  var ong = await collection.findOne(consultaEmail);
+
+
+  List<dynamic> feedImagens = ong!['feedImagens'] ?? [];
+  feedImagens.add(imagem);
+  ong['feedImagens'] = feedImagens;
+  await collection.update(consultaEmail, ong);
+
+  
+}
+
 
 static Future<void> insereBioPerfil(email,bio) async {
   var consultaEmail = where.eq('email', email);
@@ -292,6 +343,7 @@ static Future<Map<String,dynamic>> retornaOngCompleta(email) async {
     'cpf representante' : ong['cpf representante'],
     'imagemPerfil' : ong['imagemPerfil'],
     'bio' : ong['bio'],
+    'feedImagens' : ong['feedImagens']
    };
    
   return ongInfo;
@@ -302,7 +354,7 @@ static Future<Map<String,dynamic>> retornaUsuarioCompleto(email) async {
   var user = await collection.findOne(consultaEmail);
 
   Map<String,dynamic> usuario = {};
-  if(user!['tipo'] == 2){
+  if(user!['Tipo'] == 2){
     usuario = {
       'userName' : user['userName'],
       'email' : user['email'],
@@ -310,7 +362,7 @@ static Future<Map<String,dynamic>> retornaUsuarioCompleto(email) async {
       'data' : user['data'],
       'petList' : user['petList'],
       'preferedPetsList' : user['preferedPetsList'],
-      'Tipo' : user['Tipo'],
+      'tipo' : user['Tipo'],
       'nomeOng' : user['nomeOng'],
       'cnpj' : user['cnpj'],
       'rua' : user['rua'],
@@ -350,8 +402,29 @@ static Future<Map<String,dynamic>> retornaUsuarioCompleto(email) async {
     };
 
   }
-   
+  print(usuario);
   return usuario;
+}
+
+
+static Future<void> apagaDocumento(String campo, dynamic documento, String email) async {
+  // encontrar o usuario
+  var consultaEmail = where.eq('email', email);
+  var ong = await collection.findOne(consultaEmail);
+
+  // Verificar se o usuário foi encontrado
+  if (ong != null) {
+    // Construir o filtro para remover o elemento do array
+    var filtro = where.eq('email', email);
+    var update = modify.pull(campo, documento);
+
+    // Aplicar a atualização
+    await collection.update(filtro, update);
+
+    print('Elemento removido com sucesso do array!');
+  } else {
+    print('Usuário não encontrado com o email fornecido.');
+  }
 }
 
 

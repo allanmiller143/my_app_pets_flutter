@@ -5,27 +5,27 @@ class CustomIconButton extends StatelessWidget {
   final Widget? icon;
   final VoidCallback onPressed;
   final double? width;
+  final double? height;
   final double? raio;
   final MainAxisAlignment alinhamento;
 
   const CustomIconButton(
       {super.key,
       required this.label,
-      this.raio = 30.0,
+      this.raio = 0.0,
       this.icon,
       required this.onPressed,
       this.width,
-      this.alinhamento = MainAxisAlignment.start});
+      this.alinhamento = MainAxisAlignment.start,
+      this.height});
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(
-          raio!), // Define o raio de arredondamento do botão
-
+      borderRadius: BorderRadius.circular(raio!), // Define o raio de arredondamento do botão
       child: SizedBox(
         width: width,
-        height: 45,
+        height: height,
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(

@@ -2,18 +2,26 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
-import 'package:replica_google_classroom/widgets/load_widget.dart';
+import 'package:replica_google_classroom/App_pages/usuarioPages/settings_page.dart';
+
+//import 'package:replica_google_classroom/services/mongodb.dart';
+//import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class OngEditBioPageController extends GetxController {
   var bioText = TextEditingController();
- 
+  late SettingsPageController settingsController;
 
   @override
   void onInit() async {
     // Chamado quando o controller é inicializado
-    bioText.text = Get.arguments[0];
+    settingsController = Get.find(); // Encontra a instância existente
+    bioText.text = settingsController.bio.value;
     super.onInit();
+  }
+
+  void concluirEdicao() {
+    settingsController.bio.value = bioText.text;
+    Get.back(result: settingsController.bio);
   }
 }
 
@@ -45,12 +53,12 @@ class OngEditBioProfilePage extends StatelessWidget {
                       const Text('Bio',style: TextStyle(fontSize: 18),),
                       TextButton(
                         onPressed: () async{
-                          showLoad(context);
-                          await MongoDataBase.insereBioPerfil('allan.miller@upe.br',ongEditBioPageController.bioText.text);
-                          print(ongEditBioPageController.bioText.text);
+                          //showLoad(context);
+                          //await MongoDataBase.insereBioPerfil('allan.miller@upe.br',ongEditBioPageController.bioText.text);
+                          ongEditBioPageController.concluirEdicao();
                           Get.back();
-                          Get.toNamed('/ongProfilePage');
-                          
+                          //Get.toNamed('/ongProfilePage');
+
                         },
                          child: const Text('Concluir'))
                 

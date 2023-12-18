@@ -7,11 +7,13 @@ import 'package:get/get.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 
 class AnimalInsertPageController extends GetxController {
-  static AnimalInsertPageController get to => Get.find();
-  String imagemFavorito = (Get.arguments[1].contains(Get.arguments[0]['id'])) ? 'assets/ame.png': 'assets/ame2.png';  
+  dynamic ongPetInfo = Get.arguments[0];
+  dynamic usuarioInfo = Get.arguments[1];
+
+  String imagemFavorito = (Get.arguments[1]['preferedPetsList'].contains(Get.arguments[0]['id'])) ? 'assets/ame.png': 'assets/ame2.png';  
   dynamic imagem = Get.arguments[0]['imagem'];
   String imagemPadrao = Get.arguments[0]['tipo']  == '1' ? 'assets/exemplo1.png':'assets/exemplo2.png';
-  int tipo = Get.arguments[2]; 
+  String tipo = Get.arguments[1]['Tipo']; 
  
   ImageProvider<Object> convertBase64ToImageProvider(dynamic base64Image) {
     final Uint8List bytes = base64.decode(base64Image);
@@ -102,7 +104,7 @@ class AnimalInsertPage extends StatelessWidget {
                                 Padding(
                                   padding:const EdgeInsets.fromLTRB(5, 0, 5, 0),    
                                   child: Text(
-                                    Get.arguments[0]['nome'],
+                                    animalInsertPageController.ongPetInfo['nome'],
                                     style: TextStyle(fontFamily: 'AsapCondensed-Bold',fontSize: 28),
    
                                   ),
@@ -110,7 +112,7 @@ class AnimalInsertPage extends StatelessWidget {
                                 Row(
                                   children: [
                                     Icon(Icons.place_outlined,color: Color.fromARGB(255, 255, 94, 0),size: 15,),
-                                    Text(Get.arguments[0]['localizacao'],
+                                    Text(animalInsertPageController.ongPetInfo['localizacao'],
                                     style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontSize: 15))      
                                   ],
                                 )
@@ -136,22 +138,22 @@ class AnimalInsertPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               CustomCard(
-                                valor: Get.arguments[0]['sexo'],
+                                valor: animalInsertPageController.ongPetInfo['sexo'],
                                 campo: 'Sexo',
                                 backgroundImage: 'assets/card1.png',
                               ),
                               CustomCard(
-                                valor: Get.arguments[0]['idade'],
+                                valor: animalInsertPageController.ongPetInfo['idade'],
                                 campo: 'valor',
                                 backgroundImage: 'assets/card2.png',
                               ),
                               CustomCard(
-                                valor: Get.arguments[0]['porte'],
+                                valor: animalInsertPageController.ongPetInfo['porte'],
                                 campo: 'Porte',
                                 backgroundImage: 'assets/card3.png',
                               ),
                               CustomCard(
-                                valor: Get.arguments[0]['raca'],
+                                valor: animalInsertPageController.ongPetInfo['raca'],
                                 campo: 'Raça',
                                 backgroundImage: 'assets/card4.png',
                               ),
@@ -165,7 +167,7 @@ class AnimalInsertPage extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: (){
-                                  Get.toNamed('/ongProfilePage',arguments: [Get.arguments[0]['email'],animalInsertPageController.tipo]);
+                                  Get.toNamed('/ongProfilePage',arguments: [animalInsertPageController.ongPetInfo,animalInsertPageController.usuarioInfo]);
                                 },
                                 child: Card(
                                   elevation: 8,
@@ -242,7 +244,7 @@ class AnimalInsertPage extends StatelessWidget {
                                 Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(5, 0, 0, 5),
-                                  child: Text("Detalhes",
+                                  child: Text("Detalhes da Raça",
                                       style: TextStyle(
                                           fontFamily: 'AsapCondensed-Bold',
                                           fontSize: 16)),
@@ -254,7 +256,7 @@ class AnimalInsertPage extends StatelessWidget {
                                     width: screenWidth * 0.875,
                                     child: Text(
                                         'Os vira-latas são cães sem raça definida, conhecidos por sua inteligência, lealdade e capacvalor de adaptação. São frequentemente encontrados em situações de resgate e fazem companheiros amorosos. Adotar um vira-lata é uma oportunvalor de dar um lar a um cão necessitado e fazer a diferença no mundo dos animais.',
-                                        maxLines: 4,
+                                        maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                             fontFamily: 'AsapCondensed-Medium',

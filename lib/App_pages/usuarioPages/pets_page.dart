@@ -1,15 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'package:replica_google_classroom/App_pages/usuarioPages/my_principal_app_page.dart';
+
 import '../app_widgets/my_animal_card.dart';
-import '../app_widgets/my_pick_pet_widget.dart';
+import '../componentesOngPerfil/my_pick_pet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 
 class PetsController extends GetxController {
-  static PetsController get to => Get.find(); 
+  late PrincipaAppController principaAppController;
   dynamic argumentsUsed = false;
   var selectedType = '5'.obs;
-    
+  Map<String,dynamic>? usuario;
   List<String> favoritPetIds = [];  
   List<Map<String, dynamic>> pets = [];
   List<Map<String, dynamic>> petsInfo = [];
@@ -19,9 +21,12 @@ class PetsController extends GetxController {
 //recebe parametros por que se quem chamou ela foi o botao da homePage, ela recebe argumentos, para inicializar,
 //dps disso, nao preciso mais dos argumentos ent argumentsUsed passa a ser true, no momento em que eu clico em voltar, argumentsUsed volta a ser false 
 Future<List<Map<String,dynamic>>> alteraLista(tipo,argumentsUsed)async {
+  principaAppController = PrincipaAppController();
   pets = await MongoDataBase.retornaListaPets();
   favoritPetIds = [];
-  favoritPetIds = await MongoDataBase.retornaPetIds('12678032400');
+  
+  usuario = await MongoDataBase.retornaUsuarioCompleto(principaAppController.emailUsuario);
+  favoritPetIds = await MongoDataBase.retornaPetIds(usuario!['cpf']);
   if(tipo != '-1'){
     if(argumentsUsed == false){
       selectedType.value = tipo;
@@ -100,7 +105,7 @@ String filtro() {
             pet: petInfo,
             onPressed: () {
               int p = petInfo['posicao'];
-                Get.toNamed('/animalDetail', arguments: [pets[p],favoritPetIds]);    
+                Get.toNamed('/animalDetail', arguments: [pets[p],usuario]);    
             },
             petIds: favoritPetIds,
             cpf: ''
@@ -356,7 +361,7 @@ class PetsPage extends StatelessWidget {
                                 ),
                                 Container(
                                   width:MediaQuery.of(context).size.width - 40,
-                                  height: 435,
+                                  height: 420,
                                   child: SingleChildScrollView(
                                     child: Column(
                                       mainAxisAlignment:MainAxisAlignment.spaceBetween,   

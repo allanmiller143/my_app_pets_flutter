@@ -7,22 +7,17 @@ import '../app_widgets/my_custom_card_home_page.dart';
 import '../app_widgets/my_animal_card.dart';
 
 class HomePageController extends GetxController {
-  static HomePageController get to => Get.find(); 
   late PrincipaAppController principaAppController;
-
   List<Map<String, dynamic>> pets = [];
-  List<String> favoritPetIds = [];
   Map<String,dynamic>? usuario;
 
 
+  // antes de tela ser chamada carrega as informações necessarias
   Future<List<Map<String,dynamic>>> alteraLista() async {
     principaAppController = PrincipaAppController();
     pets = await MongoDataBase.retornaListaPets();
-    usuario = await MongoDataBase.retornaUsuarioCompleto('millerallan17@gmail.com');
-    favoritPetIds = [];
-    favoritPetIds = await MongoDataBase.retornaPetIds(principaAppController.cpfUsuario);
-    print('----------------------------------------------------------');
-    print(usuario);
+    usuario = await MongoDataBase.retornaUsuarioCompleto(principaAppController.emailUsuario);
+    print(usuario?['preferdPetList']);
     return pets;
   }
 }
@@ -123,7 +118,7 @@ class HomePage extends StatelessWidget {
                                     children: [
                                       GestureDetector(
                                         onTap: (){
-                                          print(homePageController.favoritPetIds);
+                                          print(homePageController.usuario!['preferedPetsList']);
                                         },
                                         child: Text(
                                           'Categorias',
@@ -197,34 +192,39 @@ class HomePage extends StatelessWidget {
                                 SizedBox(
                                   width: double.infinity,
                                   height: 235,
-                                  child: ListView(
+                                  child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
-                                    children: [
-                                      AnimalCard(
+
+                                    child: Row(
+                                      children: [
+                                        AnimalCard(
                                         pet: homePageController.pets[0],
                                         onPressed: () {
-                                          Get.toNamed('/animalDetail', arguments: [homePageController.pets[0],homePageController.favoritPetIds,homePageController.principaAppController.tipo]);       
+                                          // informações do(pet e sua ong ) e informações do usuario logado 
+                                          Get.toNamed('/animalDetail', arguments: [homePageController.pets[0],homePageController.usuario]);       
                                         },
-                                        petIds: homePageController.favoritPetIds,
+                                        petIds: homePageController.usuario!['preferedPetsList'],
                                         cpf: homePageController.principaAppController.cpfUsuario
                                       ),
                                       AnimalCard(
                                         pet: homePageController.pets[1],
                                         onPressed: () {
-                                          Get.toNamed('/animalDetail', arguments: [homePageController.pets[1],homePageController.favoritPetIds,homePageController.principaAppController.tipo]);
+                                          Get.toNamed('/animalDetail', arguments: [homePageController.pets[1],homePageController.usuario]);
                                         },     
-                                        petIds: homePageController.favoritPetIds,
+                                        petIds: homePageController.usuario!['preferedPetsList'],
                                         cpf: homePageController.principaAppController.cpfUsuario
                                       ),
                                       AnimalCard(
                                         pet: homePageController.pets[2],
                                         onPressed: () {
-                                          Get.toNamed('/animalDetail', arguments: [homePageController.pets[2],homePageController.favoritPetIds,homePageController.principaAppController.tipo]);    
+                                          Get.toNamed('/animalDetail', arguments: [homePageController.pets[2],homePageController.usuario]);    
                                         },
-                                        petIds: homePageController.favoritPetIds,
+                                        petIds: homePageController.usuario!['preferedPetsList'],
                                         cpf: homePageController.principaAppController.cpfUsuario
                                       ),
-                                    ],
+                                      ],
+                                    ),
+                                    
                                   ),
                                 ),
                               ],

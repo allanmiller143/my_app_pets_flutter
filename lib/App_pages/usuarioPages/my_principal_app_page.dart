@@ -16,25 +16,26 @@ class PrincipaAppController extends GetxController {
   Color corItemSelecionado = Color.fromARGB(255, 0, 0, 0);
   Color corItemNaoSelecionado = Color.fromARGB(255, 255, 255, 255);
   String cpfUsuario = '12678032400';
+  String emailUsuario = 'millerallan17@gmail.com';
   File? imageFile;
+  File? imageFeedFile;
   int tipo = 1;
 
   Map<String,dynamic>? usuario;
-
 
   void mudaOpcaoSelecionada(int index) {
     opcaoSelecionada.value = index;
   }
 
-  void pick(ImageSource source) async {
+  void pick(ImageSource source, File? imagem) async {
     final imagePicker = ImagePicker();
     final pickedFile = await imagePicker.pickImage(source: source);
     if (pickedFile != null) {
-      imageFile = File(pickedFile.path);
+      imagem = File(pickedFile.path);
       update();
     }
   }
-  void showBottomSheet(BuildContext context) {
+  void showBottomSheet(BuildContext context,File? imagem) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -44,7 +45,7 @@ class PrincipaAppController extends GetxController {
 
           child: Column(
             children: [
-              ListTile(
+              const ListTile(
                 title: Text(
                   'Inserir uma foto',
                   style: TextStyle(
@@ -54,33 +55,33 @@ class PrincipaAppController extends GetxController {
                 ),
               ),
               ListTile(
-                title: Text(
+                title:const  Text(
                   'Galeria',
                   style: TextStyle(
                       color: Color.fromARGB(255, 0, 0, 0),
                       fontFamily: 'AsapCondensed-Medium'),
                 ),
-                leading: Icon(
+                leading:const  Icon(
                   Icons.photo,
                   color: Color.fromARGB(255, 255, 84, 16),
                 ),
                 onTap: () {
-                  pick(ImageSource.gallery);
+                  pick(ImageSource.gallery, imagem);
                 },
               ),
               ListTile(
-                title: Text(
+                title: const Text(
                   'Camera',
                   style: TextStyle(
                       color: Color.fromARGB(255, 0, 0, 0),
                       fontFamily: 'AsapCondensed-Medium'),
                 ),
-                leading: Icon(
+                leading: const  Icon(
                   Icons.camera_alt,
                   color: Color.fromARGB(255, 255, 84, 16),
                 ),
                 onTap: () {
-                  pick(ImageSource.camera);
+                  pick(ImageSource.camera,imagem);
                 },
               ),
             ],
@@ -104,21 +105,23 @@ class MyPrincipalAppPage extends StatelessWidget {
           builder: (_) {
             return Scaffold(
               extendBodyBehindAppBar: true,
+              
               drawer:  Drawer(
+
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(10,20,10,0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
+                      const Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              PhotoContainer(onPressed: (){principaAppController.showBottomSheet(context);}, image: principaAppController.imageFile,),
+                              //PhotoContainer(onPressed: (){principaAppController.showBottomSheet(context);}, image: principaAppController.imageFile,),
                             ],
                           ),
-                          const Padding(
+                           Padding(
                             padding: EdgeInsets.fromLTRB(0,5,0,0),
                             child:  Text('Allan Miller',style: TextStyle(fontSize: 22),),
                           ),
@@ -142,7 +145,7 @@ class MyPrincipalAppPage extends StatelessWidget {
                         leading: const Icon(Icons.favorite),
                         title:const  Text('Pets favoritos'),
                         onTap: (){
-                          Get.toNamed('/favorits',arguments: [principaAppController.cpfUsuario]);
+                          Get.toNamed('/favorits',arguments: [principaAppController.cpfUsuario,principaAppController.emailUsuario]);
                         },
                       ),
                       const ListTile(
