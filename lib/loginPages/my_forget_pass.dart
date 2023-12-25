@@ -7,8 +7,6 @@ import 'package:replica_google_classroom/widgets/load_widget.dart';
 import '../services/mongodb.dart';
 
 class ForgetController extends GetxController {
-  static ForgetController get to =>
-      Get.find(); // serve para acessar a variável de forma mais simples
   String email = Get.arguments[0];
   String nome = Get.arguments[1];
   String senha = '';
@@ -23,7 +21,6 @@ class ForgetController extends GetxController {
         Get.back();
         Get.back();
         mySnackBar('Senha alterada com sucesso!', true);
-        
       } else {
         mySnackBar('As senhas não conferem', false);
       }
@@ -94,16 +91,13 @@ class MyForgetPage extends StatelessWidget {
                               child: BackdropFilter(
                                 filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                                 child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:MainAxisAlignment.spaceAround,
                                   children: [
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      mainAxisAlignment:MainAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              10, 0, 10, 0),
+                                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                           child: ClipOval(
                                             child: Image.asset(
                                               'assets/fundo.png',
@@ -114,18 +108,15 @@ class MyForgetPage extends StatelessWidget {
                                           ),
                                         ),
                                         Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
+                                          crossAxisAlignment:CrossAxisAlignment.start,    
+                                          mainAxisAlignment:MainAxisAlignment.end,    
                                           children: [
                                             Text(
                                               forgetController.nome,
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w400,
-                                                color: const Color.fromARGB(
-                                                    255, 255, 255, 255),
+                                                color: const Color.fromARGB(255, 255, 255, 255),
                                               ),
                                             ),
                                             Text(
@@ -133,8 +124,7 @@ class MyForgetPage extends StatelessWidget {
                                               style: TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w200,
-                                                color: const Color.fromARGB(
-                                                    255, 255, 255, 255),
+                                                color: const Color.fromARGB(255, 255, 255, 255),
                                               ),
                                             )
                                           ],
@@ -147,16 +137,15 @@ class MyForgetPage extends StatelessWidget {
                                       },
                                       obscureText: true,
                                       decoration: InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),),
+                                        contentPadding:EdgeInsets.fromLTRB(10, 10, 10, 10),
                                         border: OutlineInputBorder(),
                                         filled: true,
                                         hintStyle: TextStyle(
                                           color: Color.fromARGB(255, 0, 0, 0),
                                         ),
                                         hintText: "Nova senha",
-                                        fillColor:
-                                            Color.fromARGB(255, 248, 248, 248),
+                                        fillColor:Color.fromARGB(255, 248, 248, 248),
                                       ),
                                     ),
                                     TextField(
@@ -165,16 +154,13 @@ class MyForgetPage extends StatelessWidget {
                                       },
                                       obscureText: true,
                                       decoration: InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),),  
+                                        contentPadding:EdgeInsets.fromLTRB(10, 10, 10, 10),     
                                         border: OutlineInputBorder(),
                                         filled: true,
-                                        hintStyle: TextStyle(
-                                          color: Color.fromARGB(255, 0, 0, 0),
-                                        ),
+                                        hintStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0),),
                                         hintText: "Confirmar nova senha",
-                                        fillColor:
-                                            Color.fromARGB(255, 248, 248, 248),
+                                        fillColor: Color.fromARGB(255, 248, 248, 248),
                                       ),
                                     ),
                                     ClipRRect(
@@ -182,20 +168,16 @@ class MyForgetPage extends StatelessWidget {
                                       child: SizedBox(
                                         width: double.infinity,
                                         child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Color.fromARGB(
-                                                  255, 236, 71, 6),
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      10, 20, 10, 20),
-                                            ),
-                                            child: Text("Confirmar",style: TextStyle(fontSize: 20),
-                                            
-                                            ),
-                                            onPressed: () async {
-                                              await forgetController.redefinir(context);    
-                                            }
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color.fromARGB(255, 236, 71, 6),
+                                            padding:const EdgeInsets.fromLTRB(10, 20, 10, 20),      
                                           ),
+                                          child: Text("Confirmar",style: TextStyle(fontSize: 20,color: const Color.fromARGB(255, 255, 255, 255)),
+                                          ),
+                                          onPressed: () async {
+                                            await forgetController.redefinir(context);    
+                                          }
+                                        ),
                                       ),
                                     ),
                                   ],

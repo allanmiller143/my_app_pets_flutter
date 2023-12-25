@@ -11,9 +11,6 @@ import 'package:replica_google_classroom/widgets/load_widget.dart';
 final random = Random();
 
 class SenhaController extends GetxController {
-  static SenhaController get to =>
-      Get.find(); // serve para acessar a variável de forma mais simples
-
   String senha = '';
   String email = Get.arguments[0];
   String nome = Get.arguments[1];
@@ -53,8 +50,7 @@ class SenhaController extends GetxController {
     await sendEmail(name: nome, email: email,confirmationCode: codigo.toString(),);
     Navigator.of(context).pop();
     mySnackBar('Um código foi enviado ao seu email\nPor favor digite-o abaixo',true);
-    Get.toNamed('/confirmPage', arguments: [2, codigo.toString(), nome, email, senha]);
-        
+    Get.toNamed('/confirmPage', arguments: [2, codigo.toString(), nome, email, senha]);  
   }
 }
 
@@ -93,9 +89,7 @@ class MyPasswordPage extends StatelessWidget {
                               Get.back();
                             },
                             icon: Icon(
-                              Icons.arrow_back_ios,
-                              size: 30,
-                              weight: 80,
+                              Icons.arrow_back_ios,size: 30,weight: 80, color: const Color.fromARGB(255, 255, 255, 255),
                             ),
                           ),
                         ],
@@ -181,16 +175,15 @@ class MyPasswordPage extends StatelessWidget {
                                       },
                                       obscureText: true,
                                       decoration: InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.black), // Cor de foco desejada
+                                        ),  
+                                        contentPadding:EdgeInsets.fromLTRB(10, 10, 10, 10),
                                         border: OutlineInputBorder(),
                                         filled: true,
-                                        hintStyle: TextStyle(
-                                          color: Color.fromARGB(255, 0, 0, 0),
-                                        ),
+                                        hintStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0),),
                                         hintText: "Senha",
-                                        fillColor:
-                                            Color.fromARGB(255, 248, 248, 248),
+                                        fillColor:Color.fromARGB(255, 248, 248, 248),   
                                       ),
                                     ),
                                     ClipRRect(
@@ -198,20 +191,16 @@ class MyPasswordPage extends StatelessWidget {
                                       child: SizedBox(
                                         width: double.infinity,
                                         child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Color.fromARGB(
-                                                  255, 236, 71, 6),
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      10, 20, 10, 20),
-                                            ),
-                                            child: Text(
-                                              'Continue',
-                                              style: TextStyle(fontSize: 20,color: const Color.fromARGB(255, 255, 255, 255)),
-                                            ),
-                                            onPressed: () async {
-                                              await senhaController.login(context);
-                                            }),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color.fromARGB(255, 236, 71, 6),  
+                                            padding:const EdgeInsets.fromLTRB(10, 20, 10, 20),       
+                                          ),
+                                          child: Text('Continue',
+                                            style: TextStyle(fontSize: 20,color: const Color.fromARGB(255, 255, 255, 255)),
+                                          ),
+                                          onPressed: () async {
+                                            await senhaController.login(context);
+                                          }),
                                       ),
                                     ),
                                     GestureDetector(

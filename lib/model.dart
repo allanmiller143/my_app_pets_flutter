@@ -9,8 +9,9 @@ class SettingsPageController extends GetxController {
  
 }
 
+// ignore: must_be_immutable
 class SettingsPage extends StatelessWidget {
-  SettingsPage({Key? key}) : super(key: key);
+  SettingsPage({super.key});
   var settingsPageController = Get.put(SettingsPageController());
 
   @override
@@ -25,13 +26,13 @@ class SettingsPage extends StatelessWidget {
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
-                    return Center(
+                    return const Center(
                       child: Column(
                         
                       ),
                     );
                   } else {
-                    return Text('Nenhum pet disponível');
+                    return const Text('Nenhum pet disponível');
                   }
                 } else if (snapshot.hasError) {
                   return Text(

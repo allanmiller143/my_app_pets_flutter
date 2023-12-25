@@ -9,7 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType keyboardType;
   final void Function(String)? onChanged; // Novo parâmetro onChanged
 
-  CustomTextFormField({
+   const CustomTextFormField({super.key, 
     required this.hintText,
     required this.controller,
     required this.width,
@@ -21,7 +21,7 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(
+    const textStyle = TextStyle(
       color: Colors.black,
     );
 
@@ -29,14 +29,14 @@ class CustomTextFormField extends StatelessWidget {
       width: width,
       height: 40, // Aumentei a altura para acomodar o rótulo acima
       decoration: BoxDecoration(
-        color: Color.fromARGB(176, 226, 221, 218),
+        color: const Color.fromARGB(176, 226, 221, 218),
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextFormField(
         decoration: InputDecoration(
           labelText: hintText, // Usando o labelText para o rótulo
-          labelStyle: TextStyle(
-            color: const Color.fromARGB(255, 27, 27, 27), // Cor do rótulo preto
+          labelStyle: const TextStyle(
+            color:  Color.fromARGB(255, 27, 27, 27), // Cor do rótulo preto
             fontWeight: FontWeight.w400,
             fontSize: 12,
           ),

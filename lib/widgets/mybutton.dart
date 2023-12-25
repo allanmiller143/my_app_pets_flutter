@@ -30,7 +30,7 @@ class CustomIconButton extends StatelessWidget {
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.black,
-            backgroundColor: Color.fromARGB(255, 250, 63, 6),
+            backgroundColor: const Color.fromARGB(255, 250, 63, 6),
             // Cor do texto do botão
             padding: const EdgeInsets.all(15.0),
           ),

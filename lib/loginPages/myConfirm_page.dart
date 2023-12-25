@@ -95,6 +95,7 @@ class MyConfirmPage extends StatelessWidget {
                               Icons.arrow_back_ios,
                               size: 30,
                               weight: 80,
+                              color: const Color.fromARGB(255, 255, 255, 255),
                             ),
                           ),
                         ],
@@ -123,36 +124,25 @@ class MyConfirmPage extends StatelessWidget {
                                       ),
                                     ),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment:MainAxisAlignment.spaceAround,
                                       children: List.generate(4, (index) {
                                         return SizedBox(
                                           width: 60,
                                           height: 80,
                                           child: TextField(
-                                            buildCounter: (BuildContext context,
-                                                {required int currentLength,
-                                                required bool isFocused,
-                                                required int? maxLength}) {
+                                            buildCounter: (BuildContext context,{required int currentLength,required bool isFocused,required int? maxLength}) {
                                               return null; // Isso remove o contador de caracteres
                                             },
-                                            controller: confirmController
-                                                .codigoControllers[index],
+                                            controller: confirmController.codigoControllers[index],
                                             keyboardType: TextInputType.number,
                                             maxLength: 1,
                                             decoration: InputDecoration(
+                                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black), // Cor de foco desejada
+                                              ),  
                                               border: OutlineInputBorder(),
                                               filled: true,
-                                              hintStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 0, 0, 0),
-                                              ),
-                                              fillColor: Color.fromARGB(
-                                                255,
-                                                248,
-                                                248,
-                                                248,
-                                              ),
+                                              hintStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0),),
+                                              fillColor: Color.fromARGB(255,248,248,248,),
                                             ),
                                           ),
                                         );
@@ -169,7 +159,7 @@ class MyConfirmPage extends StatelessWidget {
                                           ),
                                           child: Text(
                                             "Confirmar",
-                                            style: TextStyle(fontSize: 20),
+                                            style: TextStyle(fontSize: 18,color: const Color.fromARGB(255, 255, 255, 255)),
                                           ),
                                           onPressed: () async {
                                             await confirmController

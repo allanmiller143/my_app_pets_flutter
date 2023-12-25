@@ -115,16 +115,14 @@ class MySignUpPage extends StatelessWidget {
                               child: BackdropFilter(
                                 filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                 child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:MainAxisAlignment.spaceAround,
                                   children: [
                                     const Text(
                                       'Parece que você ainda não possui uma conta cadastrada.\nVamos criar uma? ',
                                       style: TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
-                                        color:
-                                            Color.fromARGB(255, 255, 255, 255),
+                                        color:Color.fromARGB(255, 255, 255, 255),
                                       ),
                                     ),
                                     TextField(
@@ -133,52 +131,38 @@ class MySignUpPage extends StatelessWidget {
                                         print(controller.nome);
                                       },
                                       decoration: const InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),),
+                                        contentPadding:EdgeInsets.fromLTRB(10, 10, 10, 10),
                                         border: OutlineInputBorder(),
                                         filled: true,
-                                        hintStyle: TextStyle(
-                                          color: Color.fromARGB(255, 0, 0, 0),
-                                        ),
+                                        hintStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0),),
                                         hintText: "Seu nome",
-                                        fillColor:
-                                            Color.fromARGB(255, 248, 248, 248),
+                                        fillColor:Color.fromARGB(255, 248, 248, 248), 
                                       ),
                                     ),
                                     TextField(
-                                      onChanged: (text) {
-                                        controller.email = text;
-                                        print(controller.email);
-                                      },
+                                      onChanged: (text) {controller.email = text;},
                                       decoration: const InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),),
+                                        contentPadding:EdgeInsets.fromLTRB(10, 10, 10, 10),
                                         border: OutlineInputBorder(),
                                         filled: true,
-                                        hintStyle: TextStyle(
-                                          color: Color.fromARGB(255, 0, 0, 0),
-                                        ),
+                                        hintStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0),),
                                         hintText: "Email",
-                                        fillColor:
-                                            Color.fromARGB(255, 248, 248, 248),
+                                        fillColor:Color.fromARGB(255, 248, 248, 248),
                                       ),
                                     ),
                                     TextField(
-                                      onChanged: (text) {
-                                        controller.senha = text;
-                                      },
+                                      onChanged: (text) {controller.senha = text;},
                                       obscureText: true,
                                       decoration: const InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),),
+                                        contentPadding:EdgeInsets.fromLTRB(10, 10, 10, 10),
                                         border: OutlineInputBorder(),
                                         filled: true,
-                                        hintStyle: TextStyle(
-                                          color: Color.fromARGB(255, 0, 0, 0),
-                                        ),
+                                        hintStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0),),
                                         hintText: "Senha",
-                                        fillColor:
-                                            Color.fromARGB(255, 248, 248, 248),
+                                        fillColor:Color.fromARGB(255, 248, 248, 248),
                                       ),
                                     ),
                                     ClipRRect(
@@ -186,22 +170,16 @@ class MySignUpPage extends StatelessWidget {
                                       child: SizedBox(
                                         width: double.infinity,
                                         child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  const Color.fromARGB(
-                                                      255, 236, 71, 6),
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      10, 20, 10, 20),
-                                            ),
-                                            child: const Text(
-                                              "Continuar",
-                                              style: TextStyle(fontSize: 20,color: const Color.fromARGB(255, 255, 255, 255)),
-                                            ),
-                                            onPressed: () async {               
-                                              await controller.validarLogin(context);
-                                            }
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:const Color.fromARGB(255, 236, 71, 6),
+                                            padding:const EdgeInsets.fromLTRB(10, 20, 10, 20),  
                                           ),
+                                          child: const Text("Continuar",style: TextStyle(fontSize: 20,color:  Color.fromARGB(255, 255, 255, 255)),
+                                          ),
+                                          onPressed: () async {               
+                                            await controller.validarLogin(context);
+                                          }
+                                        ),
                                       ),
                                     ),
                                   ],
