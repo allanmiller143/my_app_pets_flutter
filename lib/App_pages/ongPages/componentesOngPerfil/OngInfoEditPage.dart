@@ -2,64 +2,73 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:replica_google_classroom/App_pages/usuarioPages/settings_page.dart';
+import 'package:replica_google_classroom/App_pages/OngPages/perfilOng.dart';
+import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class OngInfoEditPageController extends GetxController {
   late SettingsPageController settingsController;
   dynamic usuario;
   dynamic infoEditavel; 
+  late String petId;
 
   Future<String> func() async {
     settingsController = Get.find(); // Encontra a instância existente
     usuario = settingsController.usuario;
-    infoEditavel = {
-      'nomeOng' : {usuario['nomeOng']},
-      'endereco' : {usuario['rua'] , usuario['numero'],  usuario['estado'], usuario['cidade'], usuario['bairro'],usuario['cep']},
-      'telefone': {usuario['telefone']},
-      'senha': {usuario['senha']},
-
-    };
-      
-
-    
+    infoEditavel = Get.arguments[0];
+    if(Get.arguments.length > 1 && Get.arguments[1] != null){
+      petId = Get.arguments[1];
+    }else{
+      petId = '';
+    }
     return 'allan';
   }
 
-List<Widget> campoEditar(context, campo) {
+List<Widget> campoEditar(BuildContext context, ) {
   List<Widget> rows = [];
 
-  for (String key in infoEditavel.keys) {
-    dynamic  items = infoEditavel[key];
+  infoEditavel.forEach((String key, dynamic item) {
     Widget row;
+    // Abre uma tela de edição simples
+    row = Padding(
+      padding: const EdgeInsets.fromLTRB(0,0,10,0),
+      child: ListTile(
+          title:Text('$key'), 
+          subtitle: Text('${item}'),
+          trailing: Icon(Icons.arrow_drop_down),
+          onTap: (){
+            if(petId.isNotEmpty){
+              if(key == 'Idade' || key == 'Raça' || key == 'Tipo' || key == 'Porte' || key == 'Sexo'){
+                print('indo para rota de editar nome');
+                Get.toNamed('/editarIdade',arguments: [key,item,petId]);
+              }
+              else if(key == 'Imagem'){
+                Get.toNamed('/editarImagem',arguments: [key,item,petId]);
+              }else if (key == 'Tipo'){
+                mySnackBar('Campo não editável', false);
+              }
+              else{
+                 print(key);
+                 Get.toNamed('/editarCampo',arguments: [1,key,item,petId]);
+              }
 
-    if (items.length > 1) {
-      // Abre uma tela de edição de vários campos
-      row = GestureDetector(
-        onTap: () {
-          print('Abrir tela de edição de vários campos para $key');
-          // Implemente aqui a lógica para abrir a tela de edição de vários campos
-        },
-        child: Row(
-          children: [
-            Text('ihuuuu $key (Vários Campos)'),
-          ],
-        ),
-      );
-    } else {
-      // Abre uma tela de edição simples
-      row = GestureDetector(
-        onTap: () {
-          print('Abrir tela de edição simples para $key');
-          // Implemente aqui a lógica para abrir a tela de edição simples
-        },
-        child: Row(
-          children: [ 
-            Text('$key (Simples)'),
-          ],
-        ),
-      );
-    }
+            }
+            else{
+              if(key == 'CNPJ' || key == 'Email representante' || key == 'Email'){
+                mySnackBar('Campo não ainda editável', false);
+              }else if(key == 'Endereço'){
+                Get.toNamed('/editarEndereco',arguments: [key,item]);
 
+              }
+              else{
+                Get.toNamed('/editarCampo',arguments: [1,key,item]);
+              }
+              
+            }
+            
+          },
+        ),
+    );
+      
     rows.add(
       Container(
         width: double.infinity,
@@ -67,13 +76,12 @@ List<Widget> campoEditar(context, campo) {
         child: row,
       ),
     );
-  }
+  });
 
   return rows;
 }
 
 
- 
 }
 
 // ignore: must_be_immutable
@@ -98,18 +106,20 @@ class OngInfoEditPage extends StatelessWidget {
                         children: [
                           Container(
                             width: double.infinity,
-                            height: MediaQuery.of(context).size.height * 0.09,
-                            color: Color.fromARGB(255, 255, 84, 16),
+                            height: MediaQuery.of(context).size.height * 0.1,
+                            color: const Color.fromARGB(255, 255, 84, 16),
+                            padding: const EdgeInsets.fromLTRB(0,15,0,0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween, // Adicionado alinhamento
                               children: [
                                 IconButton(
-                                  onPressed: () {
+                                  iconSize: 18,
+                                  onPressed:(){
                                     Get.back();
                                   },
                                   icon: const Icon(Icons.arrow_back_ios,color: Color.fromARGB(255, 255, 255, 255)),                       
                                 ),
-                                const Text('Editar',style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),),
+                                const Text('Editar',style: TextStyle(fontSize: 20,color: Color.fromARGB(255, 255, 255, 255)),),
                                 const SizedBox(width: 48), // Espaço para alinhar o texto "Publicação" no centro
 
                               ],
@@ -117,7 +127,7 @@ class OngInfoEditPage extends StatelessWidget {
 
                           ),
                           Column(
-                            children: ongInfoEditPageController.campoEditar(context, ongInfoEditPageController.infoEditavel)
+                            children: ongInfoEditPageController.campoEditar(context)
                           )
                           
                         ],

@@ -1,25 +1,28 @@
+
+// ignore_for_file: prefer_typing_uninitialized_variables, must_be_immutable
+
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:replica_google_classroom/App_pages/componentesOngPerfil/ongPhoto.dart';
-import 'package:replica_google_classroom/App_pages/componentesOngPerfil/picFeed.dart';
+import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/ongPhoto.dart';
+import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/customImagemFeed.dart';
+import 'package:replica_google_classroom/entitites/user.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 
 class SettingsPageController extends GetxController {
   //variaveis 
   var usuario;
-
   RxInt nunmeroDePostagens = 0.obs;
   RxInt nunmeroDeAdocoes = 0.obs;
   RxInt opcao = 0.obs;
-  String nomeOng = 'Ong dos animais\nperdidos asfdsa';
-  String localizacao = 'Surubim, PE';
-  RxString bio = 'somos uma Ong dedicada ao cuidado de pets.'.obs;
+  RxString nomeOng = ''.obs;
+  RxString localizacao = 'Surubim, PE'.obs;
+  RxString bio = ''.obs;
   dynamic info = [];
-  dynamic info2 = [];
+  dynamic petsInfo = [];
   late String emailOng;
   var imagembd;
   File? imageFile; // imagem para ser coletada e inserida no banco para o perfil 
@@ -28,24 +31,22 @@ class SettingsPageController extends GetxController {
   
   Future<String> func() async {
     usuario = await MongoDataBase.retornaOngCompleta('allan.miller@upe.br');
-    nomeOng = usuario['nomeOng'];
-    localizacao = '${usuario['cidade']},${usuario['estado']}'; 
+    nomeOng.value = usuario['nomeOng'];
+    localizacao.value = '${usuario['cidade']},${usuario['estado']}'; 
     imagembd = usuario['imagemPerfil'];
     bio.value = usuario['bio'];
     info = usuario['feedImagens'];
-    info2 = usuario['petList'];
+    petsInfo = usuario['petList'];
     emailOng = usuario['email'];
 
-    // ignore: prefer_conditional_assignment
+
+    // quando puxa do banco de dados, se tiver vazio(null), atribui uma lista vazia 
     if(info == null){
-      info2 = [];
+      petsInfo = [];
       info = [];
     }else{
       nunmeroDePostagens.value = info.length;
     }
-
-    print(info2);
-    
     return 'allan';
   }
   List<Widget> mostraFeed(context,conteudo,feed) {
@@ -58,7 +59,7 @@ class SettingsPageController extends GetxController {
           )
       );
       return rows;
-    };
+    }
 
     for (int i = 0; i < conteudo.length; i += 3) {
       List<Widget> rowChildren = [];
@@ -67,12 +68,13 @@ class SettingsPageController extends GetxController {
           GestureDetector(
             onTap: () {
               if(feed == 1){
-                Get.toNamed('/imageViewerPage',arguments: [conteudo[j]]);
+                Get.toNamed('/imageViewerPage',arguments: [conteudo[j],1]);
               }else{
-                feed = feed;
+                Get.toNamed('/imageViewerPage',arguments: [conteudo[j],2]);
               }
               
             },
+            
             child: feed == 1 ? PicFeed(image: conteudo[j]):PicFeed(petInfo: conteudo[j])
           )
         );
@@ -117,7 +119,28 @@ class SettingsPageController extends GetxController {
                   color: Color.fromARGB(255, 255, 84, 16),
                 ),
                 onTap: () {
-                  Get.toNamed('/OngInfoEditPage');
+                   var infoEditavel = {
+                      'Nome' : usuario['nomeOng'],
+                      'Telefone': usuario['telefone'],
+                      'Senha': usuario['password'],
+                      'Nome representante': usuario['nome representante'],
+                      'Endereço': {
+                        'cidade': usuario['cidade'],
+                        'rua': usuario['rua'],
+                        'numero': usuario['numero'],
+                        'estado': usuario['estado'],
+                        'bairro': usuario['bairro'],
+                        'cep': usuario['cep']
+                      },
+                      'Email': usuario['email'],
+                      'CNPJ' : usuario['cnpj'],
+                      'Email representante': usuario['email representante'],
+                      'CPF representante' : usuario['cpf representante']
+
+
+
+                    };
+                  Get.toNamed('/OngInfoEditPage',arguments: [infoEditavel]);
                 },
               ),
               ListTile(
@@ -265,8 +288,7 @@ class SettingsPageController extends GetxController {
       },
     );
   }  
-  
- void pickFeed(ImageSource source) async {
+  void pickFeed(ImageSource source) async {
   final imagePicker = ImagePicker();
   final pickedFile = await imagePicker.pickImage(source: source);
   if (pickedFile != null) {
@@ -287,7 +309,7 @@ class SettingsPageController extends GetxController {
 }
 
 class SettingsPage extends StatelessWidget {
-  SettingsPage({Key? key}) : super(key: key);
+  SettingsPage({super.key});
   var settingsPageController = Get.put(SettingsPageController());
 
   @override
@@ -299,7 +321,7 @@ class SettingsPage extends StatelessWidget {
           return Scaffold(
             floatingActionButton: FloatingActionButton(onPressed: () async {
               settingsPageController.showBottomSheetFeed(context);
-            },child: Icon(Icons.add,color: Color.fromARGB(255, 55, 98, 227),),),
+            },child: const Icon(Icons.add,color: Color.fromARGB(255, 55, 98, 227),),),
             body: FutureBuilder(
               future: settingsPageController.func(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -309,152 +331,174 @@ class SettingsPage extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Stack(
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 320,
-                                decoration: const BoxDecoration(
-                                image: DecorationImage(image: AssetImage('assets/fundoOng.png'),fit: BoxFit.cover)
-                              ),
-                              
+                          SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.4,                                
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(15,0,15,0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.height *0.15,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: MediaQuery.of(context).size.height *0.015,
 
-                              ),
-                              Container(
-                              height: MediaQuery.of(context).size.height * 0.4,                                
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(15,0,15,0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                        height: MediaQuery.of(context).size.height *0.075,
+                                        width: MediaQuery.of(context).size.width *0.5,
+                                        decoration: const BoxDecoration(
+                                          
+                                          image: DecorationImage(image: AssetImage('assets/minhaLogo.png'))
+                                        ),
+                                      
+                                      ),
+                                    ],
+                                  ),
+
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        OngPhoto(onPressed: (){settingsPageController.showBottomSheet(context);}, image: settingsPageController.imageFile,imagembd: settingsPageController.imagembd),
-                                        Container(
-                                          height: MediaQuery.of(context).size.height *0.25,
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    OngPhoto(onPressed: (){settingsPageController.showBottomSheet(context);}, image: settingsPageController.imageFile,imagembd: settingsPageController.imagembd),
+                                    SizedBox(
+                                      height: MediaQuery.of(context).size.height *0.25,
+                                      width: MediaQuery.of(context).size.width *0.52,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                            Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                               Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                              Obx(()=> Text(
+                                                settingsPageController.nomeOng.value,
+                                                style: const TextStyle(fontSize: 20),
+                               
+                                                )
+                                              ),
+                                              Row(
                                                 children: [
-                                                  Text(settingsPageController.nomeOng,style: const TextStyle(fontSize: 20),),
-                                                  Row(
-                                                    children: [
-                                                      Text(settingsPageController.localizacao),
-                                                      Icon(Icons.place),
-                                                    ],
-                                                  ),
+                                                  Obx(()=> Text(settingsPageController.localizacao.value)),
+                                                  const Icon(Icons.place),
                                                 ],
                                               ),
-                                              Padding(
-                                                padding: const EdgeInsets.fromLTRB(0,5,0,5),
-                                                child: Container(
-                                                  height: 1,
-                                                  width: MediaQuery.of(context).size.width * 0.48,// Largura da "linha"
-                                                  color: Colors.black, // Cor da "linha"
-                                                ),
-                                              ),
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      Padding(
-                                                        padding: const EdgeInsets.fromLTRB(0,0,10,0),
-                                                        child: Column( 
-                                                          children: [
-                                                            Obx(()=> Text(settingsPageController.nunmeroDePostagens.toString(),style: TextStyle(fontSize: 20),)),
-                                                            Text('publicações',style: TextStyle(fontSize: 12),),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.fromLTRB(0,0,10,0),
-                                                        child: Column(
-                                                          children: [
-                                                            Text(settingsPageController.nunmeroDeAdocoes.toString(),style: TextStyle(fontSize: 20),),
-                                                            Text('Adoções',style: TextStyle(fontSize: 12)),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                       Padding(
-                                                        padding: const EdgeInsets.fromLTRB(0,0,0,0),
-                                                        child: Column(
-                                                          children: [
-                                                            Text(settingsPageController.nunmeroDeAdocoes.toString(),style: TextStyle(fontSize: 20),),
-                                                            Text('Curtidas',style: TextStyle(fontSize: 12)),
-                                                          ],
-                                                        ),
-                                                      ), 
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.fromLTRB(0,5,0,5),
-                                                child: Container(
-                                                  height: 1,
-                                                  width: MediaQuery.of(context).size.width * 0.48,// Largura da "linha"
-                                                  color: Colors.black, // Cor da "linha"
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 35,
-                                                width: MediaQuery.of(context).size.width * 0.50,
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                  children: [
-                                                    ElevatedButton(
-                                                      onPressed: (){
-                                                        settingsPageController.showBottomSheetEdit(context);
-                                                      },
-                                                      style: ElevatedButton.styleFrom(
-                                                        backgroundColor: const Color.fromARGB(255, 255, 94, 0),
-                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5)))
-                                                      ),
-                                                      child:  const Text('Editar perfil',style: TextStyle(color:  Color.fromARGB(255, 255, 255, 255)),)),
-                                                  ],
-                                                ),
-                                              )
-                                                                            
                                             ],
                                           ),
-                                        ),
-                                      ],
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(0,5,0,5),
+                                            child: Container(
+                                              height: 1,
+                                              width: MediaQuery.of(context).size.width *0.52,
+                                              color: Colors.black, // Cor da "linha"
+                                            ),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0,0,10,0),
+                                                    child: Column( 
+                                                      children: [
+                                                        Obx(()=> Text(settingsPageController.nunmeroDePostagens.toString(),style: const TextStyle(fontSize: 20),)),
+                                                        const Text('publicações',style: TextStyle(fontSize: 12),),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0,0,10,0),
+                                                    child: Column(
+                                                      children: [
+                                                        Text(settingsPageController.nunmeroDeAdocoes.toString(),style: const TextStyle(fontSize: 20),),
+                                                        const Text('Adoções',style: TextStyle(fontSize: 12)),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                    Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0,0,0,0),
+                                                    child: Column(
+                                                      children: [
+                                                        Text(settingsPageController.nunmeroDeAdocoes.toString(),style: const TextStyle(fontSize: 20),),
+                                                        const Text('Curtidas',style: TextStyle(fontSize: 12)),
+                                                      ],
+                                                    ),
+                                                  ), 
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(0,5,0,5),
+                                            child: Container(
+                                              height: 1,
+                                              width: MediaQuery.of(context).size.width *0.52,
+                                              color: Colors.black, // Cor da "linha"
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 35,
+                                            width: MediaQuery.of(context).size.width * 0.52,
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                ElevatedButton(
+                                                  onPressed: (){
+                                                    settingsPageController.showBottomSheetEdit(context);
+                                                  },
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: const Color.fromARGB(255, 255, 94, 0),
+                                                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5)))
+                                                  ),
+                                                  child:  const Text('Editar perfil',style: TextStyle(color:Color.fromARGB(255, 255, 255, 255)),)),
+                                              ],
+                                            ),
+                                          )
+                                                                        
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
-                              ),
+                              ],
                             ),
-                            ],
-                            
                           ),
+                        ),
                           // define um limite maximo de caracteres que o texto pode ter na tela
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width * 0.9,
                             height: MediaQuery.of(context).size.height*0.1,
                             child: SingleChildScrollView(
+
                                 child: Obx(
                                   ()=>Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Text(settingsPageController.bio.value),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width * 0.9,
+                                        child: Text(
+                                          settingsPageController.bio.value,
+                                        ),
+                                      )
+                                                                
                                     ],
                                   ),
                                 )
                                 )
                           ),
                       
-                          Container(
+                          SizedBox(
                             height: MediaQuery.of(context).size.height * 0.41,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                 Container(
+                                 SizedBox(
                                   width: double.infinity,
                                   height: MediaQuery.of(context).size.height * 0.04,     
                                   child: Row(
@@ -481,7 +525,7 @@ class SettingsPage extends StatelessWidget {
                                               settingsPageController.opcao.value = 0;
                                             },
                                             style: ElevatedButton.styleFrom(
-                                               backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                                               backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
                                               ),
                                               child:  const Text('Feed',style: TextStyle(color:  Color.fromARGB(255, 255, 94, 0),),)
@@ -506,11 +550,11 @@ class SettingsPage extends StatelessWidget {
                                     height: MediaQuery.of(context).size.height * 0.37,
                                     color: const Color.fromARGB(255, 255, 255, 255),
                                     child: SingleChildScrollView(
-                                      child: settingsPageController.opcao == 0 ? Column(
+                                      child: settingsPageController.opcao.value == 0 ? Column(
                                          children: settingsPageController.mostraFeed(context,settingsPageController.info,1),
                                       ) : 
                                       Column(
-                                         children: settingsPageController.mostraFeed(context,settingsPageController.info2,2),
+                                         children: settingsPageController.mostraFeed(context,settingsPageController.petsInfo,2),
                                       ),
                                     ),
                                   ),
@@ -522,7 +566,7 @@ class SettingsPage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return Text('Nenhum pet disponível');
+                    return const Text('Nenhum pet disponível');
                   }
                 } else if (snapshot.hasError) {
                   return Text(

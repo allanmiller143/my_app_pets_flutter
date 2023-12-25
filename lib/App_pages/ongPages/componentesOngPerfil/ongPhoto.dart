@@ -55,7 +55,7 @@ class OngPhoto extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     color: Color.fromARGB(255, 255, 94, 7),
                   ),
-                  child: Icon(Icons.camera_alt, size: 16, color: const Color.fromARGB(255, 255, 255, 255)),
+                  child: Icon(Icons.add, size: 16, color: const Color.fromARGB(255, 255, 255, 255)),
                 ),
               ),
             )

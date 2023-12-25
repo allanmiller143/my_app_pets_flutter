@@ -2,13 +2,13 @@
 import 'package:replica_google_classroom/App_pages/usuarioPages/my_principal_app_page.dart';
 
 import '../app_widgets/my_animal_card.dart';
-import '../componentesOngPerfil/my_pick_pet_widget.dart';
+import '../ongPages/componentesOngPerfil/my_pick_pet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 
 class PetsController extends GetxController {
-  late PrincipaAppController principaAppController;
+
   dynamic argumentsUsed = false;
   var selectedType = '5'.obs;
   Map<String,dynamic>? usuario;
@@ -21,11 +21,11 @@ class PetsController extends GetxController {
 //recebe parametros por que se quem chamou ela foi o botao da homePage, ela recebe argumentos, para inicializar,
 //dps disso, nao preciso mais dos argumentos ent argumentsUsed passa a ser true, no momento em que eu clico em voltar, argumentsUsed volta a ser false 
 Future<List<Map<String,dynamic>>> alteraLista(tipo,argumentsUsed)async {
-  principaAppController = PrincipaAppController();
+
   pets = await MongoDataBase.retornaListaPets();
   favoritPetIds = [];
   
-  usuario = await MongoDataBase.retornaUsuarioCompleto(principaAppController.emailUsuario);
+  usuario = await MongoDataBase.retornaUsuarioCompleto('millerallan17@gmail.com');
   favoritPetIds = await MongoDataBase.retornaPetIds(usuario!['cpf']);
   if(tipo != '-1'){
     if(argumentsUsed == false){
@@ -37,6 +37,8 @@ Future<List<Map<String,dynamic>>> alteraLista(tipo,argumentsUsed)async {
 
 bool back() { // exibe um botao de voltar na AppBar
   if (Get.arguments == null || Get.arguments.isEmpty) {
+    print('------------------------------------------------------------------------------------------------------------------');
+   
     return false;
   }
   return true;
@@ -44,6 +46,7 @@ bool back() { // exibe um botao de voltar na AppBar
 
 String filtro() { 
   if (Get.arguments == null || Get.arguments.isEmpty) {// se quem chamou foi o bottomNavigationBar retorna 4 que é o valor padrao.
+    print('---------------------------------------------------------------- tenho argumentos ----------------------------------------------------------------');
     return '-1';
   }
   else{ // se  quem chamou foi o botao da homePage, bota arguments usued para true, e a tela vai se comportar de forma certa na segunda vez 
@@ -258,7 +261,7 @@ class PetsPage extends StatelessWidget {
                                       child: IconButton(
                                         onPressed: (){
                                           petsController.showBottomSheet(context);
-                                          print(petsController.selectedType.value);
+                                          
                                         },
                                         icon: Icon(Icons.filter_alt_outlined),
                                         color: Color.fromARGB(255, 255, 255, 255),

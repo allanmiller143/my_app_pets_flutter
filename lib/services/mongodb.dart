@@ -428,4 +428,98 @@ static Future<void> apagaDocumento(String campo, dynamic documento, String email
 }
 
 
+static Future<void> alteraDocumento(String campo, dynamic documento, String email) async {
+  // encontrar o usuario
+  var consultaEmail = where.eq('email', email);
+  var ong = await collection.findOne(consultaEmail);
+
+  // Verificar se o usuário foi encontrado
+  if (ong != null) {
+    ong[campo] = documento;
+
+    // Aplicar a atualização
+    await collection.update(consultaEmail, ong);
+
+    print('Elemento removido com sucesso do array!');
+  } else {
+    print('Usuário não encontrado com o email fornecido.');
+  }
+}
+
+static Future<void> alteraDocumentos(Map<String,dynamic> dados, String email) async {
+  // encontrar o usuario
+  var consultaEmail = where.eq('email', email);
+  var ong = await collection.findOne(consultaEmail);
+
+  // Verificar se o usuário foi encontrado
+  if (ong != null) {
+
+    dados.forEach((String key, dynamic item) async{
+      ong[key] = item;
+      await collection.update(consultaEmail, ong);
+    });
+  
+    
+
+    // Aplicar a atualização
+    
+
+    print('elementos alterados');
+  } else {
+    print('Usuário não encontrado com o email fornecido.');
+  }
+}
+
+static Future<void> alteraPet(String campo,String novoNome, String email, String petId) async {
+  var consultaEmail = where.eq('email', email);
+  var ong = await collection.findOne(consultaEmail);
+
+  // Verificar se a ONG foi encontrada
+  if (ong != null) {
+    // Encontrar o índice do pet na lista de pets da ONG
+    int indicePet = -1;
+    for (int i = 0; i < ong['petList'].length; i++) {
+      if (ong['petList'][i]['id'] == petId) {
+        indicePet = i;
+        break;
+      }
+    }
+
+    // Verificar se o pet foi encontrado
+    if (indicePet != -1) {
+      // Modificar o nome do pet
+      ong['petList'][indicePet][campo] = novoNome;
+
+      // Aplicar a atualização
+      await collection.update(consultaEmail, ong);
+
+      print('$campo do pet atualizado com sucesso!');
+    } else {
+      print('Pet não encontrado com o ID fornecido.');
+    }
+  } else {
+    print('Usuário não encontrado com o email fornecido.');
+  }
+}
+
+static Future<void> removePet(String email, String petId) async {
+  var consultaEmail = where.eq('email', email);
+  var ong = await collection.findOne(consultaEmail);
+
+  // Verificar se a ONG foi encontrada
+  if (ong != null) {
+    // Remover o pet da lista com base no id
+    ong['petList'].removeWhere((pet) => pet['id'] == petId);
+
+    // Aplicar a atualização
+    await collection.update(consultaEmail, ong);
+
+    print('Pet removido com sucesso!');
+  } else {
+    print('Usuário não encontrado com o email fornecido.');
+  }
+}
+
+
+
 }

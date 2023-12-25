@@ -4,15 +4,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:replica_google_classroom/App_pages/ongPages/insert_animal_page.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/home_page.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/pets_page.dart';
-import 'package:replica_google_classroom/App_pages/usuarioPages/settings_page.dart';
-import '../app_widgets/pet_register_widgets/photo_container.dart';
+import 'package:replica_google_classroom/App_pages/OngPages/perfilOng.dart';
+import 'package:replica_google_classroom/loginPages/my_password_page.dart';
 
 
 class PrincipaAppController extends GetxController {
-  static PrincipaAppController get to => Get.find();
-  var opcaoSelecionada = 0.obs;
+  late SenhaController senhaController;
+  var opcaoSelecionada = 2.obs;
   Color corItemSelecionado = Color.fromARGB(255, 0, 0, 0);
   Color corItemNaoSelecionado = Color.fromARGB(255, 255, 255, 255);
   String cpfUsuario = '12678032400';
@@ -25,6 +26,14 @@ class PrincipaAppController extends GetxController {
 
   void mudaOpcaoSelecionada(int index) {
     opcaoSelecionada.value = index;
+  }
+
+   @override
+  void onInit() async {
+    // Chamado quando o controller é inicializado
+    //senhaController = Get.find(); // Encontra a instância existente
+    //cpfUsuario = senhaController.cpf;
+    super.onInit();
   }
 
   void pick(ImageSource source, File? imagem) async {
@@ -215,7 +224,7 @@ class MyPrincipalAppPage extends StatelessWidget {
                   index: principaAppController.opcaoSelecionada.value,
                   children: <Widget>[
                     HomePage(),
-                    PetsPage(),
+                    InsertAnimalPage(),
                     SettingsPage(),
                   ],
                 ),

@@ -102,3 +102,10 @@ final List<String> racasDeCachorro = [
     'Macho',
     'Fêmea',
   ];
+
+  final List<String> tipoList = [
+    'Tipo',
+    'Cachorro',
+    'Gato',
+    'Pássaro'
+  ];

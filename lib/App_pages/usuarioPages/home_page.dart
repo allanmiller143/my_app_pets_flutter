@@ -17,7 +17,6 @@ class HomePageController extends GetxController {
     principaAppController = PrincipaAppController();
     pets = await MongoDataBase.retornaListaPets();
     usuario = await MongoDataBase.retornaUsuarioCompleto(principaAppController.emailUsuario);
-    print(usuario?['preferdPetList']);
     return pets;
   }
 }
@@ -118,7 +117,7 @@ class HomePage extends StatelessWidget {
                                     children: [
                                       GestureDetector(
                                         onTap: (){
-                                          print(homePageController.usuario!['preferedPetsList']);
+                                          
                                         },
                                         child: Text(
                                           'Categorias',

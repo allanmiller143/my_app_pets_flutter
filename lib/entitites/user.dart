@@ -26,6 +26,21 @@ class Usuario {
     required this.cpf,
   });
 
+
+   // Construtor para criar um usuário apenas com informações de endereço
+  Usuario.apenasEndereco({
+    required this.rua,
+    required this.numero,
+    required this.estado,
+    required this.cidade,
+    required this.bairro,
+    required this.cep,
+  })   : primeiroNome = '',
+        sobrenome = '',
+        telefone = '',
+        dataNascimento = '',
+        cpf = '';
+
   Map<String, String> toMap() {
     return {
       "Tipo": '1',

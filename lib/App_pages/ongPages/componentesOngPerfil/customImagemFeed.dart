@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
+// esse arquivo exibe imagems na aba do feed e de pets de uma Ong. 
 
 
 // coloquei dois parametros para o o widget, so uma foto do feed comum, e as informações do pet
@@ -18,7 +19,9 @@ class PicFeed extends StatelessWidget {
   ImageProvider<Object> getImageProvider() {
     // se vier um pet.
     if(petInfo != null){
-      petInfo['imagem'] == null ? image = 'assets/ame.png': image = petInfo['imagem'];
+      
+      var imagem = petInfo['tipo'] == '1' ? 'assets/exemplo1.png' : 'assets/exemplo2.png';
+      petInfo['imagem'] == null ? image = imagem: image = petInfo['imagem'];
       if(petInfo['imagem'] != null){
         final Uint8List bytes = base64.decode(image);
         return MemoryImage(Uint8List.fromList(bytes));
@@ -40,7 +43,7 @@ class PicFeed extends StatelessWidget {
       width: MediaQuery.of(context).size.width / 3,
       height: MediaQuery.of(context).size.height / 6,
       decoration: BoxDecoration(
-        image: DecorationImage(image: imageProvider),
+        image: DecorationImage(image: imageProvider,fit: BoxFit.cover),
         border: Border.all(color: Colors.black, width: 0.1),
       ),
     );
