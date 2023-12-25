@@ -2,16 +2,12 @@
 
 import 'dart:ui';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
-
 import '../services/mongodb.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class EmailController extends GetxController {
-  static EmailController get to =>Get.find(); // serve para acessar a variável de forma mais simples
-      
-
   String email = '';
 
   Future<void> emailfunc(BuildContext context) async {
@@ -85,33 +81,30 @@ class MyEmailPage extends StatelessWidget {
                                   onChanged: (text) {
                                     emailController.email = text;
                                   },
+                                  
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.black), // Cor de foco desejada
+                                    ),  
+                                    contentPadding:EdgeInsets.fromLTRB(10, 10, 10, 10),
                                     border: OutlineInputBorder(),
                                     filled: true,
-                                    hintStyle: TextStyle(
-                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    hintStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0),
                                     ),
                                     hintText: "Email",
                                     fillColor:
                                         Color.fromARGB(255, 248, 248, 248),
                                   ),
                                 ),
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child:
-                                    CustomIconButton(
-                                      label: 'Confirmar',
-                                      onPressed: () {
-                                        emailController.emailfunc(context);  
-                                      },
-                                      width: double.infinity,
-                                      height: 60,
-                                      raio: 5,
-                                      alinhamento: MainAxisAlignment.center),
-                                    
-                                ),
+                                CustomIconButton(
+                                  label: 'Confirmar',
+                                  onPressed: () {
+                                    emailController.emailfunc(context);  
+                                  },
+                                  width: double.infinity,
+                                  height: 60,
+                                  raio: 1,
+                                  alinhamento: MainAxisAlignment.center),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
