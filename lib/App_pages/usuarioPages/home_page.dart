@@ -2,21 +2,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/my_principal_app_page.dart';
+import 'package:replica_google_classroom/loginPages/my_password_page.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 import '../app_widgets/my_custom_card_home_page.dart';
 import '../app_widgets/my_animal_card.dart';
 
 class HomePageController extends GetxController {
-  late PrincipaAppController principaAppController;
+  late SenhaController senhaController;
   List<Map<String, dynamic>> pets = [];
   Map<String,dynamic>? usuario;
 
 
   // antes de tela ser chamada carrega as informações necessarias
   Future<List<Map<String,dynamic>>> alteraLista() async {
-    principaAppController = PrincipaAppController();
+    senhaController = Get.find();
+    var email = senhaController.email; 
+    print('888888888888888888888888888');
+    print(email);
     pets = await MongoDataBase.retornaListaPets();
-    usuario = await MongoDataBase.retornaUsuarioCompleto(principaAppController.emailUsuario);
+    usuario = await MongoDataBase.retornaUsuarioCompleto(email);
     return pets;
   }
 }
@@ -203,7 +207,7 @@ class HomePage extends StatelessWidget {
                                           Get.toNamed('/animalDetail', arguments: [homePageController.pets[0],homePageController.usuario]);       
                                         },
                                         petIds: homePageController.usuario!['preferedPetsList'],
-                                        cpf: homePageController.principaAppController.cpfUsuario
+                                        cpf: homePageController.senhaController.cpf
                                       ),
                                       AnimalCard(
                                         pet: homePageController.pets[1],
@@ -211,7 +215,7 @@ class HomePage extends StatelessWidget {
                                           Get.toNamed('/animalDetail', arguments: [homePageController.pets[1],homePageController.usuario]);
                                         },     
                                         petIds: homePageController.usuario!['preferedPetsList'],
-                                        cpf: homePageController.principaAppController.cpfUsuario
+                                        cpf: homePageController.senhaController.cpf
                                       ),
                                       AnimalCard(
                                         pet: homePageController.pets[2],
@@ -219,7 +223,7 @@ class HomePage extends StatelessWidget {
                                           Get.toNamed('/animalDetail', arguments: [homePageController.pets[2],homePageController.usuario]);    
                                         },
                                         petIds: homePageController.usuario!['preferedPetsList'],
-                                        cpf: homePageController.principaAppController.cpfUsuario
+                                        cpf: homePageController.senhaController.cpf
                                       ),
                                       ],
                                     ),

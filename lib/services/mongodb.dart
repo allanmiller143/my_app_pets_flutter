@@ -70,6 +70,12 @@ class MongoDataBase {
     var user = await collection.findOne(consultaEmail);
     return user!['cpf'].toString();
   }
+  
+  static Future<String> retornaTipo(email) async {
+    var consultaEmail = where.eq('email', email);
+    var user = await collection.findOne(consultaEmail);
+    return user!['Tipo'].toString();
+  }
 
   static Future<void> trocaSenha(email, novaSenha) async {
     var consultaEmail = where.eq('email', email);

@@ -14,6 +14,7 @@ class SenhaController extends GetxController {
   String senha = '';
   String email = Get.arguments[0];
   String nome = Get.arguments[1];
+  late String tipo;
   late String cpf;
 
   Future<void> login(BuildContext context) async {
@@ -21,9 +22,12 @@ class SenhaController extends GetxController {
     if (senha != '') {
       if (await MongoDataBase.verificaUserESenha(email, senha)) { 
         if(await MongoDataBase.verificaUserData(email)){
+          tipo = await MongoDataBase.retornaTipo(email);
           cpf = await MongoDataBase.retornaCpf(email);
-          Navigator.of(context).pop();
-          Get.toNamed('/principalAppPage'); 
+          if(tipo == '1'){
+            Navigator.of(context).pop();
+            Get.toNamed('/principalAppPage'); 
+          }
         }else{
           Get.toNamed('/whoAreYouPage',arguments: [nome,email,senha]);
           mySnackBar('Conclua seu cadastro!',true);
