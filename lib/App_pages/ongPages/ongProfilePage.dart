@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:replica_google_classroom/App_pages/app_widgets/my_animal_card.dart';
+import 'package:replica_google_classroom/loginPages/my_password_page.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 import '../app_widgets/pet_register_widgets/photo_container.dart';
 import '../app_widgets/my_custom_card_home_page.dart';
@@ -15,7 +16,7 @@ import '../app_widgets/my_custom_card_home_page.dart';
 class OngProfileController extends GetxController {
   dynamic ongPetInfo = Get.arguments[0];
   dynamic usuarioInfo = Get.arguments[1];
-
+  late SenhaController senhaController;
 
   Map<String,dynamic>? ongInfo;
   List<dynamic> ongPets = [];
@@ -62,7 +63,9 @@ class OngProfileController extends GetxController {
         },
         pet: pet,
         cpf: usuarioInfo['cpf'],
-        petIds: favoritPetIds)
+        petIds: favoritPetIds,
+        senhaController: senhaController,
+        )
       );
     }
     return cards;

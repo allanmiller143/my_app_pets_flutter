@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:replica_google_classroom/App_pages/usuarioPages/my_principal_app_page.dart';
+import 'package:replica_google_classroom/loginPages/my_password_page.dart';
 
 import '../app_widgets/my_animal_card.dart';
 import '../ongPages/componentesOngPerfil/my_pick_pet_widget.dart';
@@ -8,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 
 class PetsController extends GetxController {
-
+  late SenhaController senhaController;
   dynamic argumentsUsed = false;
   var selectedType = '5'.obs;
   Map<String,dynamic>? usuario;
@@ -21,7 +22,7 @@ class PetsController extends GetxController {
 //recebe parametros por que se quem chamou ela foi o botao da homePage, ela recebe argumentos, para inicializar,
 //dps disso, nao preciso mais dos argumentos ent argumentsUsed passa a ser true, no momento em que eu clico em voltar, argumentsUsed volta a ser false 
 Future<List<Map<String,dynamic>>> alteraLista(tipo,argumentsUsed)async {
-
+  senhaController = Get.find();
   pets = await MongoDataBase.retornaListaPets();
   favoritPetIds = [];
   
@@ -111,7 +112,8 @@ String filtro() {
                 Get.toNamed('/animalDetail', arguments: [pets[p],usuario]);    
             },
             petIds: favoritPetIds,
-            cpf: ''
+            cpf: '',
+            senhaController: senhaController,
           ),
         ),
       );

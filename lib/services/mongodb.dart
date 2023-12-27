@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print, unused_catch_clause
 
 import 'package:mongo_dart/mongo_dart.dart';
-
+import 'dart:developer';
 class MongoDataBase {
   static Db? db;
   static late DbCollection collection;
@@ -179,7 +179,6 @@ static Future<List<Map<String, dynamic>>> retornaListaPets() async {
         'imagem': pet['imagem'],
         'id':pet['id']
       };
-
       allPets.add(petInfo);
     }
   }
@@ -234,6 +233,8 @@ static Future<List<String>> retornaPetIds(cpf) async {
 }
 
 static Future<List<Map<String, dynamic>>> retornaListaPetsOng(String cnpj) async {
+  final startTime = DateTime.now(); // Marca o tempo de início
+
   final ong = await collection.findOne(where.eq('cnpj', cnpj)); // Use findOne para obter apenas uma ONG com o CNPJ fornecido
   final List<Map<String, dynamic>> allPets = [];
 
@@ -279,8 +280,13 @@ static Future<List<Map<String, dynamic>>> retornaListaPetsOng(String cnpj) async
     }
   }
 
+  final endTime = DateTime.now(); // Marca o tempo de fim
+  final elapsedTime = endTime.difference(startTime);
+  log('Tempo de execução de retornaListaPetsOng: $elapsedTime');
+
   return allPets;
 }
+
 
 
 static Future<void> insereImagemPerfil(email,imagem) async {
@@ -408,7 +414,6 @@ static Future<Map<String,dynamic>> retornaUsuarioCompleto(email) async {
     };
 
   }
-  print(usuario);
   return usuario;
 }
 

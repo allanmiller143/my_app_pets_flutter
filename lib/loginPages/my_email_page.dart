@@ -9,14 +9,16 @@ import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class EmailController extends GetxController {
   String email = '';
+  dynamic usuario;
 
   Future<void> emailfunc(BuildContext context) async {
     showLoad(context);
     if (await MongoDataBase.verificaUser(email)) {
-      var nome = await MongoDataBase.retornaNome(email);
+      usuario = await MongoDataBase.retornaUsuarioCompleto(email);
+      print(usuario);
       await resetar(emailx: email);
       Navigator.of(context).pop();
-      Get.toNamed('/password', arguments: [email, nome]);
+      Get.toNamed('/password', arguments: [usuario]);
     } else {
       await resetar(emailx: "");
       Navigator.of(context).pop();

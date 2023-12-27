@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/insert_animal_page.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/home_page.dart';
 import 'package:replica_google_classroom/App_pages/OngPages/perfilOng.dart';
@@ -12,7 +11,7 @@ import 'package:replica_google_classroom/loginPages/my_password_page.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 
 
-class PrincipaAppController extends GetxController {
+class PrincipalOngAppController extends GetxController {
   late SenhaController senhaController;
   var opcaoSelecionada = 0.obs;
   Color corItemSelecionado = const Color.fromARGB(255, 0, 0, 0);
@@ -24,94 +23,29 @@ class PrincipaAppController extends GetxController {
   Map<String,dynamic>? usuario;
 
   Future<String> func() async{
-    //senhaController = Get.find(); // Encontra a instância existente
+    senhaController = Get.find(); // Encontra a instância existente
     //usuario = await MongoDataBase.retornaUsuarioCompleto(senhaController.email);
-    //cpfUsuario = await MongoDataBase.retornaCpf('millerallan17@gmail.com');
-    cpfUsuario = '12678032400';
-    emailUsuario = 'millerallan17@gmail.com';
+    cpfUsuario = await MongoDataBase.retornaCpf(senhaController.email);
+    emailUsuario = senhaController.email;
     return 'allan';
   }
-
 
   void mudaOpcaoSelecionada(int index) {
     opcaoSelecionada.value = index;
   }
 
-  void pick(ImageSource source, File? imagem) async {
-    final imagePicker = ImagePicker();
-    final pickedFile = await imagePicker.pickImage(source: source);
-    if (pickedFile != null) {
-      imagem = File(pickedFile.path);
-      update();
-    }
-  }
-  void showBottomSheet(BuildContext context,File? imagem) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          // Conteúdo do BottomSheet
-          height: 200,
-
-          child: Column(
-            children: [
-              const ListTile(
-                title: Text(
-                  'Inserir uma foto',
-                  style: TextStyle(
-                      fontSize: 25,
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontFamily: 'AsapCondensed-Medium'),
-                ),
-              ),
-              ListTile(
-                title:const  Text(
-                  'Galeria',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontFamily: 'AsapCondensed-Medium'),
-                ),
-                leading:const  Icon(
-                  Icons.photo,
-                  color: Color.fromARGB(255, 255, 84, 16),
-                ),
-                onTap: () {
-                  pick(ImageSource.gallery, imagem);
-                },
-              ),
-              ListTile(
-                title: const Text(
-                  'Camera',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontFamily: 'AsapCondensed-Medium'),
-                ),
-                leading: const  Icon(
-                  Icons.camera_alt,
-                  color: Color.fromARGB(255, 255, 84, 16),
-                ),
-                onTap: () {
-                  pick(ImageSource.camera,imagem);
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 }
 
 
-class MyPrincipalAppPage extends StatelessWidget {
-  MyPrincipalAppPage({Key? key}) : super(key: key);
+class MyPrincipalOngAppPage extends StatelessWidget {
+  const MyPrincipalOngAppPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var principaAppController = PrincipaAppController();
+    var principalOngAppController = PrincipalOngAppController();
     return MaterialApp(
-      home: GetBuilder<PrincipaAppController>(
-          init: PrincipaAppController(),
+      home: GetBuilder<PrincipalOngAppController>(
+          init: PrincipalOngAppController(),
           builder: (_) {
             return Scaffold(
               extendBodyBehindAppBar: true,
@@ -127,42 +61,42 @@ class MyPrincipalAppPage extends StatelessWidget {
                   child: BottomNavigationBar(
                     elevation: 8,
                     onTap: (index) {
-                      principaAppController.mudaOpcaoSelecionada(index);
+                      principalOngAppController.mudaOpcaoSelecionada(index);
                     },
                     type: BottomNavigationBarType.fixed,
-                    currentIndex: principaAppController.opcaoSelecionada.value,
-                    backgroundColor: Color.fromARGB(255, 255, 51, 0),
+                    currentIndex: principalOngAppController.opcaoSelecionada.value,
+                    backgroundColor:const  Color.fromARGB(255, 255, 51, 0),
                     items: const [
                       BottomNavigationBarItem(
                         icon: Icon(Icons.home),
-                        label: 'Home',
+                        label: 'Casa',
                       ),
                       BottomNavigationBarItem(
                         icon: Icon(Icons.pets_outlined),
-                        label: 'Pets',
+                        label: 'Inserir',
                       ),
                       BottomNavigationBarItem(
                         icon: Icon(Icons.settings),
-                        label: 'Settings',
+                        label: 'Perfil',
                       ),
                     ],
-                    selectedItemColor: principaAppController.corItemSelecionado,
-                    unselectedItemColor:principaAppController.corItemNaoSelecionado,
+                    selectedItemColor: principalOngAppController.corItemSelecionado,
+                    unselectedItemColor:principalOngAppController.corItemNaoSelecionado,
                   ),
                 ),
               ),
 
               body: FutureBuilder(
-              future: principaAppController.func(),
+              future: principalOngAppController.func(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
                     return Obx(
                     () => IndexedStack(
-                      index: principaAppController.opcaoSelecionada.value,
+                      index: principalOngAppController.opcaoSelecionada.value,
                       children: <Widget>[
                         HomePage(),
-                        PetsPage(),
+                        InsertAnimalPage(),
                         SettingsPage(),
                       ],
                     ),

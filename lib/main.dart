@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/OngInfoEditPage.dart';
+import 'package:replica_google_classroom/App_pages/ongPages/my_principal_ong_page.dart';
 import 'App_pages/ongPages/componentesOngPerfil/ImageViewerPage.dart';
 import 'loginPages/my_email_page.dart';
 import 'loginPages/my_password_page.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/dataOngPage',page: () => MyOngDataPage(),transition: Transition.leftToRight,transitionDuration: const Duration(milliseconds: 400)),   
         GetPage(name: '/whoAreYouPage',page: () => MyWhoAreYouPage(),transition: Transition.rightToLeft),  
         GetPage(name: '/principalAppPage', page: () => MyPrincipalAppPage()),
+        GetPage(name: '/principalOngAppPage', page: () => const MyPrincipalOngAppPage()),        
         GetPage(name: '/animalDetail', page: () => AnimalInsertPage()),
         GetPage(name: '/favorits', page: () => FavoritsPage()),
         GetPage(name: '/ongProfilePage', page: () => OngProfilePage()),

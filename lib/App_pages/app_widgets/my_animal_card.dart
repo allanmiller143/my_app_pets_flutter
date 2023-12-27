@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:replica_google_classroom/loginPages/my_password_page.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 
 
@@ -13,12 +14,14 @@ class AnimalCard extends StatelessWidget {
   RxBool preferido = false.obs;
   List<dynamic> petIds;
   String cpf;
+  SenhaController senhaController;
 
   AnimalCard({
     required this.onPressed,
     required this.pet,
     required this.cpf,
     required this.petIds,
+    required this.senhaController,
   });
 
   ImageProvider<Object> convertBase64ToImageProvider(String base64Image) {
@@ -130,7 +133,10 @@ class AnimalCard extends StatelessWidget {
                     GestureDetector(
                       onTap: () async { 
                         preferido.value = !preferido.value;
-                        await MongoDataBase.favoritaPet(cpf, preferido.value, pet['id']);
+                        
+                        MongoDataBase.favoritaPet(cpf, preferido.value, pet['id']);
+                        senhaController.favoritaPet(pet['id'],preferido.value);
+                        
                       },
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(0,0,5,0),

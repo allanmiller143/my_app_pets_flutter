@@ -12,21 +12,24 @@ final random = Random();
 
 class SenhaController extends GetxController {
   String senha = '';
-  String email = Get.arguments[0];
-  String nome = Get.arguments[1];
-  late String tipo;
+  String email = Get.arguments[0]['email'];
+  String nome = Get.arguments[0]['userName'];
   late String cpf;
+  dynamic usuario =  Get.arguments[0];
+  dynamic pets;
 
   Future<void> login(BuildContext context) async {
     showLoad(context);
     if (senha != '') {
       if (await MongoDataBase.verificaUserESenha(email, senha)) { 
-        if(await MongoDataBase.verificaUserData(email)){
-          tipo = await MongoDataBase.retornaTipo(email);
-          cpf = await MongoDataBase.retornaCpf(email);
-          if(tipo == '1'){
+        if(usuario['data'] == true){
+          if(usuario['Tipo'] == '1'){
+            cpf  = usuario['cpf'];
+            pets = await MongoDataBase.retornaListaPets();
             Navigator.of(context).pop();
             Get.toNamed('/principalAppPage'); 
+          }else{
+            Get.toNamed('/principalOngAppPage'); 
           }
         }else{
           Get.toNamed('/whoAreYouPage',arguments: [nome,email,senha]);
@@ -56,6 +59,20 @@ class SenhaController extends GetxController {
     mySnackBar('Um código foi enviado ao seu email\nPor favor digite-o abaixo',true);
     Get.toNamed('/confirmPage', arguments: [2, codigo.toString(), nome, email, senha]);  
   }
+
+  void favoritaPet(String petId,bool preferido){
+    print('entrei');
+    if(preferido == true){
+      print('favoritei');
+      usuario['preferedPetsList'].add(petId);
+    }else{
+      print('desfavoritei');
+      usuario['preferedPetsList'].remove(petId);
+    }   
+  }
+
+
+
 }
 
 class MyPasswordPage extends StatelessWidget {
