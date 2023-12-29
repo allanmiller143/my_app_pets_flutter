@@ -11,17 +11,17 @@ import 'package:replica_google_classroom/widgets/load_widget.dart';
 final random = Random();
 
 class SenhaController extends GetxController {
-  String senha = '';
+  var senha = TextEditingController();
+  dynamic usuario =  Get.arguments[0];
   String email = Get.arguments[0]['email'];
   String nome = Get.arguments[0]['userName'];
   late String cpf;
-  dynamic usuario =  Get.arguments[0];
   dynamic pets;
 
   Future<void> login(BuildContext context) async {
     showLoad(context);
-    if (senha != '') {
-      if (await MongoDataBase.verificaUserESenha(email, senha)) { 
+    if (senha.text != '') {
+      if (usuario['password']== senha.text) { 
         if(usuario['data'] == true){
           if(usuario['Tipo'] == '1'){
             cpf  = usuario['cpf'];
@@ -45,11 +45,7 @@ class SenhaController extends GetxController {
     }
   }
 
-  void resetar() {
-    email = '';
-    senha = '';
-    nome = '';
-  }
+
 
   Future<void> forget(BuildContext context) async {
     showLoad(context);
@@ -61,25 +57,18 @@ class SenhaController extends GetxController {
   }
 
   void favoritaPet(String petId,bool preferido){
-    print('entrei');
     if(preferido == true){
       print('favoritei');
       usuario['preferedPetsList'].add(petId);
     }else{
-      print('desfavoritei');
       usuario['preferedPetsList'].remove(petId);
     }   
   }
-
-
-
 }
 
 class MyPasswordPage extends StatelessWidget {
   MyPasswordPage({super.key});
-
   final senhaController = Get.put(SenhaController());
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -106,7 +95,6 @@ class MyPasswordPage extends StatelessWidget {
                         children: [
                           IconButton(
                             onPressed: () {
-                              senhaController.resetar();
                               Get.back();
                             },
                             icon: Icon(
@@ -143,16 +131,13 @@ class MyPasswordPage extends StatelessWidget {
                               child: BackdropFilter(
                                 filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                                 child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:MainAxisAlignment.spaceAround,   
                                   children: [
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      mainAxisAlignment:MainAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              10, 0, 10, 0),
+                                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                           child: ClipOval(
                                             child: Image.asset(
                                               'assets/fundo.png',
@@ -163,18 +148,15 @@ class MyPasswordPage extends StatelessWidget {
                                           ),
                                         ),
                                         Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
+                                          crossAxisAlignment:CrossAxisAlignment.start,
+                                          mainAxisAlignment:MainAxisAlignment.end,
                                           children: [
                                             Text(
                                               senhaController.nome,
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w400,
-                                                color: const Color.fromARGB(
-                                                    255, 255, 255, 255),
+                                                color: const Color.fromARGB(255, 255, 255, 255), 
                                               ),
                                             ),
                                             Text(
@@ -190,10 +172,8 @@ class MyPasswordPage extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    TextField(
-                                      onChanged: (text) {
-                                        senhaController.senha = text;
-                                      },
+                                    TextFormField(
+                                      controller: senhaController.senha,
                                       obscureText: true,
                                       decoration: InputDecoration(
                                         focusedBorder: OutlineInputBorder(

@@ -35,8 +35,6 @@ class FavoritsController extends GetxController {
               int p = petInfo['posicao']; 
                Get.toNamed('/animalDetail', arguments: [pets[p],usuario]); 
             },
-            petIds: favoritPetIds,
-            cpf: '',
             senhaController: senhaController,
           ),
         ),

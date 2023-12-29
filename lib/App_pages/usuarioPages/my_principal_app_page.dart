@@ -14,7 +14,7 @@ import 'package:replica_google_classroom/services/mongodb.dart';
 
 class PrincipaAppController extends GetxController {
   late SenhaController senhaController;
-  var opcaoSelecionada = 0.obs;
+  RxInt opcaoSelecionada = 0.obs;
   Color corItemSelecionado = const Color.fromARGB(255, 0, 0, 0);
   Color corItemNaoSelecionado = const  Color.fromARGB(255, 255, 255, 255);
   late String cpfUsuario;
@@ -34,72 +34,12 @@ class PrincipaAppController extends GetxController {
 
 
   void mudaOpcaoSelecionada(int index) {
+    print('Valor antigo: ${opcaoSelecionada.value}');
     opcaoSelecionada.value = index;
+    print('Novo valor: ${opcaoSelecionada.value}');
+    update();
   }
 
-  void pick(ImageSource source, File? imagem) async {
-    final imagePicker = ImagePicker();
-    final pickedFile = await imagePicker.pickImage(source: source);
-    if (pickedFile != null) {
-      imagem = File(pickedFile.path);
-      update();
-    }
-  }
-  void showBottomSheet(BuildContext context,File? imagem) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          // Conteúdo do BottomSheet
-          height: 200,
-
-          child: Column(
-            children: [
-              const ListTile(
-                title: Text(
-                  'Inserir uma foto',
-                  style: TextStyle(
-                      fontSize: 25,
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontFamily: 'AsapCondensed-Medium'),
-                ),
-              ),
-              ListTile(
-                title:const  Text(
-                  'Galeria',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontFamily: 'AsapCondensed-Medium'),
-                ),
-                leading:const  Icon(
-                  Icons.photo,
-                  color: Color.fromARGB(255, 255, 84, 16),
-                ),
-                onTap: () {
-                  pick(ImageSource.gallery, imagem);
-                },
-              ),
-              ListTile(
-                title: const Text(
-                  'Camera',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontFamily: 'AsapCondensed-Medium'),
-                ),
-                leading: const  Icon(
-                  Icons.camera_alt,
-                  color: Color.fromARGB(255, 255, 84, 16),
-                ),
-                onTap: () {
-                  pick(ImageSource.camera,imagem);
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 }
 
 
@@ -163,7 +103,7 @@ class MyPrincipalAppPage extends StatelessWidget {
                       children: <Widget>[
                         HomePage(),
                         PetsPage(),
-                        SettingsPage(),
+                        //SettingsPage(),
                       ],
                     ),
                 );
@@ -172,7 +112,7 @@ class MyPrincipalAppPage extends StatelessWidget {
                   }
                 } else if (snapshot.hasError) {
                   return Text(
-                      'Erro ao carregar a listdfgfdgfdgfdgfdgfdga de pets: ${snapshot.error}');
+                      'Erro ao carregar a listd de pets: ${snapshot.error}');
                 } else {
                   return const Center(
                     child: CircularProgressIndicator(

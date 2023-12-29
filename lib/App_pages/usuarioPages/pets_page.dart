@@ -1,66 +1,28 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-import 'package:replica_google_classroom/App_pages/usuarioPages/my_principal_app_page.dart';
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
 import 'package:replica_google_classroom/loginPages/my_password_page.dart';
-
 import '../app_widgets/my_animal_card.dart';
 import '../ongPages/componentesOngPerfil/my_pick_pet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
 
 class PetsController extends GetxController {
   late SenhaController senhaController;
   dynamic argumentsUsed = false;
-  var selectedType = '5'.obs;
+  RxString selectedType = '5'.obs;
   Map<String,dynamic>? usuario;
-  List<String> favoritPetIds = [];  
+  List<dynamic> favoritPetIds = [];  
   List<Map<String, dynamic>> pets = [];
   List<Map<String, dynamic>> petsInfo = [];
   List<Map<String, dynamic>> petsInfo2 = [];
 
-//essa funcao vai retornar a lista atualizada de pets toda vez que filtrar ou entrar na tela de pets
-//recebe parametros por que se quem chamou ela foi o botao da homePage, ela recebe argumentos, para inicializar,
-//dps disso, nao preciso mais dos argumentos ent argumentsUsed passa a ser true, no momento em que eu clico em voltar, argumentsUsed volta a ser false 
-Future<List<Map<String,dynamic>>> alteraLista(tipo,argumentsUsed)async {
-  senhaController = Get.find();
-  pets = await MongoDataBase.retornaListaPets();
-  favoritPetIds = [];
-  
-  usuario = await MongoDataBase.retornaUsuarioCompleto('millerallan17@gmail.com');
-  favoritPetIds = await MongoDataBase.retornaPetIds(usuario!['cpf']);
-  if(tipo != '-1'){
-    if(argumentsUsed == false){
-      selectedType.value = tipo;
-    } 
+  Future<String> alteraLista(tipo,argumentsUsed)async {
+    senhaController = Get.find();
+    favoritPetIds = [];
+    usuario = senhaController.usuario;
+    favoritPetIds = usuario!['preferedPetsList'];
+    pets = senhaController.pets;
+    return 'allan';
   }
-  return pets;
-}
-
-bool back() { // exibe um botao de voltar na AppBar
-  if (Get.arguments == null || Get.arguments.isEmpty) {
-    print('------------------------------------------------------------------------------------------------------------------');
-   
-    return false;
-  }
-  return true;
-}
-
-String filtro() { 
-  if (Get.arguments == null || Get.arguments.isEmpty) {// se quem chamou foi o bottomNavigationBar retorna 4 que é o valor padrao.
-    print('---------------------------------------------------------------- tenho argumentos ----------------------------------------------------------------');
-    return '-1';
-  }
-  else{ // se  quem chamou foi o botao da homePage, bota arguments usued para true, e a tela vai se comportar de forma certa na segunda vez 
-    if(argumentsUsed == false){
-      argumentsUsed = true;
-      return Get.arguments[0]; // retorna quem chamou a tela de pets, isso vai servir para inicializar a lista de pets certa
-    } 
-    else { //na segunda vez que chamar a funcao de filtro, nao vai pegar os argumentos
-      return '-1';
-    }
-  }
-}
-
   void retornaLista(String filtro, int init) {
     petsInfo = [];
     petsInfo2 = [];
@@ -73,32 +35,29 @@ String filtro() {
     int cont = 1;
     if (tamanhoLista != 0) {
       for (int i = 0; i < tamanhoLista; i++) {
-        pets[i]['posicao'] = i; // adiciona a posicao para poder poder controlar as informcaoes quando chamar a tela de detalhes 
-        if(filtro != '5'){
-          if(pets[i]['tipo'] == filtro){
-            if(cont%2 != 0){
+        pets[i]['posicao'] = i;
+        if (filtro != '5') {
+          if (pets[i]['tipo'] == filtro) {
+            if (cont % 2 != 0) {
               petsInfo.add(pets[i]);
-            }
-            else{
+            } else {
               petsInfo2.add(pets[i]);
             }
             cont++;
           }
-        }else{
-          if(i%2 != 0){
+        } else {
+          if (i % 2 != 0) {
             petsInfo.add(pets[i]);
-          }
-          else{
+          } else {
             petsInfo2.add(pets[i]);
           }
         }
-        
-          
       }
     }
-    init != 1 ? update() : null; //controla quando chama o update, que nao pode ser chamado enquanto a tela esta sendo construida.
-  }
-  
+    if (init != 1) {
+      update();
+    }
+  } 
   List<Widget> generateAnimalCards(petsInfo) {
     List<Widget> cards = [];
     for (var petInfo in petsInfo) {
@@ -111,8 +70,6 @@ String filtro() {
               int p = petInfo['posicao'];
                 Get.toNamed('/animalDetail', arguments: [pets[p],usuario]);    
             },
-            petIds: favoritPetIds,
-            cpf: '',
             senhaController: senhaController,
           ),
         ),
@@ -120,12 +77,11 @@ String filtro() {
     }
     return cards;
   }
-
   void showBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return Container(
+        return SizedBox(
           height: 200,
           child: Column(
             children: [
@@ -176,228 +132,226 @@ String filtro() {
 }
 
 class PetsPage extends StatelessWidget {
-  PetsPage({Key? key}) : super(key: key);
-  final petsController = Get.put(PetsController());
+  PetsPage({super.key});
+  var petsController = Get.put(PetsController());
   @override
   Widget build(BuildContext context) {
-    var mostraBack = petsController.back(); // mostra o widget de voltar ou nao
     return MaterialApp(
       home: GetBuilder<PetsController>(
         init: PetsController(),
         builder: (_) {
           return Scaffold(
             body:FutureBuilder( // usa-se futureBuilder, pq preciso carregar a lista de pets antes de criar a tela.
-            future:  (Get.arguments == null || Get.arguments.isEmpty) ? petsController.alteraLista('-1',petsController.argumentsUsed) : petsController.alteraLista(Get.arguments[0],petsController.argumentsUsed), 
+            future:  petsController.alteraLista('-1',petsController.argumentsUsed), 
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
-                  var filtro = petsController.filtro();
-                  petsController.retornaLista( (filtro  == '-1') ? petsController.selectedType.value : filtro , 1);
-                  return Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: 165,
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            height: 130,
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 255, 51, 0),
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20)
+                  petsController.retornaLista(petsController.selectedType.value, 1);
+                  return SingleChildScrollView(
+                    child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.21,
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * 0.166,
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 255, 51, 0),
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(20)
+                                )
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 250,
+                                    height: MediaQuery.of(context).size.height * 0.319,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage('assets/5.png'),
+                                          fit: BoxFit.cover)
+                                    ),
+                                  ),
+                                ],
                               )
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                mostraBack == true ? GestureDetector( onTap: () { petsController.argumentsUsed = false; Get.back();}, child: Text('voltar')) : Text( ''),
-                                Container(
-                                  width: 250,
-                                  height: 60,
+                            Positioned(
+                              top: 95,
+                              left: 15,
+                              child: Card(
+                                elevation: 8,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:BorderRadius.all(Radius.circular(30))  
+                                ),
+                                child: Container(
+                                  width: 360,
+                                  height: 55,
                                   decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage('assets/5.png'),
-                                        fit: BoxFit.cover)
+                                    color: Color.fromARGB(255, 255, 255, 255),
+                                    borderRadius: BorderRadius.all(Radius.circular(30))     
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                                        child: Text(
+                                          'Filtrar',
+                                          style: TextStyle(fontSize: 20,fontFamily:'AsapCondensed-Light'),         
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 55,
+                                        height: 55,
+                                        decoration: BoxDecoration(
+                                          color:Color.fromARGB(255, 17, 61, 94),
+                                          borderRadius:BorderRadius.circular(40)
+                                        ),     
+                                        child: IconButton(
+                                          onPressed: (){
+                                            petsController.showBottomSheet(context);
+                                            
+                                          },
+                                          icon: Icon(Icons.filter_alt_outlined),
+                                          color: Color.fromARGB(255, 255, 255, 255),
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
-                              ],
+                              ),
                             )
-                          ),
-                          Positioned(
-                            top: 95,
-                            left: 15,
-                            child: Card(
-                              elevation: 8,
-                              shape: RoundedRectangleBorder(
-                                borderRadius:BorderRadius.all(Radius.circular(30))  
-                              ),
-                              child: Container(
-                                width: 360,
-                                height: 55,
-                                decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 255, 255, 255),
-                                  borderRadius: BorderRadius.all(Radius.circular(30))     
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                                      child: Text(
-                                        'Filtrar',
-                                        style: TextStyle(fontSize: 20,fontFamily:'AsapCondensed-Light'),         
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 55,
-                                      height: 55,
-                                      decoration: BoxDecoration(
-                                        color:Color.fromARGB(255, 17, 61, 94),
-                                        borderRadius:BorderRadius.circular(40)
-                                      ),     
-                                      child: IconButton(
-                                        onPressed: (){
-                                          petsController.showBottomSheet(context);
-                                          
-                                        },
-                                        icon: Icon(Icons.filter_alt_outlined),
-                                        color: Color.fromARGB(255, 255, 255, 255),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: mostraBack == true ?  EdgeInsets.fromLTRB(22, 0, 22, 50) :EdgeInsets.fromLTRB(22, 0, 22, 0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding:const EdgeInsets.fromLTRB(2, 0, 0, 10),
-                                child: Text(
-                                  'Categorias',
-                                  style: TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Bold'),     
-                                ),
-                              ),
-                            ],
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              mainAxisAlignment:MainAxisAlignment.spaceEvenly, 
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(22, 0, 22, 0),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                CustomPickPet(
-                                  onPressed: () {
-                                    petsController.selectedType.value ='5';
-                                    petsController.retornaLista('5',2);  
-                                  },
-                                  imagePath: 'assets/outros.png',
-                                  tipo: "5",
-                                  controller:petsController.selectedType,
-                                  text: 'Todos'),
-                                CustomPickPet(
-                                  onPressed: () {
-                                    petsController.selectedType.value = '1';
-                                    petsController.retornaLista('1',2);
-                                  },
-                                  imagePath: 'assets/doguinho.png',
-                                  tipo: "1",
-                                  controller:petsController.selectedType,
-                                  text: 'Cachorros'
-                                ),
-                                CustomPickPet(
-                                  onPressed: () {
-                                    petsController.selectedType.value ='2';
-                                    petsController.retornaLista('2',2);
-                                  },
-                                  imagePath: 'assets/gatinho.png',
-                                  tipo: "2",
-                                  controller:petsController.selectedType,
-                                  text: 'Gatos'
-                                ),
-                                CustomPickPet(
-                                  onPressed: () {
-                                    petsController.selectedType.value ='3';
-                                    petsController.retornaLista('3',2);    
-                                  },
-                                  imagePath: 'assets/passarinho.png',
-                                  tipo: "3",
-                                  controller:petsController.selectedType, 
-                                  text: 'Pássaros'),
-                                  CustomPickPet(
-                                  onPressed: () {
-                                    petsController.selectedType.value ='4';
-                                    petsController.retornaLista('4',2);    
-                                  },
-                                  imagePath: 'assets/passarinho.png',
-                                  tipo: "4",
-                                  controller:petsController.selectedType, 
-                                  text: 'Outros'),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(2, 0, 0, 10), 
-                                      child: Text(
-                                        'Esperando por você',
-                                        style: TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Bold'),   
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  width:MediaQuery.of(context).size.width - 40,
-                                  height: 420,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisAlignment:MainAxisAlignment.spaceBetween,   
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children:[
-                                            Column(
-                                              children: petsController.generateAnimalCards(petsController.petsInfo), // Use a função para gerar os cards             
-                                            ),
-                                            Column(
-                                              children: petsController.generateAnimalCards(petsController.petsInfo2) // Gere mais cards conforme necessário               
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
+                                Padding(
+                                  padding:const EdgeInsets.fromLTRB(2, 0, 0, 10),
+                                  child: Text(
+                                    'Categorias',
+                                    style: TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Bold'),     
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                mainAxisAlignment:MainAxisAlignment.spaceEvenly, 
+                                children: [
+                                  CustomPickPet(
+                                    onPressed: () {
+                                      petsController.selectedType.value ='5';
+                                      petsController.retornaLista('5',2);  
+                                    },
+                                    imagePath: 'assets/outros.png',
+                                    tipo: "5",
+                                    controller:petsController.selectedType,
+                                    text: 'Todos'),
+                                  CustomPickPet(
+                                    onPressed: () {
+                                      petsController.selectedType.value = '1';
+                                      petsController.retornaLista('1',2);
+                                    },
+                                    imagePath: 'assets/doguinho.png',
+                                    tipo: "1",
+                                    controller:petsController.selectedType,
+                                    text: 'Cachorros'
+                                  ),
+                                  CustomPickPet(
+                                    onPressed: () {
+                                      petsController.selectedType.value ='2';
+                                      petsController.retornaLista('2',2);
+                                    },
+                                    imagePath: 'assets/gatinho.png',
+                                    tipo: "2",
+                                    controller:petsController.selectedType,
+                                    text: 'Gatos'
+                                  ),
+                                  CustomPickPet(
+                                    onPressed: () {
+                                      petsController.selectedType.value ='3';
+                                      petsController.retornaLista('3',2);    
+                                    },
+                                    imagePath: 'assets/passarinho.png',
+                                    tipo: "3",
+                                    controller:petsController.selectedType, 
+                                    text: 'Pássaros'),
+                                    CustomPickPet(
+                                    onPressed: () {
+                                      petsController.selectedType.value ='4';
+                                      petsController.retornaLista('4',2);    
+                                    },
+                                    imagePath: 'assets/passarinho.png',
+                                    tipo: "4",
+                                    controller:petsController.selectedType, 
+                                    text: 'Outros'),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(2, 0, 0, 10), 
+                                        child: Text(
+                                          'Esperando por você',
+                                          style: TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Bold'),   
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width:MediaQuery.of(context).size.width - 40,
+                                    height: MediaQuery.of(context).size.height * 0.53,
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisAlignment:MainAxisAlignment.spaceBetween,   
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children:[
+                                              Column(
+                                                children: petsController.generateAnimalCards(petsController.petsInfo), // Use a função para gerar os cards             
+                                              ),
+                                              Column(
+                                                children: petsController.generateAnimalCards(petsController.petsInfo2) // Gere mais cards conforme necessário               
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-
-                 
-                );
-                } else {
+                    ], 
+                                    ),
+                  );
+                } 
+                else {
                   return Text('Nenhum pet disponível');
                 }
               } else if (snapshot.hasError) {

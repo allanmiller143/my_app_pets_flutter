@@ -9,7 +9,7 @@ class CustomPickPet extends StatelessWidget {
   final String text;
   final String imagePath;
 
-  CustomPickPet({
+  const CustomPickPet({super.key, 
     required this.onPressed,
     required this.tipo,
     required this.controller,
@@ -29,10 +29,10 @@ class CustomPickPet extends StatelessWidget {
             height: 50,
             decoration: isSelected
                 ? BoxDecoration(
-                    color: Color.fromARGB(255, 255, 51, 0),
+                    color: const Color.fromARGB(255, 255, 51, 0),
                     borderRadius: BorderRadius.circular(30))
                 : BoxDecoration(
-                    color: Color.fromARGB(255, 221, 231, 231),
+                    color: const Color.fromARGB(255, 221, 231, 231),
                     borderRadius: BorderRadius.circular(30)),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(3, 0, 2, 0),
@@ -42,7 +42,7 @@ class CustomPickPet extends StatelessWidget {
                     width: 45,
                     height: 45,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 255, 255, 255),
+                      color: const Color.fromARGB(255, 255, 255, 255),
                       borderRadius: BorderRadius.circular(50),
                       image: DecorationImage(
                         image: AssetImage(imagePath),
@@ -55,8 +55,8 @@ class CustomPickPet extends StatelessWidget {
                       text,
                       style: TextStyle(
                         color: isSelected
-                            ? Color.fromARGB(255, 255, 255, 255)
-                            : Color.fromARGB(255, 0, 0, 0),
+                            ? const Color.fromARGB(255, 255, 255, 255)
+                            : const Color.fromARGB(255, 0, 0, 0),
                         fontSize: 14,
                       ),
                     ),

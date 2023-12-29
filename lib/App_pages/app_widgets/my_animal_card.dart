@@ -12,15 +12,11 @@ class AnimalCard extends StatelessWidget {
   final VoidCallback onPressed;
   Map<String,dynamic> pet;
   RxBool preferido = false.obs;
-  List<dynamic> petIds;
-  String cpf;
   SenhaController senhaController;
 
   AnimalCard({
     required this.onPressed,
     required this.pet,
-    required this.cpf,
-    required this.petIds,
     required this.senhaController,
   });
 
@@ -30,7 +26,7 @@ class AnimalCard extends StatelessWidget {
   }
 
   void verificaFavorito(){
-    if(petIds.contains(pet['id'])){
+    if(senhaController.usuario['preferedPetsList'].contains(pet['id'])){
       preferido.value = true;
     }
   }
@@ -133,10 +129,8 @@ class AnimalCard extends StatelessWidget {
                     GestureDetector(
                       onTap: () async { 
                         preferido.value = !preferido.value;
-                        
-                        MongoDataBase.favoritaPet(cpf, preferido.value, pet['id']);
+                        MongoDataBase.favoritaPet(senhaController.usuario['cpf'], preferido.value, pet['id']);
                         senhaController.favoritaPet(pet['id'],preferido.value);
-                        
                       },
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(0,0,5,0),

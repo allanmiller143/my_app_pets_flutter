@@ -1,10 +1,8 @@
 // ignore_for_file: avoid_print, use_key_in_widget_constructors
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/OngPages/perfilOng.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
-import 'package:replica_google_classroom/entitites/user.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class EditarCampoController extends GetxController {

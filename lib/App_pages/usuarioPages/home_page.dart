@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:replica_google_classroom/App_pages/usuarioPages/my_principal_app_page.dart';
 import 'package:replica_google_classroom/loginPages/my_password_page.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
 import '../app_widgets/my_custom_card_home_page.dart';
 import '../app_widgets/my_animal_card.dart';
 
@@ -12,21 +10,16 @@ class HomePageController extends GetxController {
   List<Map<String, dynamic>> pets = [];
   dynamic usuario;
 
-
-  // antes de tela ser chamada carrega as informações necessarias
   Future<List<Map<String,dynamic>>> alteraLista() async {
     senhaController = Get.find();
     usuario = senhaController.usuario;
-
-    print('pets favoritos + ${usuario['preferedPetsList']}');
     pets = senhaController.pets;
-    print(pets[0]);
     return pets;
   }
 }
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+  HomePage({super.key});
   var homePageController = Get.put(HomePageController());
   @override
   Widget build(BuildContext context) {
@@ -36,7 +29,7 @@ class HomePage extends StatelessWidget {
         builder: (_) {
           return Scaffold(
             body:FutureBuilder(
-            future: homePageController.alteraLista(), // Remova os parênteses para não executar a função aqui
+            future: homePageController.alteraLista(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
@@ -119,14 +112,9 @@ class HomePage extends StatelessWidget {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      GestureDetector(
-                                        onTap: (){
-                                          
-                                        },
-                                        child: Text(
-                                          'Categorias',
-                                          style: TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Bold'),   
-                                        ),
+                                      Text(
+                                        'Categorias',
+                                        style: TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Bold'),   
                                       ),
                                     ],
                                   ),
@@ -137,9 +125,7 @@ class HomePage extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       CustomCardHomePage(
-                                        onPressed: () async {
-                                          Get.toNamed('/profilePage',arguments: ['1']);
-                                        },
+                                        onPressed: () async {Get.toNamed('/profilePage',arguments: ['1']);},
                                         imagePath: 'assets/doguinho.png',
                                         text: 'Cachorros',
                                         backgroundImageColor:const Color.fromARGB(255, 255, 255, 255),  
@@ -147,27 +133,20 @@ class HomePage extends StatelessWidget {
                                         textColor:const Color.fromARGB(255, 255, 255, 255),  
                                       ),
                                       CustomCardHomePage(
-                                        onPressed: () {
-                                          Get.toNamed('/profilePage',arguments: ['2']);
-                                        },
+                                        onPressed: () {Get.toNamed('/profilePage',arguments: ['2']);},
                                         imagePath: 'assets/gatinho.png',
                                         text: 'Gatos',
                                       ),
                                       CustomCardHomePage(
-                                        onPressed: () {
-                                          Get.toNamed('/profilePage',arguments: ['3']);
-                                        },
+                                        onPressed: () {Get.toNamed('/profilePage',arguments: ['3']);},
                                         imagePath: 'assets/passarinho.png',
                                         text: 'Pássaros',
                                       ),
                                       CustomCardHomePage(
-                                        onPressed: () {
-                                          Get.toNamed('/profilePage',arguments: ["4"]);
-                                        },
+                                        onPressed: () {Get.toNamed('/profilePage',arguments: ["4"]);},
                                         imagePath: 'assets/outros.png',
                                         text: 'Outros',
                                       ),
-                                      
                                     ],
                                   ),
                                 ),
@@ -197,17 +176,13 @@ class HomePage extends StatelessWidget {
                                   height: 235,
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
-
                                     child: Row(
                                       children: [
                                         AnimalCard(
                                         pet: homePageController.pets[0],
                                         onPressed: () {
-                                          // informações do(pet e sua ong ) e informações do usuario logado 
                                           Get.toNamed('/animalDetail', arguments: [homePageController.pets[0],homePageController.usuario]);       
                                         },
-                                        petIds: homePageController.usuario!['preferedPetsList'],
-                                        cpf: '12678032400',
                                         senhaController: homePageController.senhaController,
 
                                       ),
@@ -216,8 +191,6 @@ class HomePage extends StatelessWidget {
                                         onPressed: () {
                                           Get.toNamed('/animalDetail', arguments: [homePageController.pets[1],homePageController.usuario]);
                                         },     
-                                        petIds: homePageController.usuario!['preferedPetsList'],
-                                        cpf: '12678032400',
                                         senhaController: homePageController.senhaController,
 
                                       ),
@@ -226,8 +199,6 @@ class HomePage extends StatelessWidget {
                                         onPressed: () {
                                           Get.toNamed('/animalDetail', arguments: [homePageController.pets[2],homePageController.usuario]);    
                                         },
-                                        petIds: homePageController.usuario!['preferedPetsList'],
-                                        cpf: '12678032400',
                                         senhaController: homePageController.senhaController,
                                       ),
                                       ],

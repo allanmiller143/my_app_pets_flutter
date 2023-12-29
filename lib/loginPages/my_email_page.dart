@@ -8,27 +8,21 @@ import 'package:get/get.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class EmailController extends GetxController {
-  String email = '';
   dynamic usuario;
-
+  var email = TextEditingController();
+  
   Future<void> emailfunc(BuildContext context) async {
     showLoad(context);
-    if (await MongoDataBase.verificaUser(email)) {
-      usuario = await MongoDataBase.retornaUsuarioCompleto(email);
-      print(usuario);
-      await resetar(emailx: email);
+    if (await MongoDataBase.verificaUser(email.text)) {
+      usuario = await MongoDataBase.retornaUsuarioCompleto(email.text);
       Navigator.of(context).pop();
       Get.toNamed('/password', arguments: [usuario]);
     } else {
-      await resetar(emailx: "");
       Navigator.of(context).pop();
       Get.toNamed('/signUp');
     }
   }
 
-  Future<void> resetar({String? emailx}) async {
-    email = emailx!;
-  }
 }
 
 class MyEmailPage extends StatelessWidget {
@@ -79,11 +73,8 @@ class MyEmailPage extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                TextField(
-                                  onChanged: (text) {
-                                    emailController.email = text;
-                                  },
-                                  
+                                TextFormField(
+                                  controller: emailController.email,
                                   decoration: InputDecoration(
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Colors.black), // Cor de foco desejada
@@ -94,8 +85,7 @@ class MyEmailPage extends StatelessWidget {
                                     hintStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0),
                                     ),
                                     hintText: "Email",
-                                    fillColor:
-                                        Color.fromARGB(255, 248, 248, 248),
+                                    fillColor:Color.fromARGB(255, 248, 248, 248), 
                                   ),
                                 ),
                                 CustomIconButton(
@@ -105,7 +95,6 @@ class MyEmailPage extends StatelessWidget {
                                   },
                                   width: double.infinity,
                                   height: 60,
-                                  raio: 1,
                                   alinhamento: MainAxisAlignment.center),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -114,13 +103,11 @@ class MyEmailPage extends StatelessWidget {
                                       'Não possui conta?  ',
                                       style: TextStyle(
                                         fontSize: 16,
-                                        color: const Color.fromARGB(
-                                            255, 255, 255, 255),
+                                        color: const Color.fromARGB(255, 255, 255, 255),      
                                       ),
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        emailController.email = '';
                                         Get.toNamed('/signUp');
                                       },
                                       child: Text(
@@ -128,8 +115,7 @@ class MyEmailPage extends StatelessWidget {
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                          color: const Color.fromARGB(
-                                              255, 236, 71, 6),
+                                          color: const Color.fromARGB(255, 236, 71, 6),    
                                         ),
                                       ),
                                     ),

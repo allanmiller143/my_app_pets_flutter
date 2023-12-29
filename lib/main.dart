@@ -16,7 +16,7 @@ import 'registerPages/my_data_page.dart';
 import 'registerPages/My_data_page_ong.dart';
 import 'registerPages/my_who_are_you_page.dart';
 import 'App_pages/usuarioPages/my_principal_app_page.dart';
-import 'App_pages/usuarioPages/pets_page.dart';
+import 'App_pages/usuarioPages/test.dart';
 import 'App_pages/ongPages/ongProfilePage.dart';
 import 'App_pages/ong&user/animal_detail_page.dart';
 import 'App_pages/usuarioPages/favorits.dart';
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/confirmPage', page: () => MyConfirmPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/forgetPage', page: () => MyForgetPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/dataPage', page: () => MyDataPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
-        GetPage(name: '/profilePage', page: () => PetsPage()),
+        GetPage(name: '/profilePage', page: () => PetsAuxPage()),
         GetPage(name: '/dataOngPage',page: () => MyOngDataPage(),transition: Transition.leftToRight,transitionDuration: const Duration(milliseconds: 400)),   
         GetPage(name: '/whoAreYouPage',page: () => MyWhoAreYouPage(),transition: Transition.rightToLeft),  
         GetPage(name: '/principalAppPage', page: () => MyPrincipalAppPage()),

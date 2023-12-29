@@ -29,7 +29,6 @@ class OngProfileController extends GetxController {
 
   Future<dynamic> alteraLista() async {
     final stopwatch = Stopwatch()..start();
-
     if(tipo == '2'){
       print('entrei');
       favoritPetIds = [];
@@ -51,8 +50,6 @@ class OngProfileController extends GetxController {
 
     return ongPets;
   }
-
-
   List<Widget> geraAnimalCardsUser(petsInfo,n){
     List<Widget> cards = [];
     for(var pet in petsInfo){
@@ -62,8 +59,6 @@ class OngProfileController extends GetxController {
           Get.toNamed('/animalDetail', arguments: [pet,usuarioInfo]);
         },
         pet: pet,
-        cpf: usuarioInfo['cpf'],
-        petIds: favoritPetIds,
         senhaController: senhaController,
         )
       );

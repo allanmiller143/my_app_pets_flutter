@@ -366,30 +366,31 @@ static Future<Map<String,dynamic>> retornaUsuarioCompleto(email) async {
   var user = await collection.findOne(consultaEmail);
 
   Map<String,dynamic> usuario = {};
-  if(user!['Tipo'] == 2){
-    usuario = {
-      'userName' : user['userName'],
-      'email' : user['email'],
-      'password' : user['password'],
-      'data' : user['data'],
-      'petList' : user['petList'],
-      'preferedPetsList' : user['preferedPetsList'],
-      'tipo' : user['Tipo'],
-      'nomeOng' : user['nomeOng'],
-      'cnpj' : user['cnpj'],
-      'rua' : user['rua'],
-      'numero' : user['numero'],
-      'estado' : user['estado'],
-      'cidade' : user['cidade'],
-      'bairro' : user['bairro'],
-      'cep' : user['cep'],
-      'telefone' : user['telefone'],
-      'nome representante' : user['nome representante'],
-      'email representante' : user['email representante'],
-      'cpf representante' : user['cpf representante'],
-      'imagemPerfil' : user['imagemPerfil'],
-      'bio' : user['bio'],
-    };
+  if(user!['Tipo'] == '2'){
+     usuario = {
+    'userName' : user!['userName'],
+    'email' : user['email'],
+    'password' : user['password'],
+    'data' : user['data'],
+    'petList' : user['petList'],
+    'preferedPetsList' : user['preferedPetsList'],
+    'Tipo' : user['Tipo'],
+    'nomeOng' : user['nomeOng'],
+    'cnpj' : user['cnpj'],
+    'rua' : user['rua'],
+    'numero' : user['numero'],
+    'estado' : user['estado'],
+    'cidade' : user['cidade'],
+    'bairro' : user['bairro'],
+    'cep' : user['cep'],
+    'telefone' : user['telefone'],
+    'nome representante' : user['nome representante'],
+    'email representante' : user['email representante'],
+    'cpf representante' : user['cpf representante'],
+    'imagemPerfil' : user['imagemPerfil'],
+    'bio' : user['bio'],
+    'feedImagens' : user['feedImagens']
+   };
   }
   else{
     usuario = {

@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/ongPhoto.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/customImagemFeed.dart';
 import 'package:replica_google_classroom/entitites/user.dart';
+import 'package:replica_google_classroom/loginPages/my_password_page.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 
 class SettingsPageController extends GetxController {
@@ -26,13 +27,16 @@ class SettingsPageController extends GetxController {
   late String emailOng;
   var imagembd;
   File? imageFile; // imagem para ser coletada e inserida no banco para o perfil 
-  File? imageFileFeed; // imagem para ser coletada e inserida no banco para o feed 
+  File? imageFileFeed; // imagem para ser coletada e inserida no banco para o feed
+  late SenhaController senhaController;
 
   
   Future<String> func() async {
-    usuario = await MongoDataBase.retornaOngCompleta('allan.miller@upe.br');
-    nomeOng.value = usuario['nomeOng'];
+    senhaController = Get.find();
+    usuario = senhaController.usuario;
+    
     localizacao.value = '${usuario['cidade']},${usuario['estado']}'; 
+    nomeOng.value = usuario['nomeOng'];
     imagembd = usuario['imagemPerfil'];
     bio.value = usuario['bio'];
     info = usuario['feedImagens'];
@@ -311,7 +315,6 @@ class SettingsPageController extends GetxController {
 class SettingsPage extends StatelessWidget {
   SettingsPage({super.key});
   var settingsPageController = Get.put(SettingsPageController());
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

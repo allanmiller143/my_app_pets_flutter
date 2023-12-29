@@ -95,7 +95,7 @@ class MyPrincipalOngAppPage extends StatelessWidget {
                     () => IndexedStack(
                       index: principalOngAppController.opcaoSelecionada.value,
                       children: <Widget>[
-                        HomePage(),
+                  
                         InsertAnimalPage(),
                         SettingsPage(),
                       ],
