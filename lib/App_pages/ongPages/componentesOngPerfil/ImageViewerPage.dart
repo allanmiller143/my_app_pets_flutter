@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/imageFeedDetail.dart';
-import 'package:replica_google_classroom/App_pages/OngPages/perfilOng.dart';
+import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
+//import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 
 class ImageViewerController extends GetxController {
@@ -13,6 +14,9 @@ class ImageViewerController extends GetxController {
 
   @override
   void onInit() {
+
+
+
     settingsController = Get.find(); // Encontra a instância existente
 
     if (Get.arguments[1] == 2) {
@@ -115,6 +119,7 @@ class ImageViewerController extends GetxController {
 }
 
 class ImageViewerPage extends StatelessWidget {
+  // ignore: use_key_in_widget_constructors
   ImageViewerPage({Key? key});
   final imageViewerController = Get.put(ImageViewerController());
 
@@ -142,8 +147,10 @@ class ImageViewerPage extends StatelessWidget {
                           padding: EdgeInsets.all(8.0),
                           child: Text('Ong dos Animais', style: TextStyle(fontSize: 16,color: Color.fromARGB(255, 255, 255, 255))),
                         ),
-                        IconButton(
-                          onPressed: () => imageViewerController.showBottomSheet(context), icon: const Icon(Icons.menu_sharp, color: Color.fromARGB(255, 255, 255, 255))),
+                        imageViewerController.settingsController.args == false ?
+                        IconButton(onPressed: () => imageViewerController.showBottomSheet(context), icon: const Icon(Icons.menu_sharp, color: Color.fromARGB(255, 255, 255, 255))):
+                        IconButton(onPressed: () {}, icon: const Icon(Icons.menu_sharp, color: Color.fromARGB(255, 255, 255, 255)))
+
                       ],
                     ),
                   ),

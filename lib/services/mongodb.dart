@@ -146,29 +146,34 @@ static Future<List<Map<String, dynamic>>> retornaListaPets() async {
     final petList = ong['petList'] as List<dynamic>;
     String endereco = '${ong['cidade']}, ${ong['estado']}';
 
+    Map<String,dynamic> ongInfo = {
+      'userName' : ong['userName'],
+      'email' : ong['email'],
+      'password' : ong['password'],
+      'data' : ong['data'],
+      'petList' : ong['petList'],
+      'preferedPetsList' : ong['preferedPetsList'],
+      'Tipo' : ong['Tipo'],
+      'nomeOng' : ong['nomeOng'],
+      'cnpj' : ong['cnpj'],
+      'rua' : ong['rua'],
+      'numero' : ong['numero'],
+      'estado' : ong['estado'],
+      'cidade' : ong['cidade'],
+      'bairro' : ong['bairro'],
+      'cep' : ong['cep'],
+      'localizacao' : endereco,
+      'telefone' : ong['telefone'],
+      'nome representante' : ong['nome representante'],
+      'email representante' : ong['email representante'],
+      'cpf representante' : ong['cpf representante'],
+      'imagemPerfil' : ong['imagemPerfil'],
+      'bio' : ong['bio'],
+      'feedImagens' : ong['feedImagens'],
+
+    };
     for (var pet in petList) {
-      Map<String, dynamic> petInfo = {
-        // ong info 
-        'userName' : ong['userName'],
-        'email' : ong['email'],
-        'password' : ong['password'],
-        'data' : ong['data'],
-        'nomeOng' : ong['nomeOng'],
-        'cnpj' : ong['cnpj'],
-        'rua' : ong['rua'],
-        'numero' : ong['numero'],
-        'estado' : ong['estado'],
-        'cidade' : ong['cidade'],
-        'bairro' : ong['bairro'],
-        'cep' : ong['cep'],
-        'telefone' : ong['telefone'],
-        'nome representante' : ong['nome representante'],
-        'email representante' : ong['email representante'],
-        'cpf representante' : ong['cpf representante'],
-        'imagemPerfil' : ong['imagemPerfil'],
-        'bio' : ong['bio'],
-        'localizacao' : endereco,
-        'petList' : ong['petList'],
+      Map<String, dynamic> petInfo = {      
         //pet info
         'tipo': pet['tipo'],
         'nome': pet['nome'],
@@ -179,6 +184,8 @@ static Future<List<Map<String, dynamic>>> retornaListaPets() async {
         'imagem': pet['imagem'],
         'id':pet['id']
       };
+      petInfo.addAll(ongInfo);
+
       allPets.add(petInfo);
     }
   }

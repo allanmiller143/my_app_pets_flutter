@@ -9,9 +9,9 @@ class OngPhoto extends StatelessWidget {
   final VoidCallback onPressed;
   final File? image; // imagem que pega quando insere no app
   dynamic imagembd; // imsgem que puxa do banco de dados
-  int? tipo;
+  bool args;
 
-  OngPhoto({required this.onPressed, required this.image, this.imagembd, this.tipo = 2});
+  OngPhoto({required this.onPressed, required this.image, this.imagembd, required this.args });
 
   // Recupera a imagem do bd
   ImageProvider<Object> getImageProvider() {
@@ -41,7 +41,9 @@ class OngPhoto extends StatelessWidget {
           ),
           borderRadius: BorderRadius.all(Radius.circular(15)),
         ),
-        child: Stack(
+        child: 
+        args == false ?
+        Stack(
           children: [
             Positioned(
               bottom: 0,
@@ -60,7 +62,7 @@ class OngPhoto extends StatelessWidget {
               ),
             )
           ],
-        ),
+        ):const SizedBox(),
       ),
     );
   }

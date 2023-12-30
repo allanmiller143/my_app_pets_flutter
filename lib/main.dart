@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/OngInfoEditPage.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/my_principal_ong_page.dart';
+
+import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
+
+
 import 'App_pages/ongPages/componentesOngPerfil/ImageViewerPage.dart';
 import 'loginPages/my_email_page.dart';
 import 'loginPages/my_password_page.dart';
@@ -17,7 +21,6 @@ import 'registerPages/My_data_page_ong.dart';
 import 'registerPages/my_who_are_you_page.dart';
 import 'App_pages/usuarioPages/my_principal_app_page.dart';
 import 'App_pages/usuarioPages/test.dart';
-import 'App_pages/ongPages/ongProfilePage.dart';
 import 'App_pages/ong&user/animal_detail_page.dart';
 import 'App_pages/usuarioPages/favorits.dart';
 import 'App_pages/ongPages/componentesOngPerfil/ongEditBioProfilePage.dart';
@@ -58,7 +61,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/principalOngAppPage', page: () => const MyPrincipalOngAppPage()),        
         GetPage(name: '/animalDetail', page: () => AnimalInsertPage()),
         GetPage(name: '/favorits', page: () => FavoritsPage()),
-        GetPage(name: '/ongProfilePage', page: () => OngProfilePage()),
+        GetPage(name: '/ongProfilePage', page: () => SettingsPage()),
         //GetPage(name: '/', page: () => OngProfilePage()),
         GetPage(name: '/ongEditBioProfilePage', page: () => OngEditBioProfilePage()),
         GetPage(name: '/imageViewerPage', page: () => ImageViewerPage(),transition: Transition.downToUp,transitionDuration: const Duration(milliseconds: 400)),

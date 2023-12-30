@@ -4,9 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/insert_animal_page.dart';
-import 'package:replica_google_classroom/App_pages/usuarioPages/home_page.dart';
-import 'package:replica_google_classroom/App_pages/OngPages/perfilOng.dart';
-import 'package:replica_google_classroom/App_pages/usuarioPages/pets_page.dart';
+import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/loginPages/my_password_page.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 
@@ -16,7 +14,6 @@ class PrincipalOngAppController extends GetxController {
   var opcaoSelecionada = 0.obs;
   Color corItemSelecionado = const Color.fromARGB(255, 0, 0, 0);
   Color corItemNaoSelecionado = const  Color.fromARGB(255, 255, 255, 255);
-  late String cpfUsuario;
   late String emailUsuario;
   File? imageFile;
   File? imageFeedFile;
@@ -24,8 +21,6 @@ class PrincipalOngAppController extends GetxController {
 
   Future<String> func() async{
     senhaController = Get.find(); // Encontra a instância existente
-    //usuario = await MongoDataBase.retornaUsuarioCompleto(senhaController.email);
-    cpfUsuario = await MongoDataBase.retornaCpf(senhaController.email);
     emailUsuario = senhaController.email;
     return 'allan';
   }

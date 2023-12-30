@@ -5,10 +5,8 @@ import 'package:replica_google_classroom/widgets/load_Widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:replica_google_classroom/App_pages/OngPages/perfilOng.dart';
+import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
-
-
 
 class EditarCampoImagemController extends GetxController {
   String chave = Get.arguments[0]; 

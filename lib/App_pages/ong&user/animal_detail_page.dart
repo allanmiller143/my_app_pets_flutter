@@ -9,12 +9,10 @@ import 'package:replica_google_classroom/widgets/mybutton.dart';
 class AnimalInsertPageController extends GetxController {
   dynamic ongPetInfo = Get.arguments[0];
   dynamic usuarioInfo = Get.arguments[1];
-
   String imagemFavorito = (Get.arguments[1]['preferedPetsList'].contains(Get.arguments[0]['id'])) ? 'assets/ame.png': 'assets/ame2.png';  
   dynamic imagem = Get.arguments[0]['imagem'];
   String imagemPadrao = Get.arguments[0]['tipo']  == '1' ? 'assets/exemplo1.png':'assets/exemplo2.png';
   String tipo = Get.arguments[1]['Tipo']; 
- 
   ImageProvider<Object> convertBase64ToImageProvider(dynamic base64Image) {
     final Uint8List bytes = base64.decode(base64Image);
     return MemoryImage(Uint8List.fromList(bytes));
@@ -22,7 +20,7 @@ class AnimalInsertPageController extends GetxController {
 }
 
 class AnimalInsertPage extends StatelessWidget {
-  AnimalInsertPage({Key? key}) : super(key: key);
+  AnimalInsertPage({super.key});
   final animalInsertPageController = Get.put(AnimalInsertPageController());
 
   @override
@@ -167,7 +165,7 @@ class AnimalInsertPage extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: (){
-                                  Get.toNamed('/ongProfilePage',arguments: [animalInsertPageController.ongPetInfo,animalInsertPageController.usuarioInfo]);
+                                  Get.toNamed('/ongProfilePage',arguments: [animalInsertPageController.ongPetInfo]);
                                 },
                                 child: Card(
                                   elevation: 8,
