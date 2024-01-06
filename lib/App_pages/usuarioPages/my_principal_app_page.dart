@@ -17,26 +17,20 @@ class PrincipaAppController extends GetxController {
   RxInt opcaoSelecionada = 0.obs;
   Color corItemSelecionado = const Color.fromARGB(255, 0, 0, 0);
   Color corItemNaoSelecionado = const  Color.fromARGB(255, 255, 255, 255);
-  late String cpfUsuario;
   late String emailUsuario;
   File? imageFile;
   File? imageFeedFile;
   Map<String,dynamic>? usuario;
 
   Future<String> func() async{
-    //senhaController = Get.find(); // Encontra a instância existente
-    //usuario = await MongoDataBase.retornaUsuarioCompleto(senhaController.email);
-    //cpfUsuario = await MongoDataBase.retornaCpf('millerallan17@gmail.com');
-    cpfUsuario = '12678032400';
+    
     emailUsuario = 'millerallan17@gmail.com';
     return 'allan';
   }
 
 
   void mudaOpcaoSelecionada(int index) {
-    print('Valor antigo: ${opcaoSelecionada.value}');
     opcaoSelecionada.value = index;
-    print('Novo valor: ${opcaoSelecionada.value}');
     update();
   }
 
@@ -71,7 +65,7 @@ class MyPrincipalAppPage extends StatelessWidget {
                     },
                     type: BottomNavigationBarType.fixed,
                     currentIndex: principaAppController.opcaoSelecionada.value,
-                    backgroundColor: Color.fromARGB(255, 255, 51, 0),
+                    backgroundColor:const Color.fromARGB(255, 255, 51, 0),
                     items: const [
                       BottomNavigationBarItem(
                         icon: Icon(Icons.home),

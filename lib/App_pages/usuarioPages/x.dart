@@ -1,58 +1,67 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'dart:convert';
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/usuarioPages/animal_detail_page.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 
-class AnimalInsertPageController extends GetxController {
+class XController extends GetxController {
   dynamic ongPetInfo = Get.arguments[0];
   dynamic usuarioInfo = Get.arguments[1];
   String imagemFavorito = (Get.arguments[1]['preferedPetsList'].contains(Get.arguments[0]['id'])) ? 'assets/ame.png': 'assets/ame2.png';  
   dynamic imagem = Get.arguments[0]['imagem'];
   String imagemPadrao = Get.arguments[0]['tipo']  == '1' ? 'assets/exemplo1.png':'assets/exemplo2.png';
   String tipo = Get.arguments[1]['Tipo']; 
+  dynamic imageProvider;
+
   ImageProvider<Object> convertBase64ToImageProvider(dynamic base64Image) {
     final Uint8List bytes = base64.decode(base64Image);
     return MemoryImage(Uint8List.fromList(bytes));
   }
+
+  Future<String> func() async {
+    imageProvider = imagem != null? convertBase64ToImageProvider(imagem): AssetImage(imagemPadrao);
+    return 'allan';
+  }
+
+ 
 }
 
-class AnimalInsertPage extends StatelessWidget {
-  AnimalInsertPage({super.key});
-  final animalInsertPageController = Get.put(AnimalInsertPageController());
+// ignore: must_be_immutable
+class XPage extends StatelessWidget {
+  XPage({super.key});
+  var xController = Get.put(XController());
 
   @override
   Widget build(BuildContext context) {
-    
-    final imageProvider = animalInsertPageController.imagem != null
-        ? animalInsertPageController.convertBase64ToImageProvider(animalInsertPageController.imagem)
-        : AssetImage(animalInsertPageController.imagemPadrao);
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
     return MaterialApp(
-      home: GetBuilder<AnimalInsertPageController>(
-        init: AnimalInsertPageController(),
+      home: GetBuilder<XController>(
+        init: XController(),
         builder: (_) {
           return Scaffold(
-              body: Stack(
+            body: FutureBuilder(
+              future: xController.func(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
+                    return Stack(
             children: [
               Positioned(
                 top: 0,
                 child: Container(
-                  width: screenWidth,
-                  height: screenHeight,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
                   color: Color.fromARGB(6, 236, 180, 12),
                 ),
               ),
               Positioned(
                 top: 0,
                 child: Container(
-                  width: screenWidth,
-                  height: screenHeight * 0.47,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.47,
                   decoration: BoxDecoration(
-                    image: DecorationImage(image: imageProvider,fit: BoxFit.cover,), 
+                    image: DecorationImage(image: xController.imageProvider,fit: BoxFit.cover,), 
                   ),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(25, 30, 25, 10),
@@ -78,10 +87,10 @@ class AnimalInsertPage extends StatelessWidget {
                 ),
               ),
               Positioned(
-                top: screenHeight * 0.4,
+                top: MediaQuery.of(context).size.height * 0.4,
                 child: Container(
-                  width: screenWidth,
-                  height: screenHeight * 0.6,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.6,
                   decoration: BoxDecoration(
                       color: Color.fromARGB(255, 255, 255, 255),
                       borderRadius: BorderRadius.only(
@@ -102,7 +111,7 @@ class AnimalInsertPage extends StatelessWidget {
                                 Padding(
                                   padding:const EdgeInsets.fromLTRB(5, 0, 5, 0),    
                                   child: Text(
-                                    animalInsertPageController.ongPetInfo['nome'],
+                                    xController.ongPetInfo['nome'],
                                     style: TextStyle(fontFamily: 'AsapCondensed-Bold',fontSize: 28),
    
                                   ),
@@ -110,7 +119,7 @@ class AnimalInsertPage extends StatelessWidget {
                                 Row(
                                   children: [
                                     Icon(Icons.place_outlined,color: Color.fromARGB(255, 255, 94, 0),size: 15,),
-                                    Text(animalInsertPageController.ongPetInfo['localizacao'],
+                                    Text(xController.ongPetInfo['localizacao'],
                                     style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontSize: 15))      
                                   ],
                                 )
@@ -123,7 +132,7 @@ class AnimalInsertPage extends StatelessWidget {
                                 height: 30,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage(animalInsertPageController.imagemFavorito),
+                                    image: AssetImage(xController.imagemFavorito),
                                   ),
                                 ),
                               ),
@@ -136,22 +145,22 @@ class AnimalInsertPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               CustomCard(
-                                valor: animalInsertPageController.ongPetInfo['sexo'],
+                                valor: xController.ongPetInfo['sexo'],
                                 campo: 'Sexo',
                                 backgroundImage: 'assets/card1.png',
                               ),
                               CustomCard(
-                                valor: animalInsertPageController.ongPetInfo['idade'],
+                                valor: xController.ongPetInfo['idade'],
                                 campo: 'valor',
                                 backgroundImage: 'assets/card2.png',
                               ),
                               CustomCard(
-                                valor: animalInsertPageController.ongPetInfo['porte'],
+                                valor: xController.ongPetInfo['porte'],
                                 campo: 'Porte',
                                 backgroundImage: 'assets/card3.png',
                               ),
                               CustomCard(
-                                valor: animalInsertPageController.ongPetInfo['raca'],
+                                valor: xController.ongPetInfo['raca'],
                                 campo: 'Raça',
                                 backgroundImage: 'assets/card4.png',
                               ),
@@ -165,7 +174,7 @@ class AnimalInsertPage extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: (){
-                                  Get.toNamed('/ongProfilePage',arguments: [animalInsertPageController.ongPetInfo]);
+                                  Get.toNamed('/ongProfilePage',arguments: [xController.ongPetInfo]);
                                 },
                                 child: Card(
                                   elevation: 8,
@@ -173,7 +182,7 @@ class AnimalInsertPage extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: Container(
-                                    width: screenWidth * 0.875,
+                                    width: MediaQuery.of(context).size.width * 0.875,
                                     height: 80,
                                     decoration: BoxDecoration(
                                       borderRadius:BorderRadius.all(Radius.circular(15)),   
@@ -251,7 +260,7 @@ class AnimalInsertPage extends StatelessWidget {
                                   padding:
                                       const EdgeInsets.fromLTRB(5, 0, 0, 5),
                                   child: Container(
-                                    width: screenWidth * 0.875,
+                                    width: MediaQuery.of(context).size.width * 0.875,
                                     child: Text(
                                         'Os vira-latas são cães sem raça definida, conhecidos por sua inteligência, lealdade e capacvalor de adaptação. São frequentemente encontrados em situações de resgate e fazem companheiros amorosos. Adotar um vira-lata é uma oportunvalor de dar um lar a um cão necessitado e fazer a diferença no mundo dos animais.',
                                         maxLines: 3,
@@ -266,6 +275,7 @@ class AnimalInsertPage extends StatelessWidget {
                                       const EdgeInsets.fromLTRB(5, 0, 0, 5),
                                   child: GestureDetector(
                                     onTap: () {
+                                      Get.toNamed('/insertUserDataPage');
                                       print('veja mais');
                                     },
                                     child: Text('Veja Mais',
@@ -286,7 +296,10 @@ class AnimalInsertPage extends StatelessWidget {
                           children: [
                             CustomIconButton(
                               label: 'Adote agora',
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.toNamed('/insertUserDataPage');
+                                //Get.toNamed('/adoptConfirmPage',arguments: [animalInsertPageController.ongPetInfo]);
+                              },
                               width: 250,
                               alinhamento: MainAxisAlignment.center,
                               raio: 15,
@@ -299,50 +312,24 @@ class AnimalInsertPage extends StatelessWidget {
                 ),
               ),
             ],
-          ));
+          );
+                  } else {
+                    return const Text('Nenhum pet disponível');
+                  }
+                } else if (snapshot.hasError) {
+                  return Text(
+                      'Erro ao carregar a lista de pets: ${snapshot.error}');
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Color.fromARGB(255, 253, 72, 0),
+                    ),
+                  );
+                }
+              },
+            ),
+          );
         },
-      ),
-    );
-  }
-}
-
-class CustomCard extends StatelessWidget {
-  final String valor;
-  final String campo;
-  final String backgroundImage;
-
-  CustomCard({
-    required this.valor,
-    required this.campo,
-    required this.backgroundImage,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 20,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Container(
-        width: 75,
-        height: 75,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          image: DecorationImage(
-            image: AssetImage(backgroundImage),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(valor, style: TextStyle(fontFamily: 'AsapCondensed-Bold')),
-            Text(campo,
-                style: TextStyle(
-                    fontFamily: 'AsapCondensed-ExtraLight', fontSize: 10)),
-          ],
-        ),
       ),
     );
   }

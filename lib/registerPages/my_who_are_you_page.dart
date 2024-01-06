@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:replica_google_classroom/loginPages/my_password_page.dart';
+import 'package:replica_google_classroom/services/mongodb.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 import 'package:get/get.dart';
 //import 'package:replica_google_classroom/load_widget.dart';
 
 class UserTypeController extends GetxController {
-  static UserTypeController get to => Get.find();
-
   void abrirTelaDeDados(String tela) {
     Get.toNamed(tela, arguments: [Get.arguments[0],Get.arguments[1],Get.arguments[2]]);
     //Get.toNamed(tela, arguments: ["allan", "millerallan17@gmail.com", 'senha']);
@@ -86,8 +86,8 @@ class MyWhoAreYouPage extends StatelessWidget {
                                                 255, 255, 255, 255),
                                           )),
                                       onPressed: () {
-                                        userTypeController
-                                            .abrirTelaDeDados('dataOngPage');
+                                        userTypeController.abrirTelaDeDados('dataOngPage');
+                                            
                                       },
                                       width: 150),
                                 ),
@@ -97,13 +97,16 @@ class MyWhoAreYouPage extends StatelessWidget {
                                         scale: 1.5,
                                         child: const Icon(
                                           Icons.person,
-                                          color: Color.fromARGB(
-                                              255, 255, 255, 255),
+                                          color: Color.fromARGB(255, 255, 255, 255),
+                                              
                                         )),
-                                    onPressed: () {
-                                      userTypeController
-                                          .abrirTelaDeDados('/dataPage');
-                                    },
+                                        onPressed: () async {
+                                          dynamic info = {
+                                            'Tipo': "1"
+                                          };
+                                          await MongoDataBase.insertData(Get.arguments[1], info);
+                                          userTypeController.abrirTelaDeDados('/');    
+                                      },
                                     width: 150)
                               ],
                             ),

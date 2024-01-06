@@ -3,11 +3,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/adopt_pages/user/confirm_page.dart';
+import 'package:replica_google_classroom/App_pages/adopt_pages/user/data_page.dart';
+import 'package:replica_google_classroom/App_pages/adopt_pages/user/insert_user_data_page.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/OngInfoEditPage.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/my_principal_ong_page.dart';
 
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
-
+import 'package:replica_google_classroom/App_pages/usuarioPages/x.dart';
 
 import 'App_pages/ongPages/componentesOngPerfil/ImageViewerPage.dart';
 import 'loginPages/my_email_page.dart';
@@ -21,7 +24,7 @@ import 'registerPages/My_data_page_ong.dart';
 import 'registerPages/my_who_are_you_page.dart';
 import 'App_pages/usuarioPages/my_principal_app_page.dart';
 import 'App_pages/usuarioPages/test.dart';
-import 'App_pages/ong&user/animal_detail_page.dart';
+import 'App_pages/usuarioPages/animal_detail_page.dart';
 import 'App_pages/usuarioPages/favorits.dart';
 import 'App_pages/ongPages/componentesOngPerfil/ongEditBioProfilePage.dart';
 import 'App_pages/ongPages/componentesOngPerfil/editarCampo.dart';
@@ -45,8 +48,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialRoute: '/',
       getPages: [
-        //GetPage(name: '/',page: () => EditarCampoPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
-        //GetPage(name: '/', page: () => MyPrincipalAppPage()),
+        // GetPage(name: '/',page: () => EditarCampoPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        // GetPage(name: '/', page: () => MyPrincipalAppPage()),
         GetPage(name: '/', page: () => MyEmailPage()),
         // GetPage(name: '/', page: () => AnimalInsertPage()),
         GetPage(name: '/password', page: () => MyPasswordPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
@@ -70,6 +73,13 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/editarIdade',page: () => EditarCampoIdadePage(),transition: Transition.downToUp,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/editarImagem',page: () => EditarCampoImagemPage(),transition: Transition.downToUp,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/editarEndereco',page: () => EditarEnderecoPage(),transition: Transition.downToUp,transitionDuration: const Duration(milliseconds: 400)),
+        GetPage(name: '/adoptConfirmPage',page: () => AdoptConfirmPage(),transition: Transition.downToUp,transitionDuration: const Duration(milliseconds: 400)),
+        //GetPage(name: '/',page: () => AdoptConfirmPage(),transition: Transition.downToUp,transitionDuration: const Duration(milliseconds: 400)),
+        GetPage(name: '/insertUserDataPage',page: () => InsertUserDataPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        GetPage(name: '/userDataPage',page: () => UserDataPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        GetPage(name: '/',page: () => UserDataPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        GetPage(name: '/xPage',page: () => XPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+
 
       ],
     );

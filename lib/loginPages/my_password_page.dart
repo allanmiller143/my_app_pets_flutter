@@ -17,22 +17,24 @@ class SenhaController extends GetxController {
   String nome = Get.arguments[0]['userName'];
   late String cpf;
   dynamic pets;
+  
 
   Future<void> login(BuildContext context) async {
     showLoad(context);
     if (senha.text != '') {
-      if (usuario['password']== senha.text) { 
-        if(usuario['data'] == true){
+      if (usuario['password'] == senha.text) { 
+        if(usuario['Tipo'] != '-1'){
           if(usuario['Tipo'] == '1'){
-            cpf  = usuario['cpf'];
             pets = await MongoDataBase.retornaListaPets();
             Navigator.of(context).pop();
+            
             Get.toNamed('/principalAppPage'); 
           }else{
             Get.toNamed('/principalOngAppPage'); 
           }
         }else{
-          Get.toNamed('/whoAreYouPage',arguments: [nome,email,senha]);
+          pets = await MongoDataBase.retornaListaPets();
+          Get.toNamed('/whoAreYouPage',arguments: [nome,email,senha.text]);
           mySnackBar('Conclua seu cadastro!',true);
         }  
       } else {
@@ -64,11 +66,20 @@ class SenhaController extends GetxController {
       usuario['preferedPetsList'].remove(petId);
     }   
   }
+
+  void atualizaUsuario(Map<String,dynamic> info){
+    usuario['data'] = true;
+    info.forEach((key, value) { 
+      usuario[key] = value;
+    });
+  }
 }
 
 class MyPasswordPage extends StatelessWidget {
   MyPasswordPage({super.key});
   final senhaController = Get.put(SenhaController());
+  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

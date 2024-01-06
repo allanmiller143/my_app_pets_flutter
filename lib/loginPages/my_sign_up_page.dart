@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/loginPages/my_password_page.dart';
 import '../services/mongodb.dart';
 import 'dart:math';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
@@ -70,9 +71,10 @@ class MySignUpPage extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(40.0, 10, 40.0, 10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      
                         children: [
                           IconButton(
                             onPressed: () {
@@ -89,11 +91,12 @@ class MySignUpPage extends StatelessWidget {
                         ],
                       ),
                       Column(
+                        
                         children: [
                           const Padding(
                             padding: EdgeInsets.only(bottom: 10),
                             child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              
                               children: [
                                 Text(
                                   'Sign Up',
@@ -112,6 +115,7 @@ class MySignUpPage extends StatelessWidget {
                               padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                               color: const Color.fromRGBO(126, 129, 60, 0.397),
                               height: 380,
+                              width: 400,
                               child: BackdropFilter(
                                 filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                 child: Column(

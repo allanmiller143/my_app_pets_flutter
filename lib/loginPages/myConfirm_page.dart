@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/loginPages/my_password_page.dart';
 import '../services/mongodb.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class ConfirmController extends GetxController {
-  static ConfirmController get to => Get.find(); // serve para acessar a variável de forma mais simples
-     
+   
   List<TextEditingController> codigoControllers = List.generate(4,(index) =>TextEditingController()); // Lista de controladores para os TextFields
   
   String codigo = "";
@@ -152,10 +152,10 @@ class MyConfirmPage extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(10.0),
                                       child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                Color.fromARGB(255, 236, 71, 6),
-                                            padding: const EdgeInsets.fromLTRB(
-                                                10, 10, 10, 10),
+                                            backgroundColor:  Color.fromARGB(255, 236, 71, 6),
+                                              
+                                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                                
                                           ),
                                           child: Text(
                                             "Confirmar",

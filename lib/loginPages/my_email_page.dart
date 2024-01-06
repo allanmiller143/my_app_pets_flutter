@@ -68,6 +68,7 @@ class MyEmailPage extends StatelessWidget {
                           color: Color.fromRGBO(126, 129, 60, 0.397),
                           padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
                           height: 180,
+                          width: 400,
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                             child: Column(
@@ -90,14 +91,12 @@ class MyEmailPage extends StatelessWidget {
                                 ),
                                 CustomIconButton(
                                   label: 'Confirmar',
-                                  onPressed: () {
-                                    emailController.emailfunc(context);  
-                                  },
+                                  onPressed: () {emailController.emailfunc(context);  },
                                   width: double.infinity,
                                   height: 60,
                                   alinhamento: MainAxisAlignment.center),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
                                       'Não possui conta?  ',

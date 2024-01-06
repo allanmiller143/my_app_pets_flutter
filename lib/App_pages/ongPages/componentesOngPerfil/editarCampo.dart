@@ -45,7 +45,6 @@ class EditarCampoController extends GetxController {
     }
     return 'allan';
   }
-
   bool validarCPF(String cpfRepresentante) {
     cpfRepresentante = cpfRepresentante.replaceAll(RegExp(r'\D'), ''); // Remove caracteres não numéricos      
     if (cpfRepresentante.length != 11) {
@@ -94,7 +93,6 @@ class EditarCampoController extends GetxController {
     }
     return true; // O CEP é válido
   }
-
   Future<bool> validar() async {
     if (chave == 'Telefone') {
       novoValor.text = novoValor.text.replaceAll(RegExp(r'\D'), ''); // Remove caracteres não numéricos do telefone
@@ -215,8 +213,7 @@ class EditarCampoPage extends StatelessWidget {
                               editarCampoController.ativado.value = 1;
                             }
                           },
-                          maxLength:
-                              editarCampoController.regrasNegocio['maximoCaracteres'],
+                          maxLength:editarCampoController.regrasNegocio['maximoCaracteres'],
                           controller: editarCampoController.novoValor,
                           decoration: InputDecoration(
                             border: const UnderlineInputBorder(

@@ -27,10 +27,10 @@ Future<Map<String, dynamic>> buscaCep(String cep) async {
       "bairro": "",
       "localidade": "",
       "uf": "",
+      "ddd": ""
     };
         
     }
   }return dados;
-;
 }
   

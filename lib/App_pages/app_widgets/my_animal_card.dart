@@ -129,7 +129,7 @@ class AnimalCard extends StatelessWidget {
                     GestureDetector(
                       onTap: () async { 
                         preferido.value = !preferido.value;
-                        MongoDataBase.favoritaPet(senhaController.usuario['cpf'], preferido.value, pet['id']);
+                        MongoDataBase.favoritaPet(senhaController.usuario['email'], preferido.value, pet['id']);
                         senhaController.favoritaPet(pet['id'],preferido.value);
                       },
                       child: Padding(

@@ -125,7 +125,9 @@ class HomePage extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       CustomCardHomePage(
-                                        onPressed: () async {Get.toNamed('/profilePage',arguments: ['1']);},
+                                        onPressed: () async {
+                                          Get.toNamed('/profilePage',arguments: ['1']);
+                                          },
                                         imagePath: 'assets/doguinho.png',
                                         text: 'Cachorros',
                                         backgroundImageColor:const Color.fromARGB(255, 255, 255, 255),  
@@ -182,6 +184,8 @@ class HomePage extends StatelessWidget {
                                         pet: homePageController.pets[0],
                                         onPressed: () {
                                           Get.toNamed('/animalDetail', arguments: [homePageController.pets[0],homePageController.usuario]);       
+
+                                          //Get.toNamed('/animalDetail', arguments: [homePageController.pets[0],homePageController.usuario]);       
                                         },
                                         senhaController: homePageController.senhaController,
 

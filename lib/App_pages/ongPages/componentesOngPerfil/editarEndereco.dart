@@ -18,11 +18,9 @@ class EditarEnderecoController extends GetxController {
   var bairro = TextEditingController();
 
   var ruaAtivado  = false.obs;
-
   var bairroAtivado  = false.obs;
   var cep = TextEditingController();
   RxInt ativado = 0.obs;
-  Map<String, dynamic> regrasNegocio = {};
   late SettingsPageController settingsController;
   late String chaveAux;
 
@@ -51,7 +49,7 @@ class EditarEnderecoController extends GetxController {
     rua.text = dados['logradouro'];
   }
   Future<String> func() async {
-    settingsController = Get.find(); // Encontra a instância existente
+    settingsController = Get.find();
     // coletar os valores antigos
     rua.text = valores['rua'];
     numero.text = valores['numero'];

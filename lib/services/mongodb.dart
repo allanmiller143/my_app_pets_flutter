@@ -28,7 +28,8 @@ class MongoDataBase {
       'password': password,
       'data': false,
       'petList': [],
-      'preferedPetsList':[]
+      'preferedPetsList':[],
+      'Tipo': '-1'
     });
   }
 
@@ -98,6 +99,26 @@ class MongoDataBase {
       });
       user['data'] = true;
       await collection.update(consultaEmail, user);
+    } else {
+      print('nao achei!');
+    }
+  }
+
+
+
+
+
+  static Future<void> insertData(String email, Map<String, dynamic> newData) async {
+    var consultaEmail = where.eq('email', email);
+    var user = await collection.findOne(consultaEmail);
+
+    if (user != null) {
+      // Atualize o documento com as novas informações
+      newData.forEach((key, value) {
+        user[key] = value;
+      });
+      await collection.update(consultaEmail, user);
+      print('info inserida com sucesso');
     } else {
       print('nao achei!');
     }
@@ -194,16 +215,16 @@ static Future<List<Map<String, dynamic>>> retornaListaPets() async {
 
 
 
-static Future<void> favoritaPet(cpf,inserir_retirar,petId) async {
-  var consultaCpf = where.eq('cpf', cpf);
-  var user = await collection.findOne(consultaCpf);
+static Future<void> favoritaPet(email,inserir_retirar,petId) async {
+  var consultaEmail = where.eq('email', email);
+  var user = await collection.findOne(consultaEmail);
 
   if(inserir_retirar){
     if (user != null) {
         List<dynamic> petList = user['preferedPetsList'] ?? []; // Obtenha a lista atual de pets ids
         petList.add(petId);// Adicione o pet id à lista
         user['preferedPetsList'] = petList;// Atualize a lista de pets 
-        await collection.update(consultaCpf, user);// Atualize o documento 
+        await collection.update(consultaEmail, user);// Atualize o documento 
         print('Pet inserido com sucesso na lista de pets preferido.');
       } else {
         print('usuario nao encontrato ou falta de informcacos');
@@ -215,7 +236,7 @@ static Future<void> favoritaPet(cpf,inserir_retirar,petId) async {
       List<dynamic> petList = user['preferedPetsList'] ?? [];
       petList.remove(petId); // Remove o petId da lista
       user['preferedPetsList'] = petList;
-      await collection.update(consultaCpf, user);
+      await collection.update(consultaEmail, user);
       print('Pet removido com sucesso da lista de pets preferidos.');
     } else {
       print('Usuário não encontrado ou falta de informações');
@@ -373,9 +394,32 @@ static Future<Map<String,dynamic>> retornaUsuarioCompleto(email) async {
   var user = await collection.findOne(consultaEmail);
 
   Map<String,dynamic> usuario = {};
-  if(user!['Tipo'] == '2'){
-     usuario = {
-    'userName' : user!['userName'],
+  if(user!['Tipo'] == '1'){
+    usuario = {
+      'userName' : user['userName'],
+      'email' : user['email'],
+      'password' : user['password'],
+      'data' : user['data'],
+      'petList' : user['petList'],
+      'nome completo' : user['nome completo'],
+      'preferedPetsList' : user['preferedPetsList'],
+      'Tipo' : user['Tipo'],
+      'primeiroNome' : user['primeiroNome'],
+      'sobrenome' : user['sobrenome'],
+      'rua' : user['rua'],
+      'numero' : user['numero'],
+      'estado' : user['estado'],
+      'cidade' : user['cidade'],
+      'bairro' : user['bairro'],
+      'cep' : user['cep'],
+      'telefone' : user['telefone'],
+      'dataNascimento' : user['dataNascimento'],
+      'cpf' : user['cpf'],
+    }; 
+  }
+  else{
+    usuario = {
+    'userName' : user['userName'],
     'email' : user['email'],
     'password' : user['password'],
     'data' : user['data'],
@@ -398,28 +442,7 @@ static Future<Map<String,dynamic>> retornaUsuarioCompleto(email) async {
     'bio' : user['bio'],
     'feedImagens' : user['feedImagens']
    };
-  }
-  else{
-    usuario = {
-      'userName' : user['userName'],
-      'email' : user['email'],
-      'password' : user['password'],
-      'data' : user['data'],
-      'petList' : user['petList'],
-      'preferedPetsList' : user['preferedPetsList'],
-      'Tipo' : user['Tipo'],
-      'primeiroNome' : user['primeiroNome'],
-      'sobrenome' : user['sobrenome'],
-      'rua' : user['rua'],
-      'numero' : user['numero'],
-      'estado' : user['estado'],
-      'cidade' : user['cidade'],
-      'bairro' : user['bairro'],
-      'cep' : user['cep'],
-      'telefone' : user['telefone'],
-      'dataNascimento' : user['dataNascimento'],
-      'cpf' : user['cpf'],
-    };
+    
 
   }
   return usuario;

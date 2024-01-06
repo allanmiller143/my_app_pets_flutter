@@ -142,11 +142,7 @@ class MyDataPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Image.asset(
-                          'assets/minhaLogo.png',
-                          width: 250,
-                          height: 50,
-                        ),
+                        Image.asset('assets/minhaLogo.png',width: 250,height: 50,),
                         const Text(
                           "Complete seu cadastro!",
                           style: TextStyle(
