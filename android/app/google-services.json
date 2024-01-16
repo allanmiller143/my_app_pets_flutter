@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "78643950643",
+    "project_id": "app-pets-4ac92",
+    "storage_bucket": "app-pets-4ac92.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78643950643:android:95f196a491a63b54f9df46",
+        "android_client_info": {
+          "package_name": "com.example.replica_google_classroom"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbxk6ubGYrDhgMckk_eWkwk-lSiuvqmJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

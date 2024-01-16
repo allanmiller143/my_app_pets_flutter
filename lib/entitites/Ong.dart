@@ -27,21 +27,21 @@ class Ong {
     required this.cpfRepresentante,
   });
 
-  Map<String, String> toMap() {
+  Map<String, dynamic> toMap() {
     return {
-      'Tipo': '2',
-      "nomeOng": nomeOng,
+      'Tipo': 'ong',
+      "Nome ong": nomeOng,
       "cnpj": cnpj,
-      "rua": rua,
-      "numero": numero,
-      "estado": estado,
-      "cidade": cidade,
-      "bairro": bairro,
+      "Rua": rua,
+      "Numero": numero,
+      "Estado": estado,
+      "Cidade": cidade,
+      "Bairro": bairro,
       "cep": cep,
-      "telefone": telefone,
-      "nome representante": nomeRepresentante,
-      "email representante": emailRepresentante,
-      "cpf representante": cpfRepresentante
+      "Telefone": telefone,
+      "Nome representante": nomeRepresentante,
+      "Email representante": emailRepresentante,
+      "cpf representante": cpfRepresentante,
     };
   }
 

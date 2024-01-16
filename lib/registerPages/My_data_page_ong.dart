@@ -2,15 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
+import 'package:replica_google_classroom/services/firebase.dart';
 import '../widgets/load_widget.dart';
 import '../widgets/my_textformfield.dart';
 import '../widgets/mybutton.dart';
 import '../entitites/Ong.dart';
-import '../services/mongodb.dart';
 import '../services/Complete_cep.dart';
 
 class DataOngController extends GetxController {
-  static DataOngController get to => Get.find();
+  late MeuControllerGlobal meuControllerGlobal;  
 
   // Variáveis para armazenar os dados do usuário
   var nomeOng = TextEditingController();
@@ -28,7 +29,12 @@ class DataOngController extends GetxController {
   List<TextEditingController> controllers = [];
 
 
-Future<void> completarEndereco(cep) async {
+  Future<String> func() async {
+    meuControllerGlobal = Get.find();
+    return 'a';
+  }
+
+  Future<void> completarEndereco(cep) async {
     Map<String, dynamic> dados = await buscaCep(cep);
     cidade.text = dados["localidade"];
     estado.text = dados["uf"];
@@ -38,8 +44,6 @@ Future<void> completarEndereco(cep) async {
   }
 
   Future<void> fazerCadastro(BuildContext context) async {
-    String email = Get.arguments[1]; // pegar o email que vou receber da outra tela.
-    showLoad(context);
     var ong = Ong(
       nomeOng: nomeOng.text,
       cnpj: cnpj.text,
@@ -55,7 +59,7 @@ Future<void> completarEndereco(cep) async {
       cpfRepresentante: cpfRepresentante.text,
     );
 
-    Map<String, String> ongDataMap = ong.toMap();
+    Map<String, dynamic> ongDataMap = ong.toMap();
     
     String retorno = 'Por Favor, Preencha essas campos:\n';
     bool faltaCampo = false;
@@ -70,25 +74,38 @@ Future<void> completarEndereco(cep) async {
     if (faltaCampo == false) {
       retorno = ong.validaCampos(cpfRepresentante.text,cnpj.text, cep.text, telefone.text);
       if (retorno == '') {
-        await MongoDataBase.insertUserData(email, ongDataMap);
-        Navigator.of(context).pop();
-        mySnackBar('Cadastro bem sucedido',true);
+          await BancoDeDados.adicionarInformacoesUsuario(ongDataMap, meuControllerGlobal.obterId());
+          meuControllerGlobal.nomeOng.value = ongDataMap['Nome ong']!;
+          meuControllerGlobal.cnpj.value = ongDataMap['cnpj']!;
+          meuControllerGlobal.cep.value = ongDataMap['cep']!;
+          meuControllerGlobal.numero.value = ongDataMap['Numero']!;
+          meuControllerGlobal.bairro.value = ongDataMap['Bairro']!;
+          meuControllerGlobal.telefone.value = ongDataMap['Telefone']!;
+          meuControllerGlobal.rua.value = ongDataMap['Rua']!;
+          meuControllerGlobal.numero.value = ongDataMap['Numero']!;
+          meuControllerGlobal.estado.value = ongDataMap['Estado']!;
+          meuControllerGlobal.cidade.value = ongDataMap['Cidade']!;
+          meuControllerGlobal.nomeRepresentante.value = ongDataMap['Nome representante']!;
+          meuControllerGlobal.emailRepresentante.value = ongDataMap['Email representante']!;
+          meuControllerGlobal.cpfRepresentante.value = ongDataMap['cpf representante']!;
+          ongDataMap['Pets'] = [];
+          ongDataMap['Imagens feed'] = [];
+      
+    
+          await BancoDeDados.adicionarInformacoesUsuario(ongDataMap,meuControllerGlobal.obterId());
+          mySnackBar('Cadastro bem sucedido',true);
       }
       else{
-        Navigator.of(context).pop();
         mySnackBar(retorno,false);
       }
     }else{
-      Navigator.of(context).pop();
       mySnackBar(retorno,false);
     }
     
   }
 
-  // Função para resetar todos os campos
-  void reset() {}
-}
 
+}
 class MyOngDataPage extends StatelessWidget {
   MyOngDataPage({Key? key}) : super(key: key);
 
@@ -101,162 +118,179 @@ class MyOngDataPage extends StatelessWidget {
         init: DataOngController(),
         builder: (_) {
           return Scaffold(
-            body: Stack(
-              children: [
-                Image.asset(
-                  "assets/dataPagebackground.png",
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Container(
-                    height: 600,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+            body: FutureBuilder(
+              future: dataOngController.func(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
+                    return Stack(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                dataOngController.reset();
-                                Get.back();
-                              },
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                size: 30,
-                                weight: 80,
-                              ),
-                            ),
-                          ],
-                        ),
                         Image.asset(
-                          'assets/minhaLogo.png',
-                          width: 250,
-                          height: 50,
-                        ), 
-                          const Text(
-                          "Complete seu cadastro!",
-                          style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w600,
-                              
+                          "assets/dataPagebackground.png",
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Container(
+                            height: 600,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                    
+                                        Get.back();
+                                      },
+                                      icon: const Icon(
+                                        Icons.arrow_back_ios,
+                                        size: 30,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Image.asset(
+                                  'assets/minhaLogo.png',
+                                  width: 250,
+                                  height: 50,
+                                ),
+                                const Text(
+                                  "Complete seu cadastro!",
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CustomTextFormField(
+                                      hintText: 'Nome ONG',
+                                      controller: dataOngController.nomeOng,
+                                      width: 190,
+                                    ),
+                                    CustomTextFormField(
+                                      hintText: 'CNPJ',
+                                      controller: dataOngController.cnpj,
+                                      width: 150,
+                                      keyboardType: TextInputType.number,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CustomTextFormField(
+                                      onChanged: (value) async {
+                                        if (value.length == 8) {
+                                          await dataOngController.completarEndereco(value);
+                                        }
+                                      },
+                                      hintText: 'CEP sede',
+                                      controller: dataOngController.cep,
+                                      width: 95,
+                                      keyboardType: TextInputType.number,
+                                    ),
+                                    CustomTextFormField(
+                                      hintText: 'Bairro sede',
+                                      controller: dataOngController.bairro,
+                                      width: 130,
+                                      onChanged: (value) async {
+                                        if (value.length == 8) {
+                                          await dataOngController.completarEndereco(value);
+                                        }
+                                      },
+                                    ),
+                                    CustomTextFormField(
+                                      hintText: 'Telefone sede',
+                                      controller: dataOngController.telefone,
+                                      width: 115,
+                                      keyboardType: TextInputType.number,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CustomTextFormField(
+                                      hintText: 'Rua sede',
+                                      controller: dataOngController.rua,
+                                      width: 280,
+                                    ),
+                                    CustomTextFormField(
+                                      hintText: 'n°',
+                                      controller: dataOngController.numero,
+                                      width: 60,
+                                      keyboardType: TextInputType.number,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CustomTextFormField(
+                                      hintText: 'Estado sede',
+                                      controller: dataOngController.estado,
+                                      width: 90,
+                                    ),
+                                    CustomTextFormField(
+                                      hintText: 'Cidade sede',
+                                      controller: dataOngController.cidade,
+                                      width: 230,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CustomTextFormField(
+                                      hintText: 'Nome representante',
+                                      controller: dataOngController.nomeRepresentante,
+                                      width: 210,
+                                    ),
+                                    CustomTextFormField(
+                                      hintText: 'cpf representante',
+                                      controller: dataOngController.cpfRepresentante,
+                                      width: 140,
+                                      keyboardType: TextInputType.number,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    CustomTextFormField(
+                                      hintText: 'email representante',
+                                      controller: dataOngController.emailRepresentante,
+                                      width: 250,
+                                    ),
+                                  ],
+                                ),
+                                CustomIconButton(
+                                  label: 'Confirmar',
+                                  onPressed: ()  {
+                                    dataOngController.fazerCadastro(context);
+                                  },
+                                  width: double.infinity,
+                                  alinhamento: MainAxisAlignment.center,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomTextFormField(
-                              hintText: 'Nome ONG',
-                              controller: dataOngController.nomeOng,
-                              width: 190,
-                            ),
-                            CustomTextFormField(
-                              hintText: 'CNPJ',
-                              controller: dataOngController.cnpj,
-                              width: 150,
-                              keyboardType: TextInputType.number,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomTextFormField(
-                              hintText: 'CEP sede',
-                              controller: dataOngController.cep,
-                              width: 95,
-                              keyboardType: TextInputType.number,
-                            ),
-                            CustomTextFormField(
-                              hintText: 'Bairro sede',
-                              controller: dataOngController.bairro,
-                              width: 130,
-                              onChanged: (value) async {
-                                if (value.length == 8) {
-                                  await dataOngController.completarEndereco(value);
-                                }
-                              },
-                            ),
-                            CustomTextFormField(
-                              hintText: 'Telefone sede',
-                              controller: dataOngController.telefone,
-                              width: 115,
-                              keyboardType: TextInputType.number,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomTextFormField(
-                              hintText: 'Rua sede',
-                              controller: dataOngController.rua,
-                              width: 280,
-                            ),
-                            CustomTextFormField(
-                              hintText: 'n°',
-                              controller: dataOngController.numero,
-                              width: 60,
-                              keyboardType: TextInputType.number,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomTextFormField(
-                              hintText: 'Estado sede',
-                              controller: dataOngController.estado,
-                              width: 60,
-                            ),
-                            CustomTextFormField(
-                              hintText: 'Cidade sede',
-                              controller: dataOngController.cidade,
-                              width: 230,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomTextFormField(
-                              hintText: 'Nome representante',
-                              controller: dataOngController.nomeRepresentante,
-                              width: 210,
-                            ),
-                            CustomTextFormField(
-                              hintText: 'cpf representante',
-                              controller: dataOngController.cpfRepresentante,
-                              width: 140,
-                              keyboardType: TextInputType.number,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            CustomTextFormField(
-                              hintText: 'email representante',
-                              controller: dataOngController.emailRepresentante,
-                              width: 250,
-                            ),
-                          ],
-                        ),
-                        CustomIconButton(
-                            label: 'Confirmar',
-                            onPressed: () async {
-                              await dataOngController.fazerCadastro(context);  
-                            },
-                            width: double.infinity,
-                            alinhamento: MainAxisAlignment.center),
                       ],
-                    ),
-                  ),
-                ),
-              ],
+                    );
+                  } else {
+                    return Text('erro');
+                  }
+                } else {
+                  return Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 253, 72, 0),));
+                }
+              },
             ),
           );
         },
@@ -264,3 +298,4 @@ class MyOngDataPage extends StatelessWidget {
     );
   }
 }
+

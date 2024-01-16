@@ -4,9 +4,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/loginPages/my_password_page.dart';
+import 'package:replica_google_classroom/services/mongodb.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 
 class AnimalDetailPageController extends GetxController {
+  late SenhaController senhaController;
   dynamic ongPetInfo = Get.arguments[0];
   dynamic usuarioInfo = Get.arguments[1];
   String imagemFavorito = (Get.arguments[1]['preferedPetsList'].contains(Get.arguments[0]['id'])) ? 'assets/ame.png': 'assets/ame2.png';  
@@ -14,6 +17,11 @@ class AnimalDetailPageController extends GetxController {
   String imagemPadrao = Get.arguments[0]['tipo']  == '1' ? 'assets/exemplo1.png':'assets/exemplo2.png';
   String tipo = Get.arguments[1]['Tipo']; 
   dynamic imageProvider;
+  
+  void atualiza(){
+    update();
+  }
+
 
   ImageProvider<Object> convertBase64ToImageProvider(dynamic base64Image) {
     final Uint8List bytes = base64.decode(base64Image);
@@ -23,6 +31,7 @@ class AnimalDetailPageController extends GetxController {
   
 
   Future<String> func() async {
+    senhaController = Get.find();
     imageProvider = imagem != null? convertBase64ToImageProvider(imagem): AssetImage(imagemPadrao);
     return 'allan';
   }
@@ -147,10 +156,17 @@ class AnimalInsertPage extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              CustomCard(
-                                valor: animalDetailPageController.ongPetInfo['sexo'],
-                                campo: 'Sexo',
-                                backgroundImage: 'assets/card1.png',
+                              GestureDetector(
+                                onTap: () async{
+                                  await animalDetailPageController.senhaController.recarregarInfo();
+                                  print(animalDetailPageController.senhaController.pets[0]['nomeOng']);
+                                  print(animalDetailPageController.ongPetInfo[0]['nomeOng']);
+                                },
+                                child: CustomCard(
+                                  valor: animalDetailPageController.ongPetInfo['sexo'],
+                                  campo: 'Sexo',
+                                  backgroundImage: 'assets/card1.png',
+                                ),
                               ),
                               CustomCard(
                                 valor: animalDetailPageController.ongPetInfo['idade'],

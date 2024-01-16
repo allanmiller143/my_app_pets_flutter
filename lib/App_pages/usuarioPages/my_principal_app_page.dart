@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:replica_google_classroom/App_pages/adopt_pages/user/Status_page.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/insert_animal_page.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/home_page.dart';
 import 'package:replica_google_classroom/App_pages/OngPages/perfilOng.dart';
@@ -97,6 +98,7 @@ class MyPrincipalAppPage extends StatelessWidget {
                       children: <Widget>[
                         HomePage(),
                         PetsPage(),
+                        //StatusPage(),
                         //SettingsPage(),
                       ],
                     ),

@@ -26,14 +26,17 @@ class CustomTextFormField extends StatelessWidget {
     );
 
     return Container(
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 3),
       width: width,
-      height: 40, // Aumentei a altura para acomodar o rótulo acima
+      height: 42, // Aumentei a altura para acomodar o rótulo acima
       decoration: BoxDecoration(
         color: const Color.fromARGB(176, 226, 221, 218),
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextFormField(
+        
         decoration: InputDecoration(
+          
           labelText: hintText, // Usando o labelText para o rótulo
           labelStyle: const TextStyle(
             color:  Color.fromARGB(255, 27, 27, 27), // Cor do rótulo preto

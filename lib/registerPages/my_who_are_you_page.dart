@@ -1,21 +1,29 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:replica_google_classroom/loginPages/my_password_page.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
+import 'package:replica_google_classroom/services/firebase.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 import 'package:get/get.dart';
 //import 'package:replica_google_classroom/load_widget.dart';
 
 class UserTypeController extends GetxController {
+  late MeuControllerGlobal meuControllerGlobal;
+
+  @override
+  void onInit() {
+    meuControllerGlobal = Get.find();
+    super.onInit();
+  }
+
   void abrirTelaDeDados(String tela) {
-    Get.toNamed(tela, arguments: [Get.arguments[0],Get.arguments[1],Get.arguments[2]]);
-    //Get.toNamed(tela, arguments: ["allan", "millerallan17@gmail.com", 'senha']);
+    Get.toNamed('/dataOngPage');
   }
 }
 
 class MyWhoAreYouPage extends StatelessWidget {
-  MyWhoAreYouPage({Key? key}) : super(key: key);
+  MyWhoAreYouPage({super.key});
 
   final userTypeController = Get.put(UserTypeController());
 
@@ -74,40 +82,41 @@ class MyWhoAreYouPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                                  padding:const EdgeInsets.fromLTRB(0, 0, 0, 8), 
                                   child: CustomIconButton(
-                                      label: 'Sou ONG',
-                                      icon: Transform.scale(
-                                          scale: 1.5,
-                                          child: const Icon(
-                                            Icons.person,
-                                            color: Color.fromARGB(
-                                                255, 255, 255, 255),
-                                          )),
-                                      onPressed: () {
-                                        userTypeController.abrirTelaDeDados('dataOngPage');
-                                            
-                                      },
-                                      width: 150),
-                                ),
-                                CustomIconButton(
-                                    label: 'Sou usuário',
-                                    icon: Transform.scale(
+                                    label: 'Sou ONG',
+                                    icon: 
+                                      Transform.scale(
                                         scale: 1.5,
                                         child: const Icon(
                                           Icons.person,
                                           color: Color.fromARGB(255, 255, 255, 255),
-                                              
                                         )),
-                                        onPressed: () async {
-                                          dynamic info = {
-                                            'Tipo': "1"
-                                          };
-                                          await MongoDataBase.insertData(Get.arguments[1], info);
-                                          userTypeController.abrirTelaDeDados('/');    
-                                      },
-                                    width: 150)
+                                      onPressed: () {
+                                      userTypeController.abrirTelaDeDados('dataOngPage');    
+                                    },
+                                    width: 150),
+                                ),
+                                CustomIconButton(
+                                  label: 'Sou usuário',
+                                  icon: Transform.scale(
+                                      scale: 1.5,
+                                      child: const Icon(
+                                        Icons.person,
+                                        color: Color.fromARGB(255, 255, 255, 255),
+                                            
+                                      )),
+                                      onPressed: () async {
+                                        dynamic info = {
+                                          'Tipo': "comum",
+                                          'Pets preferidos': [],
+                                          'Data': false
+                                        };
+                                        userTypeController.meuControllerGlobal.salvarTipo('comum');                                    
+                                        await BancoDeDados.adicionarInformacoesUsuario(info, userTypeController.meuControllerGlobal.obterId());
+                                        //userTypeController.abrirTelaDeDados('/');    
+                                    },
+                                  width: 150)
                               ],
                             ),
                           ],

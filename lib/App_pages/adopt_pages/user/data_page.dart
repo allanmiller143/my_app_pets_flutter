@@ -100,6 +100,7 @@ class UserDataPage extends StatelessWidget {
                   child: CustomIconButton(
                     label: 'Continuar',
                     onPressed: () {
+                      Get.toNamed('/statusPage');
                     },
                     width: 250,
                     alinhamento: MainAxisAlignment.center,

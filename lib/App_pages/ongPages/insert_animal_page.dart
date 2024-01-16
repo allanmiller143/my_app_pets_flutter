@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/loginPages/my_password_page.dart';
 import 'listas.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
@@ -28,15 +29,12 @@ class InsertAnimalController extends GetxController {
   var selectedRace = 'Raça'.obs;
   var selectedListRace = racasDeCachorro.obs;
   File? imageFile;
-  late SenhaController senhaController;
+  late MeuControllerGlobal meuControllerGlobal;
   late var usuario;
 
   @override
   void onInit() async {
-    // Chamado quando o controller é inicializado
-    senhaController = Get.find(); // Encontra a instância existente
-    usuario = senhaController.usuario;
-
+    meuControllerGlobal = Get.find(); 
     super.onInit();
   }
 
@@ -62,7 +60,7 @@ class InsertAnimalController extends GetxController {
     Map<String, dynamic> animalData = animal.toMap();
     String retorno = animal.validaCampos();
     if (retorno == '') {
-      senhaController.usuario['petList'].add(animalData);
+      meuControllerGlobal.pets.add(animalData);
       await MongoDataBase.inserePet('48659836000129', animalData);
     }
     Get.back();
