@@ -11,6 +11,7 @@ import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil
 import 'package:replica_google_classroom/App_pages/ongPages/my_principal_ong_page.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/x.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/firebase_options.dart';
 import 'App_pages/ongPages/componentesOngPerfil/ImageViewerPage.dart';
 import 'loginPages/my_email_page.dart';
@@ -39,6 +40,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
+
+  Get.put(MeuControllerGlobal());
   runApp(const MyApp());
 }
 

@@ -12,18 +12,13 @@ import 'package:replica_google_classroom/services/mongodb.dart';
 
 
 class PrincipalOngAppController extends GetxController {
-  late SenhaController senhaController;
   var opcaoSelecionada = 0.obs;
   Color corItemSelecionado = const Color.fromARGB(255, 0, 0, 0);
   Color corItemNaoSelecionado = const  Color.fromARGB(255, 255, 255, 255);
-  late String emailUsuario;
-  File? imageFile;
-  File? imageFeedFile;
-  Map<String,dynamic>? usuario;
+
+
 
   Future<String> func() async{
-    senhaController = Get.find(); // Encontra a instância existente
-    emailUsuario = senhaController.email;
     return 'allan';
   }
 
@@ -92,7 +87,7 @@ class MyPrincipalOngAppPage extends StatelessWidget {
                     () => IndexedStack(
                       index: principalOngAppController.opcaoSelecionada.value,
                       children: <Widget>[
-                        SettingsPage(),
+                        //SettingsPage(),
                         InsertAnimalPage(),
                         //SenderPage(),
                         
