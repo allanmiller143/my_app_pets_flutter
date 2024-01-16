@@ -40,7 +40,6 @@ class SettingsPageController extends GetxController {
       args = true;
       usuario = Get.arguments[0];
     }
-      
     localizacao.value = '${usuario['cidade']},${usuario['estado']}'; 
     nomeOng.value = usuario['nomeOng'];
     imagembd = usuario['imagemPerfil'];
@@ -423,7 +422,13 @@ class SettingsPage extends StatelessWidget {
                                                     child: Column( 
                                                       children: [
                                                         Obx(()=> Text(settingsPageController.nunmeroDePostagens.toString(),style: const TextStyle(fontSize: 20),)),
-                                                        const Text('publicações',style: TextStyle(fontSize: 12),),
+                                                        GestureDetector(
+                                                          onTap: (){
+                                                            print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+                                                            print(settingsPageController.senhaController.pets[0]['nomeOng']);
+
+                                                          },
+                                                          child: Text('publicações',style: TextStyle(fontSize: 12),)),
                                                       ],
                                                     ),
                                                   ),

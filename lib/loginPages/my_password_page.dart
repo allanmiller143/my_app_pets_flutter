@@ -48,6 +48,13 @@ class SenhaController extends GetxController {
   }
 
 
+  Future<void> recarregarInfo () async{
+
+    pets = await MongoDataBase.retornaListaPets();
+    print(pets[0]['nomeOng']);
+  }
+
+
 
   Future<void> forget(BuildContext context) async {
     showLoad(context);

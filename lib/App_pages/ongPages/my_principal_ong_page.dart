@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/adopt_pages/ong/ong_chat.dart';
+import 'package:replica_google_classroom/App_pages/adopt_pages/user/Status_page.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/insert_animal_page.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/loginPages/my_password_page.dart';
@@ -92,6 +94,7 @@ class MyPrincipalOngAppPage extends StatelessWidget {
                       children: <Widget>[
                         SettingsPage(),
                         InsertAnimalPage(),
+                        //SenderPage(),
                         
                       ],
                     ),

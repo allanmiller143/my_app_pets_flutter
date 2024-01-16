@@ -1,6 +1,7 @@
 
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/adopt_pages/user/confirm_page.dart';
@@ -8,10 +9,9 @@ import 'package:replica_google_classroom/App_pages/adopt_pages/user/data_page.da
 import 'package:replica_google_classroom/App_pages/adopt_pages/user/insert_user_data_page.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/OngInfoEditPage.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/my_principal_ong_page.dart';
-
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/x.dart';
-
+import 'package:replica_google_classroom/firebase_options.dart';
 import 'App_pages/ongPages/componentesOngPerfil/ImageViewerPage.dart';
 import 'loginPages/my_email_page.dart';
 import 'loginPages/my_password_page.dart';
@@ -34,7 +34,11 @@ import 'App_pages/ongPages/componentesOngPerfil/editarEndereco.dart';
 //import 'exemplo_botao_desativado.dart';
 
 void main() async {
-  await MongoDataBase.connect();
+  await MongoDataBase.connect(); // esperar conectar com o mongodb
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   runApp(const MyApp());
 }
 
@@ -48,6 +52,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialRoute: '/',
       getPages: [
+        //GetPage(name: '/',page: () => StatusPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+
         // GetPage(name: '/',page: () => EditarCampoPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         // GetPage(name: '/', page: () => MyPrincipalAppPage()),
         GetPage(name: '/', page: () => MyEmailPage()),
@@ -77,10 +83,9 @@ class MyApp extends StatelessWidget {
         //GetPage(name: '/',page: () => AdoptConfirmPage(),transition: Transition.downToUp,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/insertUserDataPage',page: () => InsertUserDataPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/userDataPage',page: () => UserDataPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
-        GetPage(name: '/',page: () => UserDataPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        //GetPage(name: '/',page: () => UserDataPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/xPage',page: () => XPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
-
-
+  
       ],
     );
   }

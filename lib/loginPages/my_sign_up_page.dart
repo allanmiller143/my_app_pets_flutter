@@ -7,7 +7,6 @@ import 'package:replica_google_classroom/loginPages/my_password_page.dart';
 import '../services/mongodb.dart';
 import 'dart:math';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
-
 import '../services/send_email.dart';
 
 final random = Random();
@@ -18,21 +17,30 @@ class Controller extends GetxController {
   String email = '';
   String senha = '';
 
+
+
+
   Future<void> validarLogin(BuildContext context) async {
     showLoad(context);
 
     if (email != '' && senha != '' && nome != '') {
+
+
+
+
+
       if (await MongoDataBase.verificaUser(email)) {
         Navigator.of(context).pop();
         mySnackBar('Usuário já possui cadastro!',false);
       } else {
+      
         var codigo = 1000 + random.nextInt(9999 - 1000 + 1);
         
         await sendEmail(name: nome.toString(),email: email.toString(),confirmationCode: codigo.toString(),);
         Navigator.of(context).pop(); // fecha o showLoad
-        Get.toNamed('/confirmPage',
-            arguments: [1, codigo.toString(), nome, email, senha]);
-            mySnackBar('Um código foi enviado ao seu email\nPor favor digite-o abaixo',true);
+        Get.toNamed('/confirmPage',arguments: [1, codigo.toString(), nome, email, senha]);
+          mySnackBar('Um código foi enviado ao seu email\nPor favor digite-o abaixo',true);  
+            
       }
     } else {
       Navigator.of(context).pop();
