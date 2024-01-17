@@ -35,6 +35,7 @@ class InsertAnimalController extends GetxController {
   @override
   void onInit() async {
     meuControllerGlobal = Get.find(); 
+    print(meuControllerGlobal.usuario);
     super.onInit();
   }
 

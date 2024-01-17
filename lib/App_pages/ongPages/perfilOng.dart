@@ -9,11 +9,13 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/ongPhoto.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/customImagemFeed.dart';
-import 'package:replica_google_classroom/loginPages/my_password_page.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
+import 'package:replica_google_classroom/services/firebase.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 
 class SettingsPageController extends GetxController {
   //variaveis 
+  late MeuControllerGlobal meuControllerGlobal;
   var usuario;
   RxInt nunmeroDePostagens = 0.obs;
   RxInt nunmeroDeAdocoes = 0.obs;
@@ -27,26 +29,25 @@ class SettingsPageController extends GetxController {
   var imagembd;
   File? imageFile; // imagem para ser coletada e inserida no banco para o perfil 
   File? imageFileFeed; // imagem para ser coletada e inserida no banco para o feed
-  late SenhaController senhaController;
+  
   bool args = false; // serve para controlar as funções de usuario e ong 
 
-  
   Future<String> func() async {
-
     if(Get.arguments == null){
-      senhaController = Get.find();
-      usuario = senhaController.usuario;
+      meuControllerGlobal = Get.find();
+      usuario = meuControllerGlobal.usuario;
     }else{
       args = true;
       usuario = Get.arguments[0];
     }
-    localizacao.value = '${usuario['cidade']},${usuario['estado']}'; 
-    nomeOng.value = usuario['nomeOng'];
-    imagembd = usuario['imagemPerfil'];
-    bio.value = usuario['bio'];
-    info = usuario['feedImagens'];
-    petsInfo = usuario['petList'];
-    emailOng = usuario['email'];
+
+    localizacao.value = '${usuario['Cidade']},${usuario['Estado']}'; 
+    nomeOng.value = usuario['Nome ong'];
+    imagembd = usuario['ImagemPerfil'];
+    bio.value = usuario['Bio'];
+    info = usuario['Imagens feed'];
+    petsInfo = usuario['Pets'];
+    emailOng = usuario['E-mail'];
 
 
     // quando puxa do banco de dados, se tiver vazio(null), atribui uma lista vazia 
@@ -56,9 +57,6 @@ class SettingsPageController extends GetxController {
     }else{
       nunmeroDePostagens.value = info.length;
     }
-
-    
-   
     return 'allan';
   }
   List<Widget> mostraFeed(context,conteudo,feed) {
@@ -86,7 +84,6 @@ class SettingsPageController extends GetxController {
               }
               
             },
-            
             child: feed == 1 ? PicFeed(image: conteudo[j]):PicFeed(petInfo: conteudo[j])
           )
         );
@@ -100,7 +97,7 @@ class SettingsPageController extends GetxController {
     }
 
     return rows;
-}
+  }
   void showBottomSheetEdit(BuildContext context) async {
     showModalBottomSheet(
       context: context,
@@ -132,24 +129,23 @@ class SettingsPageController extends GetxController {
                 ),
                 onTap: () {
                    var infoEditavel = {
-                      'Nome' : usuario['nomeOng'],
-                      'Telefone': usuario['telefone'],
-                      'Senha': usuario['password'],
-                      'Nome representante': usuario['nome representante'],
+                      'Nome' : usuario['Nome ong'],
+                      'Telefone': usuario['Telefone'],
+                      //'Senha': usuario['password'],
+                      'Nome representante': usuario['Nome representante'],
+                      
+                      'E-mail': usuario['E-mail'],
+                      'cnpj' : usuario['cnpj'],
+                      'Email representante': usuario['Email representante'],
+                      'cpf representante' : usuario['cpf representante'],
                       'Endereço': {
-                        'cidade': usuario['cidade'],
-                        'rua': usuario['rua'],
-                        'numero': usuario['numero'],
-                        'estado': usuario['estado'],
-                        'bairro': usuario['bairro'],
+                        'Cidade': usuario['Cidade'],
+                        'Rua': usuario['Rua'],
+                        'Numero': usuario['Numero'],
+                        'Estado': usuario['Estado'],
+                        'Bairro': usuario['Bairro'],
                         'cep': usuario['cep']
                       },
-                      'Email': usuario['email'],
-                      'CNPJ' : usuario['cnpj'],
-                      'Email representante': usuario['email representante'],
-                      'CPF representante' : usuario['cpf representante']
-
-
 
                     };
                   Get.toNamed('/OngInfoEditPage',arguments: [infoEditavel]);
@@ -176,18 +172,17 @@ class SettingsPageController extends GetxController {
       },
     );
   }
+  
+  
   void pick(ImageSource source) async {
     final imagePicker = ImagePicker();
     final pickedFile = await imagePicker.pickImage(source: source);
     if (pickedFile != null) {
       imageFile = File(pickedFile.path);
-      Uint8List imageBytes = await imageFile!.readAsBytes(); // Converta a imagem em um array de bytes 
-      String base64Image = base64Encode(imageBytes); // Codifique os bytes em formato base64 (opcional)
       update();
-      await MongoDataBase.insereImagemPerfil(emailOng, base64Image); 
-
-
+      await BancoDeDados.saveImageToFirestore(imageFile!, meuControllerGlobal.obterId(),meuControllerGlobal.obterimagemPerfil());
       
+
     }
   }
   void showBottomSheet(BuildContext context) {
@@ -328,7 +323,6 @@ class SettingsPage extends StatelessWidget {
         init: SettingsPageController(),
         builder: (_) {
           return Scaffold(
-            
             floatingActionButton: settingsPageController.args == true ? FloatingActionButton(onPressed: () async {
               settingsPageController.showBottomSheetFeed(context);
             },child: const Icon(Icons.add,color: Color.fromARGB(255, 55, 98, 227),),): const SizedBox(),
@@ -424,8 +418,7 @@ class SettingsPage extends StatelessWidget {
                                                         Obx(()=> Text(settingsPageController.nunmeroDePostagens.toString(),style: const TextStyle(fontSize: 20),)),
                                                         GestureDetector(
                                                           onTap: (){
-                                                            print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-                                                            print(settingsPageController.senhaController.pets[0]['nomeOng']);
+                                                            print(settingsPageController.meuControllerGlobal.pets[0]['nomeOng']);
 
                                                           },
                                                           child: Text('publicações',style: TextStyle(fontSize: 12),)),

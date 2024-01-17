@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:get/get.dart';
-import 'package:replica_google_classroom/loginPages/my_password_page.dart';
 import '../services/mongodb.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
 

@@ -23,32 +23,31 @@ class BancoDeDados{
   }
 
   static adicionarInformacoesUsuario(Map<String, dynamic> novasInformacoes,String id,) async {
-  print(id);
-  print(novasInformacoes);
-  try {
-    await FirebaseFirestore.instance.collection('users').doc(id).update(novasInformacoes);
-    print('Informações do usuário atualizadas com sucesso!');
-  } catch (e) {
-    print('Erro ao atualizar informações do usuário: $e');
-  }
-}
-
-
-  static Future saveImageToFirestore(File imageFile, String userId) async {
     try {
-    
+      await FirebaseFirestore.instance.collection('users').doc(id).update(novasInformacoes);
+      print('Informações do usuário atualizadas com sucesso!');
+    } catch (e) {
+      print('Erro ao atualizar informações do usuário: $e');
+    }
+  }
+
+
+  static Future saveImageToFirestore(File imageFile, String userId, String urlAntiga) async {
+    try {
+
+      //apagar a antiga   
+      if (urlAntiga != '') {
+        Reference oldStorageReference = FirebaseStorage.instance.refFromURL(urlAntiga);
+        await oldStorageReference.delete();
+      }
       // cria um id unico para a foto
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-
       // Referência ao local no Firebase Storage onde o arquivo será armazenado
       Reference storageReference = FirebaseStorage.instance.ref().child('profile_images/$userId/$fileName');
-
       // Upload do arquivo
       await storageReference.putFile(imageFile);
-
       // Obter a URL do arquivo no Firebase Storage
       String downloadURL = await storageReference.getDownloadURL();
-
       // crio uma instancia no controlador global para salvar o dado da foto de perfil do usuario 
       MeuControllerGlobal meuControllerGlobal;
       meuControllerGlobal = Get.find();

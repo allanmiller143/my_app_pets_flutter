@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/loginPages/my_password_page.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 
 class AnimalDetailPageController extends GetxController {

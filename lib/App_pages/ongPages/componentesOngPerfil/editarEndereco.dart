@@ -51,12 +51,12 @@ class EditarEnderecoController extends GetxController {
   Future<String> func() async {
     settingsController = Get.find();
     // coletar os valores antigos
-    rua.text = valores['rua'];
-    numero.text = valores['numero'];
+    rua.text = valores['Rua'];
+    numero.text = valores['Numero'];
     cep.text = valores['cep'];
-    cidade.text = valores['cidade'];
-    bairro.text = valores['bairro'];
-    estado.text = valores['estado'];
+    cidade.text = valores['Cidade'];
+    bairro.text = valores['Bairro'];
+    estado.text = valores['Estado'];
     return 'allan';
   }
   List<Widget> gerarTextFields() {
