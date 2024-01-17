@@ -8,7 +8,6 @@ import 'package:replica_google_classroom/services/firebase.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class EmailController extends GetxController {
   late MeuControllerGlobal meuControllerGlobal;  
@@ -65,7 +64,7 @@ login(context) async{
               String bairro = querySnapshot.docs[0]['Bairro'];
               String cidade = querySnapshot.docs[0]['Cidade'];
               String estado = querySnapshot.docs[0]['Estado'];
-               String numero = querySnapshot.docs[0]['Numero'];
+              String numero = querySnapshot.docs[0]['Numero'];
               String rua = querySnapshot.docs[0]['Rua'];
               String telefone = querySnapshot.docs[0]['Telefone'];
               String cep = querySnapshot.docs[0]['cep'];
@@ -77,6 +76,7 @@ login(context) async{
               meuControllerGlobal.cep.value = cep;
               meuControllerGlobal.estado.value = estado;
 
+              
             }
           }else{ //ong 
             String bairro = querySnapshot.docs[0]['Bairro'];
@@ -108,6 +108,8 @@ login(context) async{
             meuControllerGlobal.cep.value = cep;
             meuControllerGlobal.cnpj.value = cnpj;
             meuControllerGlobal.cpfRepresentante.value = cpfRepresentante;
+
+            meuControllerGlobal.criaUsuario();
             Get.toNamed('/principalOngAppPage');
 
           }
@@ -133,6 +135,8 @@ login(context) async{
 
   Future<String> func() async {
     meuControllerGlobal = Get.find();
+    email.text = 'ong.pets@gmail.com';
+    senha.text = '32172528';
   
     return 'a';
   }

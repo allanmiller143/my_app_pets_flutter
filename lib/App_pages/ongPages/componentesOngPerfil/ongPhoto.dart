@@ -17,9 +17,8 @@ class OngPhoto extends StatelessWidget {
   ImageProvider<Object> getImageProvider() {
     if (image != null) {
       return FileImage(image!);
-    } else if (imagembd != null) {
-      final Uint8List bytes = base64.decode(imagembd);
-      return MemoryImage(Uint8List.fromList(bytes));
+    } else if (imagembd != '') {
+      return NetworkImage(imagembd);
     } else {
       return const AssetImage('assets/fundo.png'); // um imagem padrao 
     }

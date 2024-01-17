@@ -3,17 +3,18 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class OngInfoEditPageController extends GetxController {
-  late SettingsPageController settingsController;
+  late MeuControllerGlobal meuControllerGlobal;
   dynamic usuario;
   dynamic infoEditavel; 
   late String petId;
 
   Future<String> func() async {
-    settingsController = Get.find(); // Encontra a instância existente
-    usuario = settingsController.usuario;
+    meuControllerGlobal = Get.find(); // Encontra a instância existente
+    usuario = meuControllerGlobal.usuario;
     infoEditavel = Get.arguments[0];
     if(Get.arguments.length > 1 && Get.arguments[1] != null){
       petId = Get.arguments[1];
@@ -53,7 +54,7 @@ List<Widget> campoEditar(BuildContext context, ) {
 
             }
             else{
-              if(key == 'CNPJ' || key == 'Email representante' || key == 'Email'){
+              if(key == 'cnpj' || key == 'Email representante' || key == 'Email'){
                 mySnackBar('Campo não ainda editável', false);
               }else if(key == 'Endereço'){
                 Get.toNamed('/editarEndereco',arguments: [key,item]);

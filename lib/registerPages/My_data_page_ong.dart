@@ -90,8 +90,10 @@ class DataOngController extends GetxController {
           meuControllerGlobal.cpfRepresentante.value = ongDataMap['cpf representante']!;
           ongDataMap['Pets'] = [];
           ongDataMap['Imagens feed'] = [];
+          ongDataMap['Bio'] = '';
+
+          meuControllerGlobal.criaUsuario();
       
-    
           await BancoDeDados.adicionarInformacoesUsuario(ongDataMap,meuControllerGlobal.obterId());
           mySnackBar('Cadastro bem sucedido',true);
       }
