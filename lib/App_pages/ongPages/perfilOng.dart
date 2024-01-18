@@ -129,7 +129,7 @@ class SettingsPageController extends GetxController {
                 ),
                 onTap: () {
                    var infoEditavel = {
-                      'Nome' : usuario['Nome ong'],
+                      'Nome ong' : usuario['Nome ong'],
                       'Telefone': usuario['Telefone'],
                       //'Senha': usuario['password'],
                       'Nome representante': usuario['Nome representante'],
