@@ -1,14 +1,13 @@
-// ignore_for_file: avoid_print, use_key_in_widget_constructors
-
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/Complete_cep.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
+import 'package:replica_google_classroom/services/firebase.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class EditarEnderecoController extends GetxController {
-  //int tipo = Get.arguments[0]; // isso aqui nao serve de nada ainda
   dynamic chave = Get.arguments[0]; // endereço
   dynamic valores = Get.arguments[1];
   var rua = TextEditingController();
@@ -16,12 +15,12 @@ class EditarEnderecoController extends GetxController {
   var estado = TextEditingController();
   var cidade = TextEditingController();
   var bairro = TextEditingController();
-
   var ruaAtivado  = false.obs;
   var bairroAtivado  = false.obs;
   var cep = TextEditingController();
   RxInt ativado = 0.obs;
   late SettingsPageController settingsController;
+  late MeuControllerGlobal meuControllerGlobal;
   late String chaveAux;
 
   Future<void> completarEndereco(cep) async {
@@ -50,6 +49,7 @@ class EditarEnderecoController extends GetxController {
   }
   Future<String> func() async {
     settingsController = Get.find();
+    meuControllerGlobal = Get.find();
     // coletar os valores antigos
     rua.text = valores['Rua'];
     numero.text = valores['Numero'];
@@ -102,15 +102,38 @@ class EditarEnderecoController extends GetxController {
     if(cep.text.isNotEmpty && estado.text.isNotEmpty && cidade.text.isNotEmpty && bairro.text.isNotEmpty && rua.text.isNotEmpty && numero.text.isNotEmpty ){
       var dados = {
         'cep' : cep.text,
-        'estado' : estado.text,
-        'cidade' : cidade.text,
-        'bairro' : bairro.text,
-        'rua' : rua.text,
-        'numero' : numero.text 
+        'Estado' : estado.text,
+        'Cidade' : cidade.text,
+        'Bairro' : bairro.text,
+        'Rua' : rua.text,
+        'Numero' : numero.text 
       };
       settingsController.localizacao.value = '${cidade.text}, ${estado.text}';
+      settingsController.usuario['cep'] = cep.text;
+      settingsController.usuario['Estado'] = estado.text;
+      settingsController.usuario['Cidade'] = cidade.text;
+      settingsController.usuario['Bairro'] = bairro.text;
+      settingsController.usuario['Rua'] = rua.text;
+      settingsController.usuario['Numero'] = numero.text;
+
+      meuControllerGlobal.usuario['cep'] = cep.text;
+      meuControllerGlobal.usuario['Estado'] = estado.text;
+      meuControllerGlobal.usuario['Cidade'] = cidade.text;
+      meuControllerGlobal.usuario['Bairro'] = bairro.text;
+      meuControllerGlobal.usuario['Rua'] = rua.text;
+      meuControllerGlobal.usuario['Numero'] = numero.text;
+      
+      meuControllerGlobal.estado.value = estado.text;
+      meuControllerGlobal.cidade.value = cidade.text;
+      meuControllerGlobal.bairro.value = bairro.text;
+      meuControllerGlobal.rua.value = rua.text;
+      meuControllerGlobal.numero.value = numero.text;
+      meuControllerGlobal.cep.value = cep.text;
+
       Get.back();Get.back();
-      MongoDataBase.alteraDocumentos(dados, settingsController.emailOng);
+      await BancoDeDados.adicionarInformacoesUsuario(dados, meuControllerGlobal.obterId());
+      mySnackBar('Endereço alterado com sucesso', true);
+
     }
     else{
       mySnackBar('verifique os campos', false);

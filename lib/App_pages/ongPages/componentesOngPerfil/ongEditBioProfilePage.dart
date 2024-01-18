@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 
-//import 'package:replica_google_classroom/services/mongodb.dart';
-//import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class OngEditBioPageController extends GetxController {
   var bioText = TextEditingController();

@@ -2,11 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
+import 'package:replica_google_classroom/services/firebase.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class EditarCampoController extends GetxController {
-  //int tipo = Get.arguments[0]; // isso aqui nao serve de nada ainda
+
+  late MeuControllerGlobal meuControllerGlobal;
+
   String chave = Get.arguments[1];
   dynamic valor = Get.arguments[2];
   Function? funcaoValidacao;
@@ -19,6 +23,8 @@ class EditarCampoController extends GetxController {
 
   Future<String> func() async {
     settingsController = Get.find(); // Encontra a instância existente
+    meuControllerGlobal = Get.find();
+    print(chave);
 
     // verifica de quem chamou essa tela foi para editar um pet.
     if (Get.arguments.length > 3 && Get.arguments[3] != null) {
@@ -26,7 +32,7 @@ class EditarCampoController extends GetxController {
     }
 
     novoValor.text = valor; // coleta o valor q ja existe
-    if (chave == 'Nome' || chave == 'Nome animal' || chave == 'Nome representante') {
+    if (chave == 'Nome ong' || chave == 'Nome animal' || chave == 'Nome representante') {
       regrasNegocio['maximoCaracteres'] = 40;
       regrasNegocio['texto'] ='Insira o novo valor para $chave. Certifique-se de seguir as regras estabelecidas para este campo';
     } else if (chave == 'Telefone') {
@@ -36,7 +42,7 @@ class EditarCampoController extends GetxController {
     } else if (chave == 'Senha') {
       regrasNegocio['maximoCaracteres'] = 15;
       regrasNegocio['texto'] = 'Insira o novo valor para $chave. Certifique-se de seguir as regras estabelecidas para este campo'; 
-    } else if (chave == 'CPF representante') {
+    } else if (chave == 'cpf representante') {
       regrasNegocio['maximoCaracteres'] = 11;
       regrasNegocio['texto'] = 'Insira o novo valor para $chave. Certifique-se de seguir as regras estabelecidas para este campo'; 
     }else {
@@ -99,17 +105,26 @@ class EditarCampoController extends GetxController {
       if (novoValor.text.length != 11) {
         return false;
       }
-      settingsController.usuario['telefone'] = novoValor.text;
+      settingsController.usuario['Telefone'] = novoValor.text;
+      meuControllerGlobal.telefone.value = novoValor.text;
+      meuControllerGlobal.usuario['Telefone'] = novoValor.text;
+
       Get.back();Get.back();
-      await MongoDataBase.alteraDocumento('telefone', novoValor.text, settingsController.emailOng);
+
+      await BancoDeDados.adicionarInformacoesUsuario({'Telefone' : novoValor.text}, meuControllerGlobal.obterId());
+
       return true; // O telefone é válido
 
-    } else if (chave == 'Nome') {
+    } else if (chave == 'Nome ong') {
+      print('alterar nome');
       if (novoValor.text.isNotEmpty) {
         settingsController.nomeOng.value = novoValor.text;
-        settingsController.usuario['nomeOng'] = novoValor.text;
+        settingsController.usuario['Nome ong'] = novoValor.text;
+        meuControllerGlobal.nomeOng.value = novoValor.text;
+        meuControllerGlobal.usuario['Nome ong'] = novoValor.text;
         Get.back();Get.back();
-        await MongoDataBase.alteraDocumento('nomeOng', novoValor.text, settingsController.emailOng);
+        await BancoDeDados.adicionarInformacoesUsuario({'Nome ong' : novoValor.text}, meuControllerGlobal.obterId());
+        //await MongoDataBase.alteraDocumento('nomeOng', novoValor.text, settingsController.emailOng);
         return true;
       }
       return false;
@@ -124,16 +139,22 @@ class EditarCampoController extends GetxController {
     } else if (chave == 'Nome representante') {
       if (novoValor.text.isNotEmpty) {
         settingsController.usuario['nome representante'] = novoValor.text;
+        meuControllerGlobal.nomeRepresentante.value = novoValor.text;
+        meuControllerGlobal.usuario['Nome representante'] = novoValor.text;
+
         Get.back();Get.back();
-        await MongoDataBase.alteraDocumento('nome representante', novoValor.text, settingsController.emailOng);
+        await BancoDeDados.adicionarInformacoesUsuario({'Nome representante' : novoValor.text}, meuControllerGlobal.obterId());
         return true;
       }
       return false;
-    }else if (chave == 'CPF representante') {
+    }else if (chave == 'cpf representante') {
       if (validarCPF(novoValor.text)) {
         settingsController.usuario['cpf representante'] = novoValor.text;
+        meuControllerGlobal.cpfRepresentante.value = novoValor.text;
+        meuControllerGlobal.usuario['cpf representante'] = novoValor.text;
         Get.back();Get.back();
-        await MongoDataBase.alteraDocumento('cpf representante', novoValor.text, settingsController.emailOng);
+        await BancoDeDados.adicionarInformacoesUsuario({'cpf representante' : novoValor.text}, meuControllerGlobal.obterId());
+
         return true;
       }
       mySnackBar('insira um cpf válido!!!\n tente novamente', false);
@@ -154,7 +175,7 @@ class EditarCampoController extends GetxController {
       }
       return false;
     } else {
-      print('entrei');
+   
       return false;
     }
   }
