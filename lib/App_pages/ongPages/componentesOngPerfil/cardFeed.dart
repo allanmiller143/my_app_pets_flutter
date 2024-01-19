@@ -17,21 +17,25 @@ class PicFeed extends StatelessWidget {
 
   // Recupera a imagem do bd
   ImageProvider<Object> getImageProvider() {
+    print('entrei aqui');
     // se vier um pet.
     if(petInfo != null){
       
-      var imagem = petInfo['tipo'] == '1' ? 'assets/exemplo1.png' : 'assets/exemplo2.png';
-      petInfo['imagem'] == null ? image = imagem: image = petInfo['imagem'];
-      if(petInfo['imagem'] != null){
-        final Uint8List bytes = base64.decode(image);
-        return MemoryImage(Uint8List.fromList(bytes));
+      var imagem = petInfo['Tipo'] == '1' ? 'assets/exemplo1.png' : 'assets/exemplo2.png';
+      petInfo['Imagem'] == null ? image = imagem: image = petInfo['Imagem'];
+      
+      if(petInfo['Imagem'] != null){
+      
+        return NetworkImage(petInfo['Imagem']);
       }
-      else {return AssetImage(image);}
+      else {
+        return AssetImage(image);
+      }
     }
     // se vier uma imagem de feed
     else{
       final Uint8List bytes = base64.decode(image);
-    return MemoryImage(Uint8List.fromList(bytes));
+      return MemoryImage(Uint8List.fromList(bytes));
     }  
   }
 

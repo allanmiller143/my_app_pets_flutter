@@ -25,7 +25,6 @@ class EditarEnderecoController extends GetxController {
 
   Future<void> completarEndereco(cep) async {
     Map<String, dynamic> dados = await buscaCep(cep);
-    print(dados);
     if(dados['bairro'] == ''){
       bairroAtivado.value = true;
     }else{
@@ -145,6 +144,7 @@ class EditarEnderecoController extends GetxController {
 
 // ignore: must_be_immutable
 class EditarEnderecoPage extends StatelessWidget {
+  // ignore: use_key_in_widget_constructors
   EditarEnderecoPage({Key? key});
   var editarEnderecoController = Get.put(EditarEnderecoController());
 

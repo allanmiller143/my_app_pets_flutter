@@ -31,10 +31,59 @@ class BancoDeDados{
     }
   }
 
+  static adicionarPet(Map<String, dynamic> petInfo, String userId) async {
+    
+    try {
+      // cria um id unico para a foto
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      // Referência ao local no Firebase Storage onde o arquivo será armazenado
+      Reference storageReference = FirebaseStorage.instance.ref().child('pets/$userId/$fileName');
+      // Upload do arquivo
+      await storageReference.putFile(petInfo['Imagem']);
+      // Obter a URL do arquivo no Firebase Storage
+      String downloadURL = await storageReference.getDownloadURL();
+
+      petInfo['Imagem'] = downloadURL;
+
+
+      // Adiciona o novo pet à coleção 'pets' dentro do documento do usuário
+      MeuControllerGlobal meuControllerGlobal;
+      meuControllerGlobal = Get.find();
+      meuControllerGlobal.pets.add(petInfo);
+      meuControllerGlobal.usuario['pets'].add(petInfo);
+      
+      await FirebaseFirestore.instance.collection('users').doc(userId).collection('pets').add(petInfo);
+      
+      print('Pet adicionado com sucesso!');
+    } catch (e) {
+      print('Erro ao adicionar pet: $e');
+    }
+  }
+
+  static Future<List<Map<String, dynamic>>> obterPetsDoUsuario(String userId) async {
+    try {
+      QuerySnapshot petsSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('pets')
+          .get();
+
+      List<Map<String, dynamic>> petsList = [];
+
+      petsSnapshot.docs.forEach((DocumentSnapshot document) {
+        petsList.add(document.data() as Map<String, dynamic>);
+      });
+
+      return petsList;
+    } catch (e) {
+      print('Erro ao obter pets do usuário: $e');
+      return [];
+    }
+  }
+
 
   static Future saveImageToFirestore(File imageFile, String userId, String urlAntiga) async {
     try {
-
       //apagar a antiga   
       if (urlAntiga != '') {
         Reference oldStorageReference = FirebaseStorage.instance.refFromURL(urlAntiga);

@@ -72,7 +72,7 @@ List<Widget> campoEditar(BuildContext context, ) {
     rows.add(
       Container(
         width: double.infinity,
-        height: MediaQuery.of(context).size.height * 0.07,
+        height: key != 'Endereço' ? MediaQuery.of(context).size.height * 0.07 : MediaQuery.of(context).size.height * 0.11,
         child: row,
       ),
     );
