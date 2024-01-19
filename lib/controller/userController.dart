@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/services/firebase.dart';
 
 class MeuControllerGlobal extends GetxController {
   final nome = ''.obs;
@@ -33,12 +36,14 @@ class MeuControllerGlobal extends GetxController {
 
 
 
-  void criaUsuario(){
+  criaUsuario() async {
     if(tipo.value == 'ong'){
+
+      pets = await BancoDeDados.obterPetsDoUsuario(id.value);
       usuario = {
         'Id' : id.value,
         'E-mail' : email.value,
-        'pets' : pets,
+        'Pets' : pets,
         'Tipo' : tipo.value,
         'Nome ong' : nomeOng.value,
         'cnpj' : cnpj.value,
@@ -55,11 +60,9 @@ class MeuControllerGlobal extends GetxController {
         'ImagemPerfil' :imagemPerfil.value,
         'Bio' : bio.value,
         'Imagens feed' : imagensFeed
-      };
+      };    
     }
     
-
-
   }
 
 

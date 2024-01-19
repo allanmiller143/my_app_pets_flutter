@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/ongPhoto.dart';
-import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/customImagemFeed.dart';
+import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/cardFeed.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/firebase.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
@@ -23,8 +23,8 @@ class SettingsPageController extends GetxController {
   RxString nomeOng = ''.obs;
   RxString localizacao = 'Surubim, PE'.obs;
   RxString bio = ''.obs;
-  dynamic info = [];
-  dynamic petsInfo = [];
+  dynamic info = []; // feed
+  dynamic petsInfo = []; // pets
   late String emailOng;
   var imagembd;
   File? imageFile; // imagem para ser coletada e inserida no banco para o perfil 
@@ -36,6 +36,7 @@ class SettingsPageController extends GetxController {
     if(Get.arguments == null){
       meuControllerGlobal = Get.find();
       usuario = meuControllerGlobal.usuario;
+  
     }else{
       args = true;
       usuario = Get.arguments[0];
@@ -49,18 +50,13 @@ class SettingsPageController extends GetxController {
     petsInfo = usuario['Pets'];
     emailOng = usuario['E-mail'];
 
-
+   
     // quando puxa do banco de dados, se tiver vazio(null), atribui uma lista vazia 
-    if(info == null){
-      petsInfo = [];
-      info = [];
-    }else{
-      nunmeroDePostagens.value = info.length;
-    }
     return 'allan';
   }
   List<Widget> mostraFeed(context,conteudo,feed) {
     List<Widget> rows = [];
+    print(conteudo.length);
     if(conteudo.length == 0){
         rows.add(
           const Padding(

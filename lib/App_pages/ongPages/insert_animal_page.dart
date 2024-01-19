@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/loginPages/my_password_page.dart';
+import 'package:replica_google_classroom/services/firebase.dart';
 import 'listas.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 import 'package:replica_google_classroom/entitites/animal.dart';
@@ -35,7 +36,6 @@ class InsertAnimalController extends GetxController {
   @override
   void onInit() async {
     meuControllerGlobal = Get.find(); 
-    print(meuControllerGlobal.usuario);
     super.onInit();
   }
 
@@ -44,25 +44,23 @@ class InsertAnimalController extends GetxController {
     //coletar os dados do campos de input e instanciar um animal
     showLoad(context);
     var animal = Animal(
-        tipo: selectedType.value,
-        sexo: selectedTypeSex.value,
-        nome: nome.text,
-        porte: selectedSize.value,
-        idade: selectedAge.value,
-        raca: selectedRace.value
-      );
+      tipo: selectedType.value,
+      sexo: selectedTypeSex.value,
+      nome: nome.text,
+      porte: selectedSize.value,
+      idade: selectedAge.value,
+      raca: selectedRace.value
+    );
 
-    if (imageFile != null) {
-      Uint8List imageBytes = await imageFile!.readAsBytes(); // Converta a imagem em um array de bytes  
-      String base64Image = base64Encode(imageBytes); // Codifique os bytes em formato base64 (opcional)
-      animal.imagem = base64Image; // Adicione a imagem codificada ao mapa de dados do animal    
-    }
 
     Map<String, dynamic> animalData = animal.toMap();
+
+    animalData['Imagem'] = imageFile;
+
     String retorno = animal.validaCampos();
     if (retorno == '') {
-      meuControllerGlobal.pets.add(animalData);
-      await MongoDataBase.inserePet('48659836000129', animalData);
+      await BancoDeDados.adicionarPet(animalData, meuControllerGlobal.obterId());
+
     }
     Get.back();
     return retorno;

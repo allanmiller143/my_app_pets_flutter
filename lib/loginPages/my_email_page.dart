@@ -109,7 +109,7 @@ login(context) async{
             meuControllerGlobal.cnpj.value = cnpj;
             meuControllerGlobal.cpfRepresentante.value = cpfRepresentante;
 
-            meuControllerGlobal.criaUsuario();
+            await meuControllerGlobal.criaUsuario();
             Get.toNamed('/principalOngAppPage');
 
           }

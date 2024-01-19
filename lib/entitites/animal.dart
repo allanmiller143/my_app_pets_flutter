@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:random_string/random_string.dart';
+
 class Animal {
   String tipo;
   String nome;
@@ -5,7 +9,7 @@ class Animal {
   String porte;
   String raca;
   String sexo;
-  String? imagem;
+
 
   Animal({
     required this.tipo,
@@ -17,14 +21,15 @@ class Animal {
   });
 
   Map<String, dynamic> toMap() {
+    String id = randomAlphaNumeric(10);
     return {
-      "tipo": tipo,
-      "nome": nome,
-      "idade": idade,
-      "sexo": sexo,
-      "porte": porte,
-      "raca": raca,
-      "imagem": imagem,
+      "Id" : id,
+      "Tipo": tipo,
+      "Nome": nome,
+      "Idade": idade,
+      "Sexo": sexo,
+      "Porte": porte,
+      "Raça": raca,
     };
   }
 

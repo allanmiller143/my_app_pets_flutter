@@ -14,14 +14,12 @@ class ImageViewerController extends GetxController {
 
   @override
   void onInit() {
-
-
-
     settingsController = Get.find(); // Encontra a instância existente
 
     if (Get.arguments[1] == 2) {
-      imagem = Get.arguments[0]['imagem'];
+      imagem = Get.arguments[0]['Imagem'];
       info = Get.arguments[0];
+      print(info);
     } else {
       imagem = Get.arguments[0];
     }
@@ -97,13 +95,13 @@ class ImageViewerController extends GetxController {
                       ),
                       onTap: () {
                         var infoEditavel = {
-                          'Nome animal': info['nome'],
-                          'Idade': info['idade'],
-                          'Raça':info['raca'],
+                          'Nome animal': info['Nome'],
+                          'Idade': info['Idade'],
+                          'Raça':info['Raça'],
                           'Tipo': info['Tipo'],
-                          'Sexo' : info['sexo'],
-                          'Porte' : info['porte'],
-                          'Imagem': info['imagem'],
+                          'Sexo' : info['Sexo'],
+                          'Porte' : info['Porte'],
+                          'Imagem': info['Imagem'],
                           
                         };
                         Get.toNamed('/OngInfoEditPage', arguments: [infoEditavel, info['id']]);
