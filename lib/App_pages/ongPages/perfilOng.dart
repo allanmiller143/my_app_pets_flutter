@@ -1,17 +1,14 @@
 
 // ignore_for_file: prefer_typing_uninitialized_variables, must_be_immutable
 
-import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/ongPhoto.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/cardFeed.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/services/firebase.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 class SettingsPageController extends GetxController {
   //variaveis 
@@ -49,6 +46,7 @@ class SettingsPageController extends GetxController {
     info = usuario['Imagens feed'];
     petsInfo = usuario['Pets'];
     emailOng = usuario['E-mail'];
+    nunmeroDePostagens.value = info.length;
 
    
     // quando puxa do banco de dados, se tiver vazio(null), atribui uma lista vazia 
@@ -80,7 +78,7 @@ class SettingsPageController extends GetxController {
               }
               
             },
-            child: feed == 1 ? PicFeed(image: conteudo[j]):PicFeed(petInfo: conteudo[j])
+            child: feed == 1 ? PicFeed(image: conteudo[j]['Imagem']):PicFeed(petInfo: conteudo[j])
           )
         );
       }
@@ -267,7 +265,7 @@ class SettingsPageController extends GetxController {
                   color: Color.fromARGB(255, 255, 84, 16),
                 ),
                 onTap: () {
-                  pickFeed(ImageSource.gallery);
+                  pickFeed(ImageSource.gallery,context);
                 },
               ),
               ListTile(
@@ -282,7 +280,7 @@ class SettingsPageController extends GetxController {
                   color: Color.fromARGB(255, 255, 84, 16),
                 ),
                 onTap: () {
-                  pickFeed(ImageSource.camera);
+                  pickFeed(ImageSource.camera,context);
                 },
               ),
             ],
@@ -291,18 +289,17 @@ class SettingsPageController extends GetxController {
       },
     );
   }  
-  void pickFeed(ImageSource source) async {
+  
+  void pickFeed(ImageSource source,context) async {
   final imagePicker = ImagePicker();
   final pickedFile = await imagePicker.pickImage(source: source);
   if (pickedFile != null) {
     imageFileFeed = File(pickedFile.path); 
-    Uint8List imageBytes = await imageFileFeed!.readAsBytes(); // Converta a imagem em um array de bytes 
-    String base64Image = base64Encode(imageBytes); // Codifique os bytes em formato base64 (opcional)
-    info.add(base64Image);
+    
+    await BancoDeDados.saveFeedImageToFirestore(imageFileFeed!,meuControllerGlobal.obterId());
     nunmeroDePostagens.value += 1;
     opcao.value = 1;
     opcao.value = 0;
-    await MongoDataBase.insereImagemFeed('allan.miller@upe.br', base64Image);
     
   }
 }
@@ -319,7 +316,7 @@ class SettingsPage extends StatelessWidget {
         init: SettingsPageController(),
         builder: (_) {
           return Scaffold(
-            floatingActionButton: settingsPageController.args == true ? FloatingActionButton(onPressed: () async {
+            floatingActionButton: settingsPageController.args == false ? FloatingActionButton(onPressed: () async {
               settingsPageController.showBottomSheetFeed(context);
             },child: const Icon(Icons.add,color: Color.fromARGB(255, 55, 98, 227),),): const SizedBox(),
             body: FutureBuilder(

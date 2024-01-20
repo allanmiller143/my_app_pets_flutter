@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/services/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -93,6 +93,7 @@ login(context) async{
             String cep = querySnapshot.docs[0]['cep'];
             String cnpj = querySnapshot.docs[0]['cnpj'];
             String cpfRepresentante = querySnapshot.docs[0]['cpf representante'];
+            String bio = querySnapshot.docs[0]['Bio'];
 
             meuControllerGlobal.bairro.value = bairro;
             meuControllerGlobal.cidade.value = cidade;
@@ -108,6 +109,7 @@ login(context) async{
             meuControllerGlobal.cep.value = cep;
             meuControllerGlobal.cnpj.value = cnpj;
             meuControllerGlobal.cpfRepresentante.value = cpfRepresentante;
+            meuControllerGlobal.bio.value = bio;
 
             await meuControllerGlobal.criaUsuario();
             Get.toNamed('/principalOngAppPage');

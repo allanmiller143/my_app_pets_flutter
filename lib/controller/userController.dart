@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 import 'package:get/get.dart';
-import 'package:replica_google_classroom/services/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 class MeuControllerGlobal extends GetxController {
   final nome = ''.obs;
@@ -34,12 +34,12 @@ class MeuControllerGlobal extends GetxController {
 
   late Map<String,dynamic> usuario;
 
-
-
   criaUsuario() async {
     if(tipo.value == 'ong'){
 
       pets = await BancoDeDados.obterPetsDoUsuario(id.value);
+      imagensFeed =  await BancoDeDados.obterImagensFeedDoUsuario(id.value);
+
       usuario = {
         'Id' : id.value,
         'E-mail' : email.value,

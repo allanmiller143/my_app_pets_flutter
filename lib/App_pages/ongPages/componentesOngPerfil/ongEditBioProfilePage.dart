@@ -3,31 +3,37 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
-
+import 'package:replica_google_classroom/controller/userController.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 class OngEditBioPageController extends GetxController {
   var bioText = TextEditingController();
   late SettingsPageController settingsController;
+  late MeuControllerGlobal meuControllerGlobal;
 
   @override
   void onInit() async {
     // Chamado quando o controller é inicializado
     settingsController = Get.find(); // Encontra a instância existente
+    meuControllerGlobal = Get.find();
     bioText.text = settingsController.bio.value;
     super.onInit();
   }
 
   Future<void> concluirEdicao() async{
     settingsController.bio.value = bioText.text;
+    meuControllerGlobal.bio.value = bioText.text;
+    meuControllerGlobal.usuario['Bio'] = bioText.text;
+
     Get.back();
-    await MongoDataBase.alteraDocumento('bio',bioText.text, settingsController.emailOng);
-    
+
+    await BancoDeDados.adicionarInformacoesUsuario({'Bio' : bioText.text}, meuControllerGlobal.obterId());
+
   }
 }
 
 class OngEditBioProfilePage extends StatelessWidget {
-  OngEditBioProfilePage({Key? key}) : super(key: key);
+  OngEditBioProfilePage({super.key});
   final ongEditBioPageController = Get.put(OngEditBioPageController());
   @override
   Widget build(BuildContext context) {
@@ -41,7 +47,7 @@ class OngEditBioProfilePage extends StatelessWidget {
               children: [
                 Container(
                   height: MediaQuery.of(context).size.height *0.1,
-                  color: Color.fromARGB(255, 255, 84, 16),
+                  color: const Color.fromARGB(255, 255, 84, 16),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(5,15,5,0),
                     child: Row(

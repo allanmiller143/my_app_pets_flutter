@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/OngInfoEditPage.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/listas.dart';
 import 'package:replica_google_classroom/App_pages/app_widgets/pet_register_widgets/drop_down.dart';
 
@@ -12,6 +13,7 @@ class EditarCampoIdadeController extends GetxController {
   dynamic valor = Get.arguments[1];
   RxInt ativado = 0.obs;
   late SettingsPageController settingsController;
+  late MeuControllerGlobal meuControllerGlobal;
   String petId = Get.arguments[2];
   dynamic lista = idades;
   var selectedAge = 'Idade'.obs;
@@ -25,10 +27,11 @@ class EditarCampoIdadeController extends GetxController {
   
   Future<String> func() async {
     ongInfoEditPageController= Get.find(); 
+    meuControllerGlobal = Get.find();
+    meuControllerGlobal = Get.find();
     if(chave == 'Idade'){
       lista = idades;
       x = selectedAge;
-      chave = 'idade';
     }else if(chave == 'Raça'){
       if(ongInfoEditPageController.infoEditavel['Tipo'] == '1'){
         lista = racasDeCachorro;
@@ -39,20 +42,16 @@ class EditarCampoIdadeController extends GetxController {
       else{
         lista = avesDeEstimacao;
       }
-      chave = 'raca';
       x = selectedRace;
     }else if(chave == 'Tipo'){
       x = selectedType;
       lista = tipoList;
-      chave = 'Tipo';
     }else if(chave == 'Sexo'){
       x = selectedSex;
       lista = sexoList;
-      chave = 'sexo';
     }else if(chave == 'Porte'){
       x = selectedPorte;
       lista = portes;
-      chave = 'porte';
     }
 
     settingsController = Get.find(); // Encontra a instância existente
@@ -60,14 +59,17 @@ class EditarCampoIdadeController extends GetxController {
   }
 
   Future<void> validar() async{
-    for (int i = 0; i < settingsController.usuario['petList'].length; i++) {
-      if (settingsController.usuario['petList'][i]['id'] == petId) {
-        settingsController.usuario['petList'][i][chave] = x.value;
+    for (int i = 0; i < settingsController.usuario['Pets'].length; i++) {
+      if (settingsController.usuario['Pets'][i]['Id'] == petId) {
+        settingsController.usuario['Pets'][i][chave] = x.value;
+        meuControllerGlobal.usuario['Pets'][i][chave] = x.value;
         break;
       }
     }
     Get.back();Get.back();Get.back();Get.back();
-    await MongoDataBase.alteraPet(chave, x.value, settingsController.emailOng, petId);
+
+    await BancoDeDados.alterarPetInfo({chave: x.value},meuControllerGlobal.obterId(), petId);
+
   }
 }
 
@@ -145,7 +147,7 @@ class EditarCampoIdadePage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return Text('Nenhum pet disponível');
+                    return const Text('Nenhum pet disponível');
                   }
                 } else if (snapshot.hasError) {
                   return Text(

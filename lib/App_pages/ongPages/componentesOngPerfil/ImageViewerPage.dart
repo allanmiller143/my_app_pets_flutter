@@ -3,46 +3,53 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/imageFeedDetail.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
 //import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
+
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 class ImageViewerController extends GetxController {
   dynamic imagem;
   dynamic tipo = Get.arguments[1];
   late SettingsPageController settingsController;
+  late MeuControllerGlobal meuControllerGlobal;
   dynamic info = [];
 
   @override
   void onInit() {
     settingsController = Get.find(); // Encontra a instância existente
+    meuControllerGlobal = Get.find();
 
     if (Get.arguments[1] == 2) {
       imagem = Get.arguments[0]['Imagem'];
       info = Get.arguments[0];
-      print(info);
     } else {
-      imagem = Get.arguments[0];
+      imagem = Get.arguments[0]['Imagem'];
+      info = Get.arguments[0];
     }
     super.onInit();
   }
 
   void excluir() async {
-    settingsController.info.remove(imagem);
+    settingsController.info.remove(info);
+    meuControllerGlobal.usuario['Imagens feed'].remove(info);
     settingsController.nunmeroDePostagens.value -= 1;
     settingsController.opcao.value = 1;
     settingsController.opcao.value = 0;
     Get.back();
     Get.back();
-    await MongoDataBase.apagaDocumento('feedImagens', imagem, settingsController.emailOng);
+    await BancoDeDados.removerFotoFeed(meuControllerGlobal.obterId(), info['Id'], info['Imagem']);
   }
 
   void excluirPet() async {
     settingsController.petsInfo.remove(info);
+    meuControllerGlobal.pets.remove(info);
+    meuControllerGlobal.usuario['Pets'].remove(info);
     settingsController.opcao.value = 1;
     settingsController.opcao.value = 0;
     Get.back();
     Get.back();
-    await MongoDataBase.removePet(settingsController.emailOng, info['id']);
+    await BancoDeDados.removerPet(meuControllerGlobal.obterId(),info['Id'],info['Imagem']);
   }
 
   void showBottomSheet(BuildContext context) {
@@ -104,7 +111,7 @@ class ImageViewerController extends GetxController {
                           'Imagem': info['Imagem'],
                           
                         };
-                        Get.toNamed('/OngInfoEditPage', arguments: [infoEditavel, info['id']]);
+                        Get.toNamed('/OngInfoEditPage', arguments: [infoEditavel, info['Id']]);
                       },
                     )
                   : SizedBox()
