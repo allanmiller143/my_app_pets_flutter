@@ -18,8 +18,10 @@ class OngInfoEditPageController extends GetxController {
     if(Get.arguments.length > 1 && Get.arguments[1] != null){
       petId = Get.arguments[1];
     }else{
+      print('entrei kaidsugfiudsf');
       petId = '';
     }
+    print('petid: $petId');
     return 'allan';
   }
 
@@ -37,7 +39,7 @@ List<Widget> campoEditar(BuildContext context, ) {
           trailing: Icon(Icons.arrow_drop_down),
           onTap: (){
             if(petId.isNotEmpty){
-              if(key == 'Idade' || key == 'Raça' || key == 'Tipo' || key == 'Porte' || key == 'Sexo'){
+              if(key == 'Idade' || key == 'Raça' || key == 'Porte' || key == 'Sexo'){
                 print('indo para rota de editar nome');
                 Get.toNamed('/editarIdade',arguments: [key,item,petId]);
               }
@@ -47,7 +49,7 @@ List<Widget> campoEditar(BuildContext context, ) {
                 mySnackBar('Campo não editável', false);
               }
               else{
-                 print(key);
+                  
                  Get.toNamed('/editarCampo',arguments: [1,key,item,petId]);
               }
 
@@ -72,7 +74,7 @@ List<Widget> campoEditar(BuildContext context, ) {
     rows.add(
       Container(
         width: double.infinity,
-        height: key != 'Endereço' ? MediaQuery.of(context).size.height * 0.07 : MediaQuery.of(context).size.height * 0.11,
+        height: (key != 'Endereço' || key != 'Imagem') ? MediaQuery.of(context).size.height * 0.07 : MediaQuery.of(context).size.height * 0.11,
         child: row,
       ),
     );

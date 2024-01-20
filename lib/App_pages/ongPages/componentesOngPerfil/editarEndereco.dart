@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/Complete_cep.dart';
-import 'package:replica_google_classroom/services/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class EditarEnderecoController extends GetxController {

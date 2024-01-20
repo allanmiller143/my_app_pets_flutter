@@ -6,7 +6,7 @@ import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:random_string/random_string.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/services/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 
 class Controller extends GetxController {

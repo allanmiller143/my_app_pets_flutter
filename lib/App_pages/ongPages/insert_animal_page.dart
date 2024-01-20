@@ -1,21 +1,16 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables
 
-import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/loginPages/my_password_page.dart';
-import 'package:replica_google_classroom/services/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 import 'listas.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 import 'package:replica_google_classroom/entitites/animal.dart';
 import 'package:replica_google_classroom/widgets/load_Widget.dart';
-import '../../services/mongodb.dart';
 import '../app_widgets/pet_register_widgets/tipo_animal_buttom.dart';
 import '../app_widgets/pet_register_widgets/drop_down.dart';
 import '../app_widgets/pet_register_widgets/photo_container.dart';
@@ -91,7 +86,7 @@ class InsertAnimalController extends GetxController {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return Container(
+        return SizedBox(
           // Conteúdo do BottomSheet
           height: 200,
 

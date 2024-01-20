@@ -1,42 +1,39 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
+import 'package:replica_google_classroom/controller/userController.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 import 'package:replica_google_classroom/widgets/load_Widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
+
 
 class EditarCampoImagemController extends GetxController {
   String chave = Get.arguments[0]; 
   dynamic valor = Get.arguments[1];
   RxInt ativado = 0.obs;
   late SettingsPageController settingsController;
+  late MeuControllerGlobal meuControllerGlobal;
   String petId = Get.arguments[2];
   File? imageFile; // imagem para ser coletada e inserida no banco
-  late String base64Image;
+
   
 
   
   Future<String> func() async {
-
+    meuControllerGlobal = Get.find();
     settingsController = Get.find(); // Encontra a instância existente
     return 'allan';
   }
 
-  Future<void> validar() async{
-     for (int i = 0; i < settingsController.usuario['petList'].length; i++) {
-          if (settingsController.usuario['petList'][i]['id'] == petId) {
-            settingsController.usuario['petList'][i]['imagem'] = base64Image;
-            break;
-          }
-        }
-
-        settingsController.opcao.value = 0;
-        settingsController.opcao.value = 1;
-        Get.back();Get.back();Get.back();Get.back();
-    await MongoDataBase.alteraPet('imagem', base64Image, settingsController.emailOng, petId);
+  Future<void> validar(context) async{
+      showLoad(context);
+      await BancoDeDados.alterarPetInfo( {'Imagem': imageFile, 'url': valor}, meuControllerGlobal.obterId(), petId);
+      Get.back();
+      settingsController.opcao.value = 0;
+      settingsController.opcao.value = 1;
+      Get.back();Get.back();Get.back();Get.back();
+       
   }
 
   void pick(ImageSource source) async {
@@ -44,8 +41,6 @@ class EditarCampoImagemController extends GetxController {
     final pickedFile = await imagePicker.pickImage(source: source);
     if (pickedFile != null) {
       imageFile = File(pickedFile.path);
-      Uint8List imageBytes = await imageFile!.readAsBytes(); // Converta a imagem em um array de bytes 
-      base64Image = base64Encode(imageBytes); // Codifique os bytes em formato base64 (opcional)
       ativado.value = 1;
       mySnackBar('Imagem coletada com sucesso, clique em confirmar para continuar', true);
     }
@@ -201,7 +196,7 @@ class EditarCampoImagemPage extends StatelessWidget {
                                   backgroundColor: editarCampoImagemController.ativado.value == 0 ? Colors.black12 :const Color.fromARGB(255, 255, 84, 16)
                                 ),
                                 onPressed: () {
-                                   editarCampoImagemController.ativado.value == 0 ? print(editarCampoImagemController.imageFile) : editarCampoImagemController.validar();
+                                   editarCampoImagemController.ativado.value == 0 ? print(editarCampoImagemController.imageFile) : editarCampoImagemController.validar(context);
                                 },      
                                 
                                 child:  const Text('Concluir',style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),)

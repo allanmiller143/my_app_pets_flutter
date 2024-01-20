@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/services/firebase.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class EditarCampoController extends GetxController {
@@ -124,15 +123,6 @@ class EditarCampoController extends GetxController {
         meuControllerGlobal.usuario['Nome ong'] = novoValor.text;
         Get.back();Get.back();
         await BancoDeDados.adicionarInformacoesUsuario({'Nome ong' : novoValor.text}, meuControllerGlobal.obterId());
-        //await MongoDataBase.alteraDocumento('nomeOng', novoValor.text, settingsController.emailOng);
-        return true;
-      }
-      return false;
-    } else if (chave == 'Senha') {
-      if (novoValor.text.isNotEmpty) {
-        settingsController.usuario['senha'] = novoValor.text;
-        Get.back();Get.back();
-        await MongoDataBase.alteraDocumento('password', novoValor.text, settingsController.emailOng);
         return true;
       }
       return false;
@@ -161,16 +151,15 @@ class EditarCampoController extends GetxController {
       return false;
     }else if (chave == 'Nome animal') {
       if (novoValor.text.isNotEmpty) {
-        for (int i = 0;
-            i < settingsController.usuario['petList'].length;
-            i++) {
-          if (settingsController.usuario['petList'][i]['id'] == petId) {
-            settingsController.usuario['petList'][i]['nome'] = novoValor.text;
+        for (int i = 0; i < settingsController.usuario['Pets'].length;i++) {
+          if (settingsController.usuario['Pets'][i]['Id'] == petId) {
+            settingsController.usuario['Pets'][i]['Nome'] = novoValor.text;
+            meuControllerGlobal.usuario['Pets'][i]['Nome'] = novoValor.text;
             break;
           }
         }
         Get.back();Get.back();Get.back();
-        await MongoDataBase.alteraPet('nome', novoValor.text, settingsController.emailOng, petId);
+        await BancoDeDados.alterarPetInfo({'Nome': novoValor.text}, meuControllerGlobal.obterId(), petId);
         return true;     
       }
       return false;
