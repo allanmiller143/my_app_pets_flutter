@@ -1,43 +1,31 @@
 // ignore_for_file: must_be_immutable, use_key_in_widget_constructors
 
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:replica_google_classroom/loginPages/my_password_page.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
-
+import 'package:replica_google_classroom/controller/userController.dart';
 
 class AnimalCard extends StatelessWidget {
   final VoidCallback onPressed;
-  Map<String,dynamic> pet;
-  RxBool preferido = false.obs;
-  SenhaController senhaController;
+  final Map<String, dynamic> pet;
+  final RxBool preferido = false.obs;
+  final MeuControllerGlobal meuControllerGlobal;
 
   AnimalCard({
     required this.onPressed,
     required this.pet,
-    required this.senhaController,
+    required this.meuControllerGlobal,
   });
 
-  ImageProvider<Object> convertBase64ToImageProvider(String base64Image) {
-    final Uint8List bytes = base64.decode(base64Image);
-    return MemoryImage(Uint8List.fromList(bytes));
-  }
-
-  void verificaFavorito(){
-    if(senhaController.usuario['preferedPetsList'].contains(pet['id'])){
+  void verificaFavorito() {
+    if (meuControllerGlobal.usuario['Pets preferidos'].contains(pet)) {
       preferido.value = true;
     }
   }
 
-
-
   @override
-  Widget build(BuildContext context)  {
-    String imagemPadrao = pet['tipo'] == '1' ? 'assets/exemplo1.png': 'assets/exemplo2.png';
+  Widget build(BuildContext context) {
     verificaFavorito();
-    final imageProvider = pet['imagem'] != null ? convertBase64ToImageProvider(pet['imagem']):AssetImage(imagemPadrao);   
+
     return Obx(
       () => GestureDetector(
         onTap: onPressed,
@@ -50,23 +38,26 @@ class AnimalCard extends StatelessWidget {
             width: 160,
             height: 225,
             decoration: BoxDecoration(
-                color:const  Color.fromARGB(255, 255, 250, 248),
-                borderRadius: BorderRadius.circular(15)),
+              color: const Color.fromARGB(255, 255, 250, 248),
+              borderRadius: BorderRadius.circular(15),
+            ),
             child: Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
                   child: Container(
-                      width: 150,
-                      height: 120,
-                      decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(15),
-                          ),
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ))),
+                    width: 150,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(15),
+                      ),
+                      image: DecorationImage(
+                        image: NetworkImage(pet['Imagem']),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 3, 10, 0),
@@ -76,7 +67,7 @@ class AnimalCard extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            pet['nome'],
+                            pet['Nome animal'],
                             style: const TextStyle(
                               fontSize: 22,
                               fontFamily: 'AsapCondensed-Bold',
@@ -86,10 +77,9 @@ class AnimalCard extends StatelessWidget {
                         ],
                       ),
                       Icon(
-                        pet['sexo'] == 'Fêmea'? Icons.male : Icons.female,
-                        size: 22,
-                        color : pet['sexo'] == 'Fêmea'? const  Color.fromARGB(255, 255, 72, 0) : const   Color.fromARGB(255, 17, 61, 94),
-                      )
+                        pet['Sexo'] != 'Fêmea'? Icons.male: Icons.female,size: 22,
+                        color: pet['Sexo'] == 'Fêmea'? const Color.fromARGB(255, 255, 72, 0) : const Color.fromARGB(255, 17, 61, 94),
+                      ),
                     ],
                   ),
                 ),
@@ -99,8 +89,8 @@ class AnimalCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        pet['idade'],
-                        style:const  TextStyle(
+                        pet['Idade'],
+                        style: const TextStyle(
                           fontSize: 14,
                           fontFamily: 'AsapCondensed-Medium',
                         ),
@@ -114,8 +104,8 @@ class AnimalCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        pet['raca'],
-                        style: const  TextStyle(
+                        pet['Raça'],
+                        style: const TextStyle(
                           fontSize: 14,
                           fontFamily: 'AsapCondensed-Medium',
                         ),
@@ -127,23 +117,28 @@ class AnimalCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     GestureDetector(
-                      onTap: () async { 
+                      onTap: () async {
                         preferido.value = !preferido.value;
-                        MongoDataBase.favoritaPet(senhaController.usuario['email'], preferido.value, pet['id']);
-                        senhaController.favoritaPet(pet['id'],preferido.value);
+                        //MongoDataBase.favoritaPet(meuControllerGlobal.usuario['E-mail'], preferido.value, pet['id']);
+                        //meuControllerGlobal.favoritaPet(pet['id'],preferido.value);
                       },
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0,0,5,0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                         child: Container(
                           width: 25,
                           height: 25,
-                          decoration:  BoxDecoration(
-                              color:const  Color.fromARGB(255, 255, 255, 255) ,
-                              borderRadius: const  BorderRadius.all(
-                                Radius.circular(15),
-                              ),
-                            image: DecorationImage(image: preferido.value ? const  AssetImage('assets/ame.png'): const AssetImage('assets/ame2.png'),fit: BoxFit.cover)
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 255, 255, 255),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(15),
                             ),
+                            image: DecorationImage(
+                              image: preferido.value
+                                  ? const AssetImage('assets/ame.png')
+                                  : const AssetImage('assets/ame2.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                       ),
                     ),

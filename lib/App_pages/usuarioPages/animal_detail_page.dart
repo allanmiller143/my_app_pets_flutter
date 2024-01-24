@@ -1,38 +1,31 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:replica_google_classroom/loginPages/my_password_page.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 
 class AnimalDetailPageController extends GetxController {
-  late SenhaController senhaController;
+
+  late MeuControllerGlobal meuControllerGlobal;
   dynamic ongPetInfo = Get.arguments[0];
   dynamic usuarioInfo = Get.arguments[1];
-  String imagemFavorito = (Get.arguments[1]['preferedPetsList'].contains(Get.arguments[0]['id'])) ? 'assets/ame.png': 'assets/ame2.png';  
-  dynamic imagem = Get.arguments[0]['imagem'];
-  String imagemPadrao = Get.arguments[0]['tipo']  == '1' ? 'assets/exemplo1.png':'assets/exemplo2.png';
-  String tipo = Get.arguments[1]['Tipo']; 
-  dynamic imageProvider;
-  
-  void atualiza(){
-    update();
-  }
+  String localizacao = '${Get.arguments[0]['Estado']}, ${Get.arguments[0]['Cidade']}';
+  String imagemFavorito = (Get.arguments[1]['Pets preferidos'].contains(Get.arguments[0]['Id'])) ? 'assets/ame.png': 'assets/ame2.png';  
 
-
-  ImageProvider<Object> convertBase64ToImageProvider(dynamic base64Image) {
-    final Uint8List bytes = base64.decode(base64Image);
-    return MemoryImage(Uint8List.fromList(bytes));
-  }
-
-  
 
   Future<String> func() async {
-    senhaController = Get.find();
-    imageProvider = imagem != null? convertBase64ToImageProvider(imagem): AssetImage(imagemPadrao);
+    meuControllerGlobal = Get.find();
     return 'allan';
+  }
+
+  getChatRoomByUserName(String a,String b){
+    if(a.substring(0,1).codeUnitAt(0) > b.substring(0,1).codeUnitAt(0)){
+      return "$b\_$a";
+    }else{
+      return "$a\_$b";
+    }
   }
 
  
@@ -72,7 +65,10 @@ class AnimalInsertPage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.47,
                   decoration: BoxDecoration(
-                    image: DecorationImage(image: animalDetailPageController.imageProvider,fit: BoxFit.cover,), 
+                    image: DecorationImage(
+                      image: NetworkImage(animalDetailPageController.ongPetInfo['Imagem']),
+                      fit: BoxFit.cover,
+                    ), 
                   ),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(25, 30, 25, 10),
@@ -122,7 +118,7 @@ class AnimalInsertPage extends StatelessWidget {
                                 Padding(
                                   padding:const EdgeInsets.fromLTRB(5, 0, 5, 0),    
                                   child: Text(
-                                    animalDetailPageController.ongPetInfo['nome'],
+                                    animalDetailPageController.ongPetInfo['Nome animal'],
                                     style: TextStyle(fontFamily: 'AsapCondensed-Bold',fontSize: 28),
    
                                   ),
@@ -130,7 +126,7 @@ class AnimalInsertPage extends StatelessWidget {
                                 Row(
                                   children: [
                                     Icon(Icons.place_outlined,color: Color.fromARGB(255, 255, 94, 0),size: 15,),
-                                    Text(animalDetailPageController.ongPetInfo['localizacao'],
+                                    Text(animalDetailPageController.localizacao,
                                     style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontSize: 15))      
                                   ],
                                 )
@@ -155,30 +151,24 @@ class AnimalInsertPage extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              GestureDetector(
-                                onTap: () async{
-                                  await animalDetailPageController.senhaController.recarregarInfo();
-                                  print(animalDetailPageController.senhaController.pets[0]['nomeOng']);
-                                  print(animalDetailPageController.ongPetInfo[0]['nomeOng']);
-                                },
-                                child: CustomCard(
-                                  valor: animalDetailPageController.ongPetInfo['sexo'],
+                              CustomCard(
+                                  valor: animalDetailPageController.ongPetInfo['Sexo'],
                                   campo: 'Sexo',
                                   backgroundImage: 'assets/card1.png',
                                 ),
-                              ),
+                              
                               CustomCard(
-                                valor: animalDetailPageController.ongPetInfo['idade'],
-                                campo: 'valor',
+                                valor: animalDetailPageController.ongPetInfo['Idade'],
+                                campo: 'Idade',
                                 backgroundImage: 'assets/card2.png',
                               ),
                               CustomCard(
-                                valor: animalDetailPageController.ongPetInfo['porte'],
+                                valor: animalDetailPageController.ongPetInfo['Porte'],
                                 campo: 'Porte',
                                 backgroundImage: 'assets/card3.png',
                               ),
                               CustomCard(
-                                valor: animalDetailPageController.ongPetInfo['raca'],
+                                valor: animalDetailPageController.ongPetInfo['Raça'],
                                 campo: 'Raça',
                                 backgroundImage: 'assets/card4.png',
                               ),
@@ -229,10 +219,10 @@ class AnimalInsertPage extends StatelessWidget {
                                                   mainAxisAlignment:MainAxisAlignment.spaceEvenly,        
                                                   children: [
                                                     Text(
-                                                        Get.arguments[0]['nomeOng'],
+                                                        Get.arguments[0]['Nome ong'],
                                                         style: TextStyle(fontFamily:'AsapCondensed-Bold',fontSize: 13)),      
                                                     Text(
-                                                        Get.arguments[0]['email'],
+                                                        Get.arguments[0]['E-mail'],
                                                         style: TextStyle(fontFamily:'AsapCondensed-Medium',fontSize: 13)),    
                                                     Row(
                                                       children: [
@@ -247,7 +237,16 @@ class AnimalInsertPage extends StatelessWidget {
                                           ),
                                         ),
                                         IconButton(
-                                            onPressed: () {},
+                                            onPressed: () async {
+                                              var chatRoomId = animalDetailPageController.getChatRoomByUserName(animalDetailPageController.meuControllerGlobal.usuario['Id'], animalDetailPageController.ongPetInfo['Id']); // quem envia e quem recebe 
+                                              Map<String, dynamic> chatRoomInfoMap = {
+                                                'users' : [animalDetailPageController.meuControllerGlobal.usuario['Id'],animalDetailPageController.ongPetInfo['Id']],
+                                              };
+
+                                              await BancoDeDados.criaChatRoom(chatRoomId, chatRoomInfoMap);
+                                              Get.toNamed('/chatConversa',arguments: [animalDetailPageController.ongPetInfo['Id'], animalDetailPageController.ongPetInfo['Nome']]);
+
+                                            },
                                             icon: Icon(
                                               Icons.message,
                                               color: Color.fromARGB(
@@ -281,7 +280,7 @@ class AnimalInsertPage extends StatelessWidget {
                                     width: MediaQuery.of(context).size.width * 0.875,
                                     child: Text(
                                         'Os vira-latas são cães sem raça definida, conhecidos por sua inteligência, lealdade e capacvalor de adaptação. São frequentemente encontrados em situações de resgate e fazem companheiros amorosos. Adotar um vira-lata é uma oportunvalor de dar um lar a um cão necessitado e fazer a diferença no mundo dos animais.',
-                                        maxLines: 3,
+                                        maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                             fontFamily: 'AsapCondensed-Medium',
@@ -293,7 +292,6 @@ class AnimalInsertPage extends StatelessWidget {
                                       const EdgeInsets.fromLTRB(5, 0, 0, 5),
                                   child: GestureDetector(
                                     onTap: () {
-                                      
                                       print('veja mais');
                                     },
                                     child: Text('Veja Mais',

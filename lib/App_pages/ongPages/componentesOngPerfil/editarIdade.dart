@@ -68,7 +68,7 @@ class EditarCampoIdadeController extends GetxController {
     }
     Get.back();Get.back();Get.back();Get.back();
 
-    await BancoDeDados.alterarPetInfo({chave: x.value},meuControllerGlobal.obterId(), petId);
+    await BancoDeDados.alterarPetInfo({chave: x.value},meuControllerGlobal.usuario['Id'], petId);
 
   }
 }

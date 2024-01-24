@@ -1,13 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
-import 'package:replica_google_classroom/loginPages/my_password_page.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
 import '../app_widgets/my_animal_card.dart';
 import '../ongPages/componentesOngPerfil/my_pick_pet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PetsController extends GetxController {
-  late SenhaController senhaController;
-  dynamic argumentsUsed = false;
+  late MeuControllerGlobal meuControllerGlobal;
   RxString selectedType = '5'.obs;
   Map<String,dynamic>? usuario;
   List<dynamic> favoritPetIds = [];  
@@ -15,12 +14,12 @@ class PetsController extends GetxController {
   List<Map<String, dynamic>> petsInfo = [];
   List<Map<String, dynamic>> petsInfo2 = [];
 
-  Future<String> alteraLista(tipo,argumentsUsed)async {
-    senhaController = Get.find();
-    favoritPetIds = [];
-    usuario = senhaController.usuario;
-    favoritPetIds = usuario!['preferedPetsList'];
-    pets = senhaController.pets;
+  Future<String> alteraLista(tipo)async {
+
+    meuControllerGlobal = Get.find();
+    usuario = meuControllerGlobal.usuario;
+    favoritPetIds = usuario!['Pets preferidos'];
+    pets = meuControllerGlobal.petsSistema;
     return 'allan';
   }
   void retornaLista(String filtro, int init) {
@@ -28,6 +27,8 @@ class PetsController extends GetxController {
     petsInfo2 = [];
 
     int tamanhoLista = pets.length;
+    print(tamanhoLista);
+    print(pets);
 
     if (tamanhoLista % 2 != 0) {
       tamanhoLista = tamanhoLista - 1;
@@ -37,7 +38,7 @@ class PetsController extends GetxController {
       for (int i = 0; i < tamanhoLista; i++) {
         pets[i]['posicao'] = i;
         if (filtro != '5') {
-          if (pets[i]['tipo'] == filtro) {
+          if (pets[i]['Tipo animal'] == filtro) {
             if (cont % 2 != 0) {
               petsInfo.add(pets[i]);
             } else {
@@ -70,7 +71,7 @@ class PetsController extends GetxController {
               int p = petInfo['posicao'];
                 Get.toNamed('/animalDetail', arguments: [pets[p],usuario]);    
             },
-            senhaController: senhaController,
+            meuControllerGlobal: meuControllerGlobal,
           ),
         ),
       );
@@ -142,7 +143,7 @@ class PetsPage extends StatelessWidget {
         builder: (_) {
           return Scaffold(
             body:FutureBuilder( // usa-se futureBuilder, pq preciso carregar a lista de pets antes de criar a tela.
-            future:  petsController.alteraLista('-1',petsController.argumentsUsed), 
+            future:  petsController.alteraLista('-1'), 
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {

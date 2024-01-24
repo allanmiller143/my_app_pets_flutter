@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:random_string/random_string.dart';
 
 class Animal {
@@ -23,9 +25,9 @@ class Animal {
   Map<String, dynamic> toMap() {
     String id = randomAlphaNumeric(10);
     return {
-      "Id" : id,
-      "Tipo": tipo,
-      "Nome": nome,
+      "Id animal" : id,
+      "Tipo animal": tipo,
+      "Nome animal": nome,
       "Idade": idade,
       "Sexo": sexo,
       "Porte": porte,
@@ -40,7 +42,7 @@ class Animal {
     return true;
   }
 
-  String validaCampos() {
+  String validaCampos(imagem) {
     List<String> camposInvalidos = [];
 
     if (!validarCampo('Raça', raca)) {
@@ -62,9 +64,16 @@ class Animal {
       camposInvalidos.add("Idade\n");
     }
 
+    if(imagem == null){
+      camposInvalidos.add("Insira uma Imagem\n");
+
+
+    }
+
     if (nome.isEmpty) {
       camposInvalidos.add("Nome\n");
     }
+  
 
     if (camposInvalidos.isNotEmpty) {
       return 'Insira os campos:\n${camposInvalidos.join("")}';

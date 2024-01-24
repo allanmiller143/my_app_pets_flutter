@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
-import 'package:replica_google_classroom/App_pages/usuarioPages/my_principal_app_page.dart';
-import 'package:replica_google_classroom/loginPages/my_password_page.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
 
 import '../app_widgets/my_animal_card.dart';
 import '../ongPages/componentesOngPerfil/my_pick_pet_widget.dart';
@@ -8,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PetsAuxController extends GetxController {
-  late SenhaController senhaController;
+  late MeuControllerGlobal meuControllerGlobal;
   dynamic argumentsUsed = false;
   RxString selectedType = '5'.obs;
   Map<String,dynamic>? usuario;
@@ -23,12 +22,12 @@ class PetsAuxController extends GetxController {
           selectedType.value = tipo;
       } 
     }
-   
-    senhaController = Get.find();
+    meuControllerGlobal = Get.find();
+
     favoritPetIds = [];
-    usuario = senhaController.usuario;
-    favoritPetIds = usuario!['preferedPetsList'];
-    pets = senhaController.pets;
+    usuario = meuControllerGlobal.usuario;
+    favoritPetIds = usuario!['Pets preferidos'];
+    pets = meuControllerGlobal.petsSistema;
     return 'allan';
 }
 
@@ -57,7 +56,7 @@ String filtro() {
     for (int i = 0; i < tamanhoLista; i++) {
       pets[i]['posicao'] = i;
       if (filtro != '5') {
-        if (pets[i]['tipo'] == filtro) {
+        if (pets[i]['Tipo animal'] == filtro) {
           if (cont % 2 != 0) {
             petsInfo.add(pets[i]);
           } else {
@@ -93,7 +92,7 @@ String filtro() {
               int p = petInfo['posicao'];
                 Get.toNamed('/animalDetail', arguments: [pets[p],usuario]);    
             },
-            senhaController: senhaController,
+            meuControllerGlobal: meuControllerGlobal,
           ),
         ),
       );

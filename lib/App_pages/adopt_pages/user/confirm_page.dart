@@ -1,26 +1,17 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:replica_google_classroom/loginPages/my_password_page.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 
 class AdoptConfirmPageController extends GetxController {
-  late SenhaController senhaController;
-  dynamic imagem = Get.arguments[0]['imagem'];
-  String imagemPadrao = Get.arguments[0]['tipo'] == '1' ? 'assets/exemplo1.png' : 'assets/exemplo2.png';
-  dynamic imageProvider;
-
-  ImageProvider<Object> convertBase64ToImageProvider(dynamic base64Image) {
-    final Uint8List bytes = base64.decode(base64Image);
-    return MemoryImage(Uint8List.fromList(bytes));
-  }
+  late MeuControllerGlobal meuControllerGlobal;
+  dynamic imagem = Get.arguments[0]['Imagem'];
+  String nome = Get.arguments[0]['Nome animal'];
 
   Future<String> func() async {
-    senhaController = Get.find();
-    imageProvider = imagem != null? convertBase64ToImageProvider(imagem): AssetImage(imagemPadrao);
+    meuControllerGlobal = Get.find();
     return 'allan';
   }
 }
@@ -58,7 +49,7 @@ class AdoptConfirmPage extends StatelessWidget {
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height * 0.47,
                             decoration: BoxDecoration(
-                              image: DecorationImage(image:adoptConfirmPageController.imageProvider, fit: BoxFit.cover),
+                              image: DecorationImage(image:NetworkImage(adoptConfirmPageController.imagem), fit: BoxFit.cover),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(25, 30, 25, 10),
@@ -106,13 +97,13 @@ class AdoptConfirmPage extends StatelessWidget {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  const Row(
+                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Padding(
+                                          const Padding(
                                             padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                                             child: Center(
                                               child: Text(
@@ -122,10 +113,10 @@ class AdoptConfirmPage extends StatelessWidget {
                                             ),
                                           ),
                                           Padding(
-                                            padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                            padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                                             child: Text(
-                                              'luna',
-                                              style: TextStyle(fontFamily: 'AsapCondensed-Medium', fontSize: 24),
+                                              adoptConfirmPageController.nome,
+                                              style: const TextStyle(fontFamily: 'AsapCondensed-Medium', fontSize: 24),
                                             ),
                                           ),
                                         ],
@@ -179,7 +170,7 @@ class AdoptConfirmPage extends StatelessWidget {
                                   CustomIconButton(
                                     label: 'Continuar',
                                     onPressed: () {
-                                      if(adoptConfirmPageController.senhaController.usuario['data'] == false){
+                                      if(adoptConfirmPageController.meuControllerGlobal.usuario['Data'] == false){
                                         Get.toNamed('/insertUserDataPage',arguments: ['Insira seus dados','Para completar a adoção insira suas informações']);
                                       }
                                       else{

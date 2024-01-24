@@ -52,9 +52,9 @@ class InsertAnimalController extends GetxController {
 
     animalData['Imagem'] = imageFile;
 
-    String retorno = animal.validaCampos();
+    String retorno = animal.validaCampos(imageFile);
     if (retorno == '') {
-      await BancoDeDados.adicionarPet(animalData, meuControllerGlobal.obterId());
+      await BancoDeDados.adicionarPet(animalData, meuControllerGlobal.usuario['Id']);
 
     }
     Get.back();

@@ -130,7 +130,7 @@ class EditarEnderecoController extends GetxController {
       meuControllerGlobal.cep.value = cep.text;
 
       Get.back();Get.back();
-      await BancoDeDados.adicionarInformacoesUsuario(dados, meuControllerGlobal.obterId());
+      await BancoDeDados.adicionarInformacoesUsuario(dados, meuControllerGlobal.usuario['Id']);
       mySnackBar('Endereço alterado com sucesso', true);
 
     }

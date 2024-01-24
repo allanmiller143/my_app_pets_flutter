@@ -3,18 +3,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:replica_google_classroom/App_pages/adopt_pages/user/Status_page.dart';
-import 'package:replica_google_classroom/App_pages/ongPages/insert_animal_page.dart';
+import 'package:replica_google_classroom/App_pages/chat/chat.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/home_page.dart';
-import 'package:replica_google_classroom/App_pages/OngPages/perfilOng.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/pets_page.dart';
-import 'package:replica_google_classroom/loginPages/my_password_page.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
-
 
 class PrincipaAppController extends GetxController {
-  late SenhaController senhaController;
+
   RxInt opcaoSelecionada = 0.obs;
   Color corItemSelecionado = const Color.fromARGB(255, 0, 0, 0);
   Color corItemNaoSelecionado = const  Color.fromARGB(255, 255, 255, 255);
@@ -78,7 +72,7 @@ class MyPrincipalAppPage extends StatelessWidget {
                       ),
                       BottomNavigationBarItem(
                         icon: Icon(Icons.settings),
-                        label: 'Settings',
+                        label: 'chat',
                       ),
                     ],
                     selectedItemColor: principaAppController.corItemSelecionado,
@@ -98,6 +92,7 @@ class MyPrincipalAppPage extends StatelessWidget {
                       children: <Widget>[
                         HomePage(),
                         PetsPage(),
+                        ChatPage(),
                         //StatusPage(),
                         //SettingsPage(),
                       ],

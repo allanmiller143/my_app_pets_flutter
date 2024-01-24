@@ -28,7 +28,7 @@ class EditarCampoImagemController extends GetxController {
 
   Future<void> validar(context) async{
       showLoad(context);
-      await BancoDeDados.alterarPetInfo( {'Imagem': imageFile, 'url': valor}, meuControllerGlobal.obterId(), petId);
+      await BancoDeDados.alterarPetInfo( {'Imagem': imageFile, 'url': valor}, meuControllerGlobal.usuario['Id'], petId);
       Get.back();
       settingsController.opcao.value = 0;
       settingsController.opcao.value = 1;

@@ -113,6 +113,10 @@ class MyWhoAreYouPage extends StatelessWidget {
                                         };
                                         userTypeController.meuControllerGlobal.salvarTipo('comum');                                    
                                         await BancoDeDados.adicionarInformacoesUsuario(info, userTypeController.meuControllerGlobal.obterId());
+
+                                        
+
+                                        Get.toNamed('/principalAppPage');
                                         //userTypeController.abrirTelaDeDados('/');    
                                     },
                                   width: 150)

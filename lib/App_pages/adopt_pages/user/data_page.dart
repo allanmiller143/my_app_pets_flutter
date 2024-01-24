@@ -3,22 +3,22 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:replica_google_classroom/loginPages/my_password_page.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 
 class UserDataPageController extends GetxController {
-  late SenhaController senhaController;
+  late MeuControllerGlobal meuControllerGlobal;
   RxString rua = ''.obs;
   late String nomeTelefone;
   late String localizacao;
   
   @override
   void onInit() {
-    senhaController = Get.find();
+    meuControllerGlobal = Get.find();
     // verificar se o usuario ja possui dados cadastrados no sistema, se sim, essa tela vai ser de alteração, se nap se inserção
-    rua.value = '${senhaController.usuario['rua']} - ${senhaController.usuario['numero']}';
-    nomeTelefone = '${senhaController.usuario['nome completo']} - ${senhaController.usuario['telefone']}';
-    localizacao = '${senhaController.usuario['cidade']}, ${senhaController.usuario['estado']} - ${senhaController.usuario['cep']}';
+    rua.value = '${meuControllerGlobal.usuario['Rua']} - ${meuControllerGlobal.usuario['Numero']}';
+    nomeTelefone = '${meuControllerGlobal.usuario['Nome completo']} - ${meuControllerGlobal.usuario['Telefone']}';
+    localizacao = '${meuControllerGlobal.usuario['Cidade']}, ${meuControllerGlobal.usuario['Estado']} - ${meuControllerGlobal.usuario['cep']}';
     super.onInit();
   }
   
@@ -62,7 +62,7 @@ class UserDataPage extends StatelessWidget {
                     elevation: 2,
                       child: Container(
                         width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 0.2,
+                      
                         padding:const EdgeInsets.fromLTRB(30, 10, 15, 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),

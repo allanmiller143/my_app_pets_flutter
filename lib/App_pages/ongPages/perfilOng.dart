@@ -40,7 +40,7 @@ class SettingsPageController extends GetxController {
     }
 
     localizacao.value = '${usuario['Cidade']},${usuario['Estado']}'; 
-    nomeOng.value = usuario['Nome ong'];
+    nomeOng.value = usuario['Nome'];
     imagembd = usuario['ImagemPerfil'];
     bio.value = usuario['Bio'];
     info = usuario['Imagens feed'];
@@ -174,9 +174,8 @@ class SettingsPageController extends GetxController {
     if (pickedFile != null) {
       imageFile = File(pickedFile.path);
       update();
-      await BancoDeDados.saveImageToFirestore(imageFile!, meuControllerGlobal.obterId(),meuControllerGlobal.obterimagemPerfil());
+      await BancoDeDados.saveImageToFirestore(imageFile!, meuControllerGlobal.usuario['Id'],meuControllerGlobal.usuario['ImagemPerfil']);
       
-
     }
   }
   void showBottomSheet(BuildContext context) {
@@ -296,7 +295,7 @@ class SettingsPageController extends GetxController {
   if (pickedFile != null) {
     imageFileFeed = File(pickedFile.path); 
     
-    await BancoDeDados.saveFeedImageToFirestore(imageFileFeed!,meuControllerGlobal.obterId());
+    await BancoDeDados.saveFeedImageToFirestore(imageFileFeed!,meuControllerGlobal.usuario['Id']);
     nunmeroDePostagens.value += 1;
     opcao.value = 1;
     opcao.value = 0;
