@@ -1,3 +1,5 @@
+import 'package:replica_google_classroom/services/banco/firebase.dart';
+
 class Ong {
   String nomeOng;
   String cnpj;
@@ -139,7 +141,7 @@ class Ong {
     return int.parse(cnpj[12]) == digito1 && int.parse(cnpj[13]) == digito2;
   }
 
-  String validaCampos(cpfRepresentante,cnpj,cep,telefone) {
+  Future<String> validaCampos(cpfRepresentante,cnpj,cep,telefone) async{
     List<String> camposInvalidos = [];
 
     if (!validarCEP(cep)) {
@@ -156,6 +158,16 @@ class Ong {
 
     if (!validarTelefone(telefone)) {
       camposInvalidos.add('Telefone\n');
+    }
+
+    if (await BancoDeDados.verificarCpfExistente(cpfRepresentante)){
+      camposInvalidos.add('cpf já cadastrado\n');
+    }
+    if (await BancoDeDados.verificarTelefoneExistente(telefone)){
+      camposInvalidos.add('telefone já cadastrado\n');
+    }
+    if (await BancoDeDados.verificarEmailExistente(emailRepresentante)){
+      camposInvalidos.add('email já cadastrado\n');
     }
 
     if (camposInvalidos.isNotEmpty) {

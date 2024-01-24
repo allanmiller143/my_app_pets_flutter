@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:replica_google_classroom/loginPages/my_password_page.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/mongodb.dart';
 import '../app_widgets/my_animal_card.dart';
 
@@ -12,10 +12,11 @@ class FavoritsController extends GetxController {
   List<Map<String, dynamic>> petsInfo = [];
   List<Map<String, dynamic>> petsInfo2 = [];
   Map<String,dynamic>? usuario;
-  late SenhaController senhaController;
+
+  late MeuControllerGlobal meuControllerGlobal;
 
   Future<List<Map<String,dynamic>>> alteraLista() async {
-    senhaController = Get.find();
+    meuControllerGlobal = Get.find();
     pets = await MongoDataBase.retornaListaPets();
     usuario = await MongoDataBase.retornaUsuarioCompleto(Get.arguments[1]);
     favoritPetIds = [];
@@ -35,7 +36,7 @@ class FavoritsController extends GetxController {
               int p = petInfo['posicao']; 
                Get.toNamed('/animalDetail', arguments: [pets[p],usuario]); 
             },
-            senhaController: senhaController,
+            meuControllerGlobal: meuControllerGlobal,
           ),
         ),
       );

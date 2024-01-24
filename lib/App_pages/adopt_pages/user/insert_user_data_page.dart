@@ -2,16 +2,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/adopt_pages/user/validar.dart';
-import 'package:replica_google_classroom/loginPages/my_password_page.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/Complete_cep.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 import 'package:replica_google_classroom/widgets/load_Widget.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 
 class InsertUserDataPageController extends GetxController {
   String titulo = Get.arguments[0];
   String subtitulo = Get.arguments[1];
-  late SenhaController senhaController;
+  late MeuControllerGlobal meuControllerGlobal;
   
   var cpf = TextEditingController();
   var rua = TextEditingController();
@@ -26,25 +26,25 @@ class InsertUserDataPageController extends GetxController {
   var nome = TextEditingController();
 
   Future<String> func() async {
-    
+
     return 'allan';
   } 
 
    @override
   void onInit() {
     // verificar se o usuario ja possui dados cadastrados no sistema, se sim, essa tela vai ser de alteração, se nap se inserção
-    senhaController = Get.find();
+    meuControllerGlobal = Get.find();
 
-    if(senhaController.usuario['data'] == true) {
-      nome.text = senhaController.usuario['nome completo'];
-      cep.text = senhaController.usuario['cep'];
-      estado.text = senhaController.usuario['estado'];
-      cidade.text = senhaController.usuario['cidade'];
-      bairro.text = senhaController.usuario['bairro'];
-      rua.text = senhaController.usuario['rua'];
-      telefone.text = senhaController.usuario['telefone'];
-      cpf.text = senhaController.usuario['cpf'];
-      numero.text = senhaController.usuario['numero'];
+    if(meuControllerGlobal.usuario['Data'] == true) {
+      nome.text = meuControllerGlobal.usuario['Nome completo'];
+      cep.text = meuControllerGlobal.usuario['cep'];
+      estado.text = meuControllerGlobal.usuario['Estado'];
+      cidade.text = meuControllerGlobal.usuario['Cidade'];
+      bairro.text = meuControllerGlobal.usuario['Bairro'];
+      rua.text = meuControllerGlobal.usuario['Rua'];
+      telefone.text = meuControllerGlobal.usuario['Telefone'];
+      cpf.text = meuControllerGlobal.usuario['cpf'];
+      numero.text = meuControllerGlobal.usuario['Numero'];
     }
     super.onInit();
   } 
@@ -142,19 +142,21 @@ List<Widget> gerarTextFields() {
       if(mensagemRetorno == 'Campos ínvalidos:\n'){
         
         Map<String,dynamic> info = {
-          'nome completo': nome.text,
+          'Nome completo': nome.text,
           'cep': cep.text,
-          'estado': estado.text,
-          'cidade': cidade.text,
-          'bairro': bairro.text,
-          'rua' : rua.text,
-          'numero': numero.text,
-          'telefone': telefone.text,
-          'cpf': cpf.text       
+          'Estado': estado.text,
+          'Cidade': cidade.text,
+          'Bairro': bairro.text,
+          'Rua' : rua.text,
+          'Numero': numero.text,
+          'Telefone': telefone.text,
+          'cpf': cpf.text,
+          'Data': true    
         };
         mySnackBar('cadastro realizado com sucesso!', true);
-        senhaController.atualizaUsuario(info);
-        await MongoDataBase.insertUserData(senhaController.email, info);
+      
+        meuControllerGlobal.usuario.addAll(info);
+        await BancoDeDados.adicionarInformacoesUsuario(info, meuControllerGlobal.usuario['Id']);
         Get.toNamed('/userDataPage');
         
       }else {

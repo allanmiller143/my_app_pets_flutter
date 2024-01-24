@@ -9,7 +9,7 @@ import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 
-class Controller extends GetxController {
+class SignUpController extends GetxController {
   var nome = TextEditingController();
   var email = TextEditingController();
   var senha = TextEditingController();
@@ -17,7 +17,6 @@ class Controller extends GetxController {
   late MeuControllerGlobal meuControllerGlobal;
 
   validarLogin(context) async {
-
       if(senha.text.isNotEmpty && senha.text == confirmaSenha.text){
       print('entrei aqui');
       try{
@@ -33,22 +32,31 @@ class Controller extends GetxController {
           'ImagemPerfil': '',
           'Tipo' : tipo,
         };
-        meuControllerGlobal.salvarEmail(email.text);
-        meuControllerGlobal.salvarId(id);
-        meuControllerGlobal.salvarNome(nome.text);
-        meuControllerGlobal.salvarTipo(tipo);
-        meuControllerGlobal.salvarPesquisa(nome.text[0]);
-
+        
+        meuControllerGlobal.usuario = userInfoMap;
         await BancoDeDados.addUsuarioDetalhes(userInfoMap, id);
         
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Cadastro Realizado com sucesso')));
+        ScaffoldFeatureController<SnackBar, SnackBarClosedReason> controller = ScaffoldMessenger.of(context)
+        .showSnackBar(  
+          const SnackBar(
+            content: Text('Login bem sucedido'),
+            backgroundColor: Color.fromARGB(155, 33, 250, 0),
+          ),
+        );
+
+        await controller.closed;
+
         Get.toNamed('/whoAreYouPage');
       }on FirebaseAuthException catch(e){
         if(e.code == 'weak-password'){
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Senha fraca, por favor tente outra mais forte'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
         }
-        if(e.code == 'email-already-in-use'){
+        else if(e.code == 'email-already-in-use'){
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Esse email já possui conta'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
+        }
+        else{
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Erro inesperado'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
+
         }
         print(e);
       }
@@ -68,17 +76,17 @@ class Controller extends GetxController {
 // ignore: must_be_immutable
 class MySignUpPage extends StatelessWidget {
   MySignUpPage({super.key});
-  final controller = Get.put(Controller());
+  final signUpController = Get.put(SignUpController());
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: GetBuilder<Controller>(
-        init: Controller(),
+      home: GetBuilder<SignUpController>(
+        init: SignUpController(),
         builder: (_) {
           return Scaffold(
             body: FutureBuilder(
-              future: controller.func(),
+              future: signUpController.func(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
@@ -150,7 +158,7 @@ class MySignUpPage extends StatelessWidget {
                                               ),
                                             ),
                                             TextField(
-                                              controller: controller.nome,
+                                              controller: signUpController.nome,
                                               decoration: const InputDecoration(
                                                 focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),),
                                                 contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -162,7 +170,7 @@ class MySignUpPage extends StatelessWidget {
                                               ),
                                             ),
                                             TextField(
-                                              controller: controller.email,
+                                              controller: signUpController.email,
                                               decoration: const InputDecoration(
                                                 focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),),
                                                 contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -174,7 +182,7 @@ class MySignUpPage extends StatelessWidget {
                                               ),
                                             ),
                                             TextField(
-                                              controller: controller.senha,
+                                              controller: signUpController.senha,
                                               obscureText: true,
                                               decoration: const InputDecoration(
                                                 focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),),
@@ -187,7 +195,7 @@ class MySignUpPage extends StatelessWidget {
                                               ),
                                             ),
                                             TextField(
-                                              controller: controller.confirmaSenha,
+                                              controller: signUpController.confirmaSenha,
                                               obscureText: true,
                                               decoration: const InputDecoration(
                                                 focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black),),
@@ -210,7 +218,7 @@ class MySignUpPage extends StatelessWidget {
                                                   ),
                                                   child: const Text("Continuar", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 255, 255, 255))),
                                                   onPressed: () {
-                                                    controller.validarLogin(context);
+                                                    signUpController.validarLogin(context);
                                                   },
                                                 ),
                                               ),

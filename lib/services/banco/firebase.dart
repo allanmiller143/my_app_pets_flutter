@@ -11,6 +11,34 @@ import 'package:replica_google_classroom/controller/userController.dart';
 
 class BancoDeDados{
 
+  static Future<bool> verificarCpfExistente(String cpf) async {
+    // Consulta se existe algum usuário com o mesmo CPF
+    QuerySnapshot query = await FirebaseFirestore.instance
+        .collection('users')
+        .where('cpf representante', isEqualTo: cpf)
+        .get();
+
+    return query.docs.isNotEmpty;
+  }
+  static Future<bool> verificarEmailExistente(String email) async {
+    // Consulta se existe algum usuário com o mesmo CPF
+    QuerySnapshot query = await FirebaseFirestore.instance
+        .collection('users')
+        .where('Email representante', isEqualTo: email)
+        .get();
+
+    return query.docs.isNotEmpty;
+  }
+  static Future<bool> verificarTelefoneExistente(String telefone) async {
+    // Consulta se existe algum usuário com o mesmo CPF
+    QuerySnapshot query = await FirebaseFirestore.instance
+        .collection('users')
+        .where('Telefone', isEqualTo: telefone)
+        .get();
+
+    return query.docs.isNotEmpty;
+  }
+
   //adiciona informações sobre um usuario no firebase firestore
   static Future addUsuarioDetalhes(Map<String,dynamic> infoMap, String id)async{
     try{
@@ -24,7 +52,9 @@ class BancoDeDados{
   }
   static adicionarInformacoesUsuario(Map<String, dynamic> novasInformacoes,String id,) async {
     try {
+     
       await FirebaseFirestore.instance.collection('users').doc(id).update(novasInformacoes);
+     
       print('Informações do usuário atualizadas com sucesso!');
     } catch (e) {
       print('Erro ao atualizar informações do usuário: $e');
@@ -53,7 +83,7 @@ class BancoDeDados{
       .instance
       .collection('users')
       .doc(userId)
-      .collection('pets').doc(petInfo['Id']).set(petInfo);
+      .collection('pets').doc(petInfo['Id animal']).set(petInfo);
       
       print('Pet adicionado com sucesso!');
     } catch (e) {
@@ -83,8 +113,7 @@ class BancoDeDados{
       print('Erro ao remover pet: $e');
     }
   }
-
-static Future<void> removerFotoFeed(String userId, String idImagem, String url) async {
+  static Future<void> removerFotoFeed(String userId, String idImagem, String url) async {
     try {
       // apagar a foto do storage
       Reference oldStorageReference = FirebaseStorage.instance.refFromURL(url);
@@ -105,15 +134,64 @@ static Future<void> removerFotoFeed(String userId, String idImagem, String url) 
       print('Erro ao remover imagem: $e');
     }
   }
-
-
-
   static Future<List<Map<String, dynamic>>> obterPetsDoUsuario(String userId) async {
     try {
       QuerySnapshot petsSnapshot = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .collection('pets')
+          .get();
+
+      List<Map<String, dynamic>> petsList = [];
+
+      petsSnapshot.docs.forEach((DocumentSnapshot document) {
+        petsList.add(document.data() as Map<String, dynamic>);
+      });
+
+      return petsList;
+    } catch (e) {
+      print('Erro ao obter pets do usuário: $e');
+      return [];
+    }
+  }
+  static Future<List<Map<String, dynamic>>> obterPets() async {
+  try {
+    QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('Tipo', isEqualTo: 'ong')
+        .get();
+
+    List<Map<String, dynamic>> petsList = [];
+
+    for (QueryDocumentSnapshot userDoc in usersSnapshot.docs) {
+      // Obtenha a coleção de pets para cada usuário do tipo "ong"
+      QuerySnapshot petsSnapshot = await userDoc.reference.collection('pets').get();
+
+      // Adicione os dados dos pets à lista
+      petsSnapshot.docs.forEach((DocumentSnapshot petDoc) {
+        Map<String, dynamic> petData = petDoc.data() as Map<String, dynamic>;
+        Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+        userData['Tipo'];
+
+        // Adicione todas as chaves e valores de userDoc.data() a petData
+        petData.addAll(userData);
+        petsList.add(petData);
+      });
+    }
+
+    return petsList;
+  } catch (e) {
+    print('Erro ao obter pets: $e');
+    return [];
+  }
+}
+
+   static Future<List<Map<String, dynamic>>> petsPreferidos(String userId) async {
+    try {
+      QuerySnapshot petsSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('pets preferidos')
           .get();
 
       List<Map<String, dynamic>> petsList = [];
@@ -172,7 +250,7 @@ static Future<void> removerFotoFeed(String userId, String idImagem, String url) 
 
 
         for (int i = 0; i < settingsController.usuario['Pets'].length; i++) {
-          if (settingsController.usuario['Pets'][i]['Id'] == petId) {
+          if (settingsController.usuario['Pets'][i]['Id animal'] == petId) {
             settingsController.usuario['Pets'][i]['Imagem'] = downloadURL;
             meuControllerGlobal.usuario['Pets'][i]['Imagem'] = downloadURL;
             break;
@@ -221,9 +299,6 @@ static Future<void> removerFotoFeed(String userId, String idImagem, String url) 
       print('Erro ao salvar a imagem no Firestore: $e');
     }
   }
-
-
-
   static Future saveFeedImageToFirestore(File imageFile, String userId) async {
     try {
       // cria um id unico para a foto
@@ -265,9 +340,6 @@ static Future<void> removerFotoFeed(String userId, String idImagem, String url) 
       print('Erro ao salvar a imagem no Firestore: $e');
     }
   }
-
-
-
   //retorna as informações de um usuario que forneceu um email
   static Future<QuerySnapshot> getUsuarioPorEmail(String email)async{
     return await FirebaseFirestore.instance.collection('users').where('E-mail', isEqualTo: email).get();

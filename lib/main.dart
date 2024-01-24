@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/adopt_pages/user/confirm_page.dart';
 import 'package:replica_google_classroom/App_pages/adopt_pages/user/data_page.dart';
 import 'package:replica_google_classroom/App_pages/adopt_pages/user/insert_user_data_page.dart';
+import 'package:replica_google_classroom/App_pages/chat/chat_conversa.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/OngInfoEditPage.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/my_principal_ong_page.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
@@ -14,13 +15,10 @@ import 'package:replica_google_classroom/App_pages/usuarioPages/x.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/firebase_options.dart';
 import 'App_pages/ongPages/componentesOngPerfil/ImageViewerPage.dart';
-import 'loginPages/my_email_page.dart';
-import 'loginPages/my_password_page.dart';
-import 'loginPages/my_sign_up_page.dart';
-import 'loginPages/myConfirm_page.dart';
+import 'loginPages/signIn.dart';
+import 'loginPages/signUp.dart';
 import 'services/mongodb.dart';
-import 'loginPages/my_forget_pass.dart';
-import 'registerPages/my_data_page.dart';
+import 'loginPages/esqueciSenha.dart';
 import 'registerPages/My_data_page_ong.dart';
 import 'registerPages/my_who_are_you_page.dart';
 import 'App_pages/usuarioPages/my_principal_app_page.dart';
@@ -61,11 +59,8 @@ class MyApp extends StatelessWidget {
         // GetPage(name: '/', page: () => MyPrincipalAppPage()),
         GetPage(name: '/', page: () => MyEmailPage()),
         // GetPage(name: '/', page: () => AnimalInsertPage()),
-        GetPage(name: '/password', page: () => MyPasswordPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/signUp', page: () => MySignUpPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
-        GetPage(name: '/confirmPage', page: () => MyConfirmPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
-        GetPage(name: '/forgetPage', page: () => MyForgetPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
-        GetPage(name: '/dataPage', page: () => MyDataPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        GetPage(name: '/esqueciSenha', page: () => EsqueciSenhaPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/profilePage', page: () => PetsAuxPage()),
         GetPage(name: '/dataOngPage',page: () => MyOngDataPage(),transition: Transition.leftToRight,transitionDuration: const Duration(milliseconds: 400)),   
         GetPage(name: '/whoAreYouPage',page: () => MyWhoAreYouPage(),transition: Transition.rightToLeft),  
@@ -88,7 +83,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/userDataPage',page: () => UserDataPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         //GetPage(name: '/',page: () => UserDataPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/xPage',page: () => XPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
-  
+        GetPage(name: '/chatConversa',page: () => ChatConversaPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+
       ],
     );
   }

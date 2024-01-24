@@ -110,7 +110,7 @@ class EditarCampoController extends GetxController {
 
       Get.back();Get.back();
 
-      await BancoDeDados.adicionarInformacoesUsuario({'Telefone' : novoValor.text}, meuControllerGlobal.obterId());
+      await BancoDeDados.adicionarInformacoesUsuario({'Telefone' : novoValor.text}, meuControllerGlobal.usuario['Id']);
 
       return true; // O telefone é válido
 
@@ -122,7 +122,7 @@ class EditarCampoController extends GetxController {
         meuControllerGlobal.nomeOng.value = novoValor.text;
         meuControllerGlobal.usuario['Nome ong'] = novoValor.text;
         Get.back();Get.back();
-        await BancoDeDados.adicionarInformacoesUsuario({'Nome ong' : novoValor.text}, meuControllerGlobal.obterId());
+        await BancoDeDados.adicionarInformacoesUsuario({'Nome ong' : novoValor.text}, meuControllerGlobal.usuario['Id']);
         return true;
       }
       return false;
@@ -133,7 +133,7 @@ class EditarCampoController extends GetxController {
         meuControllerGlobal.usuario['Nome representante'] = novoValor.text;
 
         Get.back();Get.back();
-        await BancoDeDados.adicionarInformacoesUsuario({'Nome representante' : novoValor.text}, meuControllerGlobal.obterId());
+        await BancoDeDados.adicionarInformacoesUsuario({'Nome representante' : novoValor.text}, meuControllerGlobal.usuario['Id']);
         return true;
       }
       return false;
@@ -143,7 +143,7 @@ class EditarCampoController extends GetxController {
         meuControllerGlobal.cpfRepresentante.value = novoValor.text;
         meuControllerGlobal.usuario['cpf representante'] = novoValor.text;
         Get.back();Get.back();
-        await BancoDeDados.adicionarInformacoesUsuario({'cpf representante' : novoValor.text}, meuControllerGlobal.obterId());
+        await BancoDeDados.adicionarInformacoesUsuario({'cpf representante' : novoValor.text}, meuControllerGlobal.usuario['Id']);
 
         return true;
       }
@@ -152,14 +152,14 @@ class EditarCampoController extends GetxController {
     }else if (chave == 'Nome animal') {
       if (novoValor.text.isNotEmpty) {
         for (int i = 0; i < settingsController.usuario['Pets'].length;i++) {
-          if (settingsController.usuario['Pets'][i]['Id'] == petId) {
-            settingsController.usuario['Pets'][i]['Nome'] = novoValor.text;
-            meuControllerGlobal.usuario['Pets'][i]['Nome'] = novoValor.text;
+          if (settingsController.usuario['Pets'][i]['Id animal'] == petId) {
+            settingsController.usuario['Pets'][i]['Nome animal'] = novoValor.text;
+            meuControllerGlobal.usuario['Pets'][i]['Nome animal'] = novoValor.text;
             break;
           }
         }
         Get.back();Get.back();Get.back();
-        await BancoDeDados.alterarPetInfo({'Nome': novoValor.text}, meuControllerGlobal.obterId(), petId);
+        await BancoDeDados.alterarPetInfo({'Nome animal': novoValor.text}, meuControllerGlobal.usuario['Id'], petId);
         return true;     
       }
       return false;

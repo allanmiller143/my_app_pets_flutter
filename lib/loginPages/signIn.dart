@@ -9,7 +9,7 @@ import 'package:replica_google_classroom/widgets/mybutton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class EmailController extends GetxController {
+class SignInController extends GetxController {
   late MeuControllerGlobal meuControllerGlobal;  
   
   dynamic usuario;
@@ -27,97 +27,94 @@ login(context) async{
       try{
         await FirebaseAuth.instance.signInWithEmailAndPassword(email: email.text, password: senha.text);
         QuerySnapshot querySnapshot = await BancoDeDados.getUsuarioPorEmail(email.text);
-        
         // informações das duas contas
 
-        nome = "${querySnapshot.docs[0]['Nome']}";
-        id = "${querySnapshot.docs[0]['Id']}";
         tipo = "${querySnapshot.docs[0]['Tipo']}";
-        imagemPerfil = "${querySnapshot.docs[0]['ImagemPerfil']}";
-        meuControllerGlobal.salvarEmail(email.text);
-        meuControllerGlobal.salvarId(id);
-        meuControllerGlobal.salvarNome(nome);
-        meuControllerGlobal.salvarImagemPerfil(imagemPerfil);
-        meuControllerGlobal.salvarTipo(tipo);
-
-
-        ScaffoldFeatureController<SnackBar, SnackBarClosedReason> controller = ScaffoldMessenger.of(context)
-        .showSnackBar(  
-          SnackBar(
-            content: Text('Login bem sucedido'),
-            backgroundColor: Color.fromARGB(155, 33, 250, 0),
-          ),
-        );
-        await controller.closed;
-       
 
         if(tipo == '-1'){
-          Get.toNamed('/whoAreYouPage');
+           Get.toNamed('/whoAreYouPage');
         }
         else{
-          if(tipo == 'comum'){ 
+          if(tipo == 'ong'){
+            var pets = await BancoDeDados.obterPetsDoUsuario(querySnapshot.docs[0]['Id']);
+            var imagensFeed =  await BancoDeDados.obterImagensFeedDoUsuario(querySnapshot.docs[0]['Id']);
+
+            meuControllerGlobal.usuario = {
+              'Nome' : querySnapshot.docs[0]['Nome'],
+              'Id' : querySnapshot.docs[0]['Id'],
+              'E-mail' : querySnapshot.docs[0]['E-mail'],
+              'Pets' : pets,
+              'Tipo' : querySnapshot.docs[0]['Tipo'],
+              'Nome ong' : querySnapshot.docs[0]['Nome ong'],
+              'cnpj' : querySnapshot.docs[0]['cnpj'],
+              'Rua' : querySnapshot.docs[0]['Rua'],
+              'Numero' : querySnapshot.docs[0]['Numero'],
+              'Estado' : querySnapshot.docs[0]['Estado'],
+              'Cidade' : querySnapshot.docs[0]['Cidade'],
+              'Bairro' : querySnapshot.docs[0]['Bairro'],
+              'cep' : querySnapshot.docs[0]['cep'],
+              'Telefone' : querySnapshot.docs[0]['Telefone'],
+              'Nome representante' : querySnapshot.docs[0]['Nome representante'],
+              'Email representante' : querySnapshot.docs[0]['Email representante'],
+              'cpf representante' : querySnapshot.docs[0]['cpf representante'],
+              'ImagemPerfil' :querySnapshot.docs[0]['ImagemPerfil'],
+              'Bio' : querySnapshot.docs[0]['Bio'],
+              'Imagens feed' : imagensFeed
+            };  
+            Get.toNamed('/principalOngAppPage');  
+          }
+          else{
             data = querySnapshot.docs[0]['Data'];
-            petsPreferidos = querySnapshot.docs[0]['Pets preferidos']; 
-            meuControllerGlobal.petsPreferidos = petsPreferidos;
-            meuControllerGlobal.salvarData(data);
+            meuControllerGlobal.petsSistema = await BancoDeDados.obterPets();
             if(data == true){
-              String bairro = querySnapshot.docs[0]['Bairro'];
-              String cidade = querySnapshot.docs[0]['Cidade'];
-              String estado = querySnapshot.docs[0]['Estado'];
-              String numero = querySnapshot.docs[0]['Numero'];
-              String rua = querySnapshot.docs[0]['Rua'];
-              String telefone = querySnapshot.docs[0]['Telefone'];
-              String cep = querySnapshot.docs[0]['cep'];
-              meuControllerGlobal.bairro.value = bairro;
-              meuControllerGlobal.cidade.value = cidade;
-              meuControllerGlobal.numero.value = numero;
-              meuControllerGlobal.rua.value = rua;
-              meuControllerGlobal.telefone.value = telefone;
-              meuControllerGlobal.cep.value = cep;
-              meuControllerGlobal.estado.value = estado;
-
-              
+               meuControllerGlobal.usuario = {
+                'Id' : querySnapshot.docs[0]['Id'],
+                'E-mail' : querySnapshot.docs[0]['E-mail'],
+                'Tipo' : querySnapshot.docs[0]['Tipo'],
+                'Rua' : querySnapshot.docs[0]['Rua'],
+                'Numero' : querySnapshot.docs[0]['Numero'],
+                'Estado' : querySnapshot.docs[0]['Estado'],
+                'Cidade' : querySnapshot.docs[0]['Cidade'],
+                'Bairro' : querySnapshot.docs[0]['Bairro'],
+                'cep' : querySnapshot.docs[0]['cep'],
+                'Telefone' : querySnapshot.docs[0]['Telefone'],
+                'ImagemPerfil' :querySnapshot.docs[0]['ImagemPerfil'],
+                'Data': data,
+                'Nome completo': querySnapshot.docs[0]['Nome completo'],
+                'Pesquisa' : querySnapshot.docs[0]['Pesquisa'],
+                'Pets preferidos' : querySnapshot.docs[0]['Pets preferidos'],
+                'cpf' : querySnapshot.docs[0]['cpf'],
+                'Nome': querySnapshot.docs[0]['Nome'],
+               };
+            }else{
+              meuControllerGlobal.usuario = {
+                'Id' : querySnapshot.docs[0]['Id'],
+                'E-mail' : querySnapshot.docs[0]['E-mail'],
+                'Tipo' : querySnapshot.docs[0]['Tipo'],
+                'ImagemPerfil' :querySnapshot.docs[0]['ImagemPerfil'],
+                'Data': data,
+                'Pesquisa' : querySnapshot.docs[0]['Pesquisa'],
+                'Pets preferidos' : querySnapshot.docs[0]['Pets preferidos'],
+                'Nome': querySnapshot.docs[0]['Nome'],
+               };
             }
-          }else{ //ong 
-            String bairro = querySnapshot.docs[0]['Bairro'];
-            String cidade = querySnapshot.docs[0]['Cidade'];
-            String emailRepresentante = querySnapshot.docs[0]['Email representante'];
-            String estado = querySnapshot.docs[0]['Estado'];
-            var imagensFeed = querySnapshot.docs[0]['Imagens feed'];
-            var pets = querySnapshot.docs[0]['Pets'];
-            String nomeOng = querySnapshot.docs[0]['Nome ong'];
-            String nomeRepresentante= querySnapshot.docs[0]['Nome representante'];
-            String numero = querySnapshot.docs[0]['Numero'];
-            String rua = querySnapshot.docs[0]['Rua'];
-            String telefone = querySnapshot.docs[0]['Telefone'];
-            String cep = querySnapshot.docs[0]['cep'];
-            String cnpj = querySnapshot.docs[0]['cnpj'];
-            String cpfRepresentante = querySnapshot.docs[0]['cpf representante'];
-            String bio = querySnapshot.docs[0]['Bio'];
+            Get.toNamed('/principalAppPage');
+            
+            }
 
-            meuControllerGlobal.bairro.value = bairro;
-            meuControllerGlobal.cidade.value = cidade;
-            meuControllerGlobal.emailRepresentante.value = emailRepresentante;
-            meuControllerGlobal.imagensFeed = imagensFeed;
-            meuControllerGlobal.estado.value = estado;
-            meuControllerGlobal.pets = pets;
-            meuControllerGlobal.nomeRepresentante.value = nomeRepresentante;
-            meuControllerGlobal.nomeOng.value = nomeOng;
-            meuControllerGlobal.numero.value = numero;
-            meuControllerGlobal.rua.value = rua;
-            meuControllerGlobal.telefone.value = telefone;
-            meuControllerGlobal.cep.value = cep;
-            meuControllerGlobal.cnpj.value = cnpj;
-            meuControllerGlobal.cpfRepresentante.value = cpfRepresentante;
-            meuControllerGlobal.bio.value = bio;
-
-            await meuControllerGlobal.criaUsuario();
-            Get.toNamed('/principalOngAppPage');
 
           }
-
+          ScaffoldFeatureController<SnackBar, SnackBarClosedReason> controller = ScaffoldMessenger.of(context)
+          .showSnackBar(  
+            SnackBar(
+              content: Text('Login bem sucedido'),
+              backgroundColor: Color.fromARGB(155, 33, 250, 0),
+            ),
+          );
+          await controller.closed;
         }
-      } on FirebaseException catch(e){
+
+       on FirebaseException catch(e){
         if(e.code == 'invalid-credential'){
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('E-mail ou senha incorreta'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
         }
@@ -137,7 +134,7 @@ login(context) async{
 
   Future<String> func() async {
     meuControllerGlobal = Get.find();
-    email.text = 'ong.pets@gmail.vom';
+    email.text = 'ong2@gmail.com';
     senha.text = '32172528';
   
     return 'a';
@@ -148,17 +145,17 @@ login(context) async{
 class MyEmailPage extends StatelessWidget {
   MyEmailPage({Key? key}) : super(key: key);
 
-  final emailController = Get.put(EmailController());
+  final signInController = Get.put(SignInController());
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: GetBuilder<EmailController>(
-        init: EmailController(),
+      home: GetBuilder<SignInController>(
+        init: SignInController(),
         builder: (_) {
           return Scaffold(
             body: FutureBuilder(
-              future: emailController.func(),
+              future: signInController.func(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
@@ -200,7 +197,7 @@ class MyEmailPage extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         TextFormField(
-                                          controller: emailController.email,
+                                          controller: signInController.email,
                                           decoration: InputDecoration(
                                             focusedBorder: OutlineInputBorder(
                                               borderSide: BorderSide(color: Colors.black),
@@ -217,7 +214,7 @@ class MyEmailPage extends StatelessWidget {
                                         ),
                                         SizedBox(height: 15),
                                         TextFormField(
-                                          controller: emailController.senha,
+                                          controller: signInController.senha,
                                           obscureText: true,
                                           decoration: InputDecoration(
                                             focusedBorder: OutlineInputBorder(
@@ -237,20 +234,43 @@ class MyEmailPage extends StatelessWidget {
                                         CustomIconButton(
                                           label: 'Entrar',
                                           onPressed: () {
-                                            emailController.login(context);
+                                            signInController.login(context);
                                           },
                                           width: double.infinity,
                                           height: 60,
                                           alinhamento: MainAxisAlignment.center,
                                         ),
                                         SizedBox(height: 5),
+
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(0,0,10,0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Get.toNamed('/esqueciSenha');
+                                                },
+                                                child: Text(
+                                                  'Esqueci a senha',
+                                                  style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: const Color.fromARGB(255, 236, 71, 6),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Text(
                                               'Não possui conta?  ',
                                               style: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 18,
                                                 color: const Color.fromARGB(255, 255, 255, 255),
                                               ),
                                             ),
@@ -269,6 +289,7 @@ class MyEmailPage extends StatelessWidget {
                                             ),
                                           ],
                                         ),
+                                        
                                       ],
                                     ),
                                   ),

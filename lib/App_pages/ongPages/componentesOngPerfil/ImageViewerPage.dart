@@ -38,7 +38,7 @@ class ImageViewerController extends GetxController {
     settingsController.opcao.value = 0;
     Get.back();
     Get.back();
-    await BancoDeDados.removerFotoFeed(meuControllerGlobal.obterId(), info['Id'], info['Imagem']);
+    await BancoDeDados.removerFotoFeed(meuControllerGlobal.usuario['Id'], info['Id animal'], info['Imagem']);
   }
 
   void excluirPet() async {
@@ -49,7 +49,7 @@ class ImageViewerController extends GetxController {
     settingsController.opcao.value = 0;
     Get.back();
     Get.back();
-    await BancoDeDados.removerPet(meuControllerGlobal.obterId(),info['Id'],info['Imagem']);
+    await BancoDeDados.removerPet(meuControllerGlobal.usuario['Id'],info['Id animal'],info['Imagem']);
   }
 
   void showBottomSheet(BuildContext context) {
@@ -102,16 +102,16 @@ class ImageViewerController extends GetxController {
                       ),
                       onTap: () {
                         var infoEditavel = {
-                          'Nome animal': info['Nome'],
+                          'Nome animal': info['Nome animal'],
                           'Idade': info['Idade'],
                           'Raça':info['Raça'],
-                          'Tipo': info['Tipo'],
+                          'Tipo': info['Tipo animal'],
                           'Sexo' : info['Sexo'],
                           'Porte' : info['Porte'],
                           'Imagem': info['Imagem'],
                           
                         };
-                        Get.toNamed('/OngInfoEditPage', arguments: [infoEditavel, info['Id']]);
+                        Get.toNamed('/OngInfoEditPage', arguments: [infoEditavel, info['Id animal']]);
                       },
                     )
                   : SizedBox()
@@ -161,7 +161,7 @@ class ImageViewerPage extends StatelessWidget {
                   ),
                 ),
                 imageViewerController.tipo == 2 ?
-                FeedDetail(imagembd: imageViewerController.imagem,tipoPet: imageViewerController.info['tipo'],):
+                FeedDetail(imagembd: imageViewerController.imagem,tipoPet: imageViewerController.info['tipo animal'],):
                 FeedDetail(imagembd: imageViewerController.imagem),
               ],
             ),

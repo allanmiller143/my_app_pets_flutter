@@ -1,12 +1,3 @@
-
-
-
-
-
-
-
-
-
 bool validarCPF(String cpf) {
     cpf = cpf.replaceAll(RegExp(r'\D'), ''); // Remove caracteres não numéricos
    

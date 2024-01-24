@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
 
@@ -15,6 +13,7 @@ class MeuControllerGlobal extends GetxController {
   final data = false.obs;
   var petsPreferidos = [];
 
+  late List<Map<String,dynamic>> petsSistema = [];
 
   final nomeOng = ''.obs;
   final cnpj = ''.obs;
@@ -39,6 +38,70 @@ class MeuControllerGlobal extends GetxController {
 
       pets = await BancoDeDados.obterPetsDoUsuario(id.value);
       imagensFeed =  await BancoDeDados.obterImagensFeedDoUsuario(id.value);
+
+      usuario = {
+        'Id' : id.value,
+        'E-mail' : email.value,
+        'Pets' : pets,
+        'Tipo' : tipo.value,
+        'Nome ong' : nomeOng.value,
+        'cnpj' : cnpj.value,
+        'Rua' : rua.value,
+        'Numero' : numero.value,
+        'Estado' : estado.value,
+        'Cidade' : cidade.value,
+        'Bairro' : bairro.value,
+        'cep' : cep.value,
+        'Telefone' : telefone.value,
+        'Nome representante' : nomeRepresentante.value,
+        'Email representante' : emailRepresentante.value,
+        'cpf representante' : cpfRepresentante.value,
+        'ImagemPerfil' :imagemPerfil.value,
+        'Bio' : bio.value,
+        'Imagens feed' : imagensFeed
+      };    
+    }
+    else{
+      petsPreferidos = await BancoDeDados.petsPreferidos(id.value);
+      petsSistema = await BancoDeDados.obterPets();
+      print(petsSistema);
+
+      usuario = {
+        'Id' : id.value,
+        'E-mail' : email.value,
+        'Pets' : pets,
+        'Tipo' : tipo.value,
+        'ImagemPerfil' :imagemPerfil.value,
+        'Data' : data.value,
+        'Nome' : nome.value,
+        'Pets preferidos' : petsPreferidos,
+      };
+
+      if(data.value == true){
+        usuario = {
+        'Id' : id.value,
+        'E-mail' : email.value,
+        'Pets' : pets,
+        'Tipo' : tipo.value,
+        'ImagemPerfil' :imagemPerfil.value,
+        'Data' : data.value,
+        'Nome' : nome.value,
+        'Pets preferidos' : petsPreferidos,
+      };
+
+      }
+
+    }
+    
+  }
+
+  criaUsuarioSignUp() async {
+    print('entrei na funca de criar usuario');
+    if(tipo.value == 'ong'){
+      print('entrei no camnpo');
+
+      //pets = await BancoDeDados.obterPetsDoUsuario(id.value);
+      //imagensFeed =  await BancoDeDados.obterImagensFeedDoUsuario(id.value);
 
       usuario = {
         'Id' : id.value,

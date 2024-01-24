@@ -27,7 +27,7 @@ class OngEditBioPageController extends GetxController {
 
     Get.back();
 
-    await BancoDeDados.adicionarInformacoesUsuario({'Bio' : bioText.text}, meuControllerGlobal.obterId());
+    await BancoDeDados.adicionarInformacoesUsuario({'Bio' : bioText.text}, meuControllerGlobal.usuario['Id']);
 
   }
 }

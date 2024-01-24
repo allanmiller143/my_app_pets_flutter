@@ -72,9 +72,9 @@ class DataOngController extends GetxController {
     });
 
     if (faltaCampo == false) {
-      retorno = ong.validaCampos(cpfRepresentante.text,cnpj.text, cep.text, telefone.text);
+      retorno = await ong.validaCampos(cpfRepresentante.text,cnpj.text, cep.text, telefone.text);
       if (retorno == '') {
-          await BancoDeDados.adicionarInformacoesUsuario(ongDataMap, meuControllerGlobal.obterId());
+          
           meuControllerGlobal.nomeOng.value = ongDataMap['Nome ong']!;
           meuControllerGlobal.cnpj.value = ongDataMap['cnpj']!;
           meuControllerGlobal.cep.value = ongDataMap['cep']!;
@@ -88,14 +88,16 @@ class DataOngController extends GetxController {
           meuControllerGlobal.nomeRepresentante.value = ongDataMap['Nome representante']!;
           meuControllerGlobal.emailRepresentante.value = ongDataMap['Email representante']!;
           meuControllerGlobal.cpfRepresentante.value = ongDataMap['cpf representante']!;
+          meuControllerGlobal.tipo.value = 'ong';
           ongDataMap['Pets'] = [];
           ongDataMap['Imagens feed'] = [];
           ongDataMap['Bio'] = '';
 
-          meuControllerGlobal.criaUsuario();
-      
-          await BancoDeDados.adicionarInformacoesUsuario(ongDataMap,meuControllerGlobal.obterId());
+          await BancoDeDados.adicionarInformacoesUsuario(ongDataMap, meuControllerGlobal.obterId());
+          await meuControllerGlobal.criaUsuarioSignUp();
+  
           mySnackBar('Cadastro bem sucedido',true);
+          Get.toNamed('/principalOngAppPage');
       }
       else{
         mySnackBar(retorno,false);
