@@ -36,7 +36,6 @@ class AnimalCard extends StatelessWidget {
           elevation: 8,
           child: Container(
             width: 160,
-            height: 225,
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 255, 250, 248),
               borderRadius: BorderRadius.circular(15),
@@ -114,8 +113,16 @@ class AnimalCard extends StatelessWidget {
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    pet['Em processo de adoção'] == true?
+
+                    const Padding(
+                      padding:  EdgeInsets.fromLTRB(10,0,0,0),
+                      child: Text('Em adoção',style: TextStyle(color: Color.fromARGB(141, 255, 0, 0),fontSize: 10,fontWeight: FontWeight.bold),),
+                    ):
+                    const SizedBox(),
+
                     GestureDetector(
                       onTap: () async {
                         preferido.value = !preferido.value;

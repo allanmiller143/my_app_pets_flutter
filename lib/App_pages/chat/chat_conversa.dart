@@ -24,9 +24,10 @@ class ChatConversaController extends GetxController {
   
   getMensagens() async {
     String chatRoomId = getChatRoomByUserName(meuControllerGlobal.usuario['Id'], id);
+
       streamMensagem = (await BancoDeDados.getMensagens(chatRoomId)) as Stream<QuerySnapshot<Map<String, dynamic>>>?;
       streamMensagem?.listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
-        listaDeMensagens.clear();
+      listaDeMensagens.clear();
       if (snapshot.docs.isNotEmpty) {
         for (DocumentSnapshot<Map<String, dynamic>> ds in snapshot.docs) {
           bool enviadoPorMim = ds['EnviadoPor'] == meuControllerGlobal.usuario['Nome'];
@@ -103,9 +104,7 @@ class ChatConversaController extends GetxController {
     listaDeMensagens.add(mensagemWidget);
     addSingleMessage.value +=1;
     
-
   }
-
 }
 
 class ChatConversaPage extends StatelessWidget {

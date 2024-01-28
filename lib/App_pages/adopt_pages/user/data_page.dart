@@ -1,13 +1,17 @@
 
 // ignore_for_file: avoid_print
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/widgets/load_widget.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 
 class UserDataPageController extends GetxController {
   late MeuControllerGlobal meuControllerGlobal;
+  var ongPetInfo = Get.arguments[0];
   RxString rua = ''.obs;
   late String nomeTelefone;
   late String localizacao;
@@ -20,6 +24,15 @@ class UserDataPageController extends GetxController {
     nomeTelefone = '${meuControllerGlobal.usuario['Nome completo']} - ${meuControllerGlobal.usuario['Telefone']}';
     localizacao = '${meuControllerGlobal.usuario['Cidade']}, ${meuControllerGlobal.usuario['Estado']} - ${meuControllerGlobal.usuario['cep']}';
     super.onInit();
+  }
+
+
+  criaIdAdocao(String a,String b){
+    if(a.substring(0,1).codeUnitAt(0) > b.substring(0,1).codeUnitAt(0)){
+      return "$b\_$a";
+    }else{
+      return "$a\_$b";
+    }
   }
   
   
@@ -78,7 +91,7 @@ class UserDataPage extends StatelessWidget {
                             GestureDetector(
                               onTap: () {
                                 Get.back();
-                                Get.toNamed('/insertUserDataPage',arguments: ['Alterar dados','Altere os dados necessários']);
+                                Get.toNamed('/insertUserDataPage',arguments: ['Alterar dados','Altere os dados necessários',userDataPageController.ongPetInfo]);
                               },
                               child:const  Text('Editar', style: TextStyle(color:Colors.blue),)
                             ),
@@ -99,8 +112,21 @@ class UserDataPage extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                   child: CustomIconButton(
                     label: 'Continuar',
-                    onPressed: () {
-                      Get.toNamed('/statusPage');
+                    onPressed: () async {
+                      String b ='${userDataPageController.ongPetInfo['Id']}-${userDataPageController.ongPetInfo['Id animal']}';
+                      String id = userDataPageController.criaIdAdocao(userDataPageController.meuControllerGlobal.usuario['Id'], b);
+                      
+                      var info = {
+                        'Id adoção' : id,
+                        'Id usuario' : userDataPageController.meuControllerGlobal.usuario['Id'],
+                        'Id ong' : userDataPageController.ongPetInfo['Id'],
+                        'Id animal': userDataPageController.ongPetInfo['Id animal'],
+                        'Hora adoção': FieldValue.serverTimestamp(),
+                        'Status': 'Aguardando avalição dos dados'
+                      };
+                      await BancoDeDados.adotar(id, info);
+
+                      //Get.toNamed('/principalAppPage');
                     },
                     width: 250,
                     alinhamento: MainAxisAlignment.center,

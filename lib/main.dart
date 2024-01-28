@@ -4,6 +4,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/adopt_pages/ong/adocoes.dart';
+import 'package:replica_google_classroom/App_pages/adopt_pages/ong/detalhesAdocao.dart';
+import 'package:replica_google_classroom/App_pages/adopt_pages/ong/todasAdocoes.dart';
+import 'package:replica_google_classroom/App_pages/adopt_pages/user/Status_page.dart';
+import 'package:replica_google_classroom/App_pages/adopt_pages/user/adocoes.dart';
 import 'package:replica_google_classroom/App_pages/adopt_pages/user/confirm_page.dart';
 import 'package:replica_google_classroom/App_pages/adopt_pages/user/data_page.dart';
 import 'package:replica_google_classroom/App_pages/adopt_pages/user/insert_user_data_page.dart';
@@ -33,7 +38,7 @@ import 'App_pages/ongPages/componentesOngPerfil/editarEndereco.dart';
 //import 'exemplo_botao_desativado.dart';
 
 void main() async {
-  await MongoDataBase.connect(); // esperar conectar com o mongodb
+  //await MongoDataBase.connect(); // esperar conectar com o mongodb
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
@@ -53,8 +58,11 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialRoute: '/',
       getPages: [
-        //GetPage(name: '/',page: () => StatusPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        //GetPage(name: '/',page: () => TodasAdocoesPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
 
+        //GetPage(name: '/',page: () => StatusAdocaoPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        //GetPage(name: '/',page: () => DetalhesAdocaoPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        //GetPage(name: '/',page: () => StatusPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         // GetPage(name: '/',page: () => EditarCampoPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         // GetPage(name: '/', page: () => MyPrincipalAppPage()),
         GetPage(name: '/', page: () => MyEmailPage()),
@@ -84,6 +92,14 @@ class MyApp extends StatelessWidget {
         //GetPage(name: '/',page: () => UserDataPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/xPage',page: () => XPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/chatConversa',page: () => ChatConversaPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        GetPage(name: '/statusPage',page: () => StatusAdocaoPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        GetPage(name: '/detalhesAdocao',page: () => DetalhesAdocaoPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        GetPage(name: '/todasAdocoes',page: () => TodasAdocoesPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        GetPage(name: '/adocoes',page: () => AdocaoPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        GetPage(name: '/adocoesUsuario',page: () => UsuarioAdocoesPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+
+
+
 
       ],
     );

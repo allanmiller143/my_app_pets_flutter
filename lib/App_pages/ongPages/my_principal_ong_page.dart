@@ -1,13 +1,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/adopt_pages/ong/adocoes.dart';
+import 'package:replica_google_classroom/App_pages/adopt_pages/ong/todasAdocoes.dart';
 import 'package:replica_google_classroom/App_pages/chat/chat.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/insert_animal_page.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 
 
 class PrincipalOngAppController extends GetxController {
-  var opcaoSelecionada = 0.obs;
+  var opcaoSelecionada = 3.obs;
   Color corItemSelecionado = const Color.fromARGB(255, 0, 0, 0);
   Color corItemNaoSelecionado = const  Color.fromARGB(255, 255, 255, 255);
 
@@ -36,11 +38,7 @@ class MyPrincipalOngAppPage extends StatelessWidget {
           builder: (_) {
             return Scaffold(
               extendBodyBehindAppBar: true,
-            
-              appBar: AppBar(
-                forceMaterialTransparency: true,
-                toolbarHeight: 85,
-              ),
+
               bottomNavigationBar: Obx(
                 () => Container(
                   decoration: const BoxDecoration(
@@ -64,7 +62,11 @@ class MyPrincipalOngAppPage extends StatelessWidget {
                       ),
                       BottomNavigationBarItem(
                         icon: Icon(Icons.settings),
-                        label: 'Perfil',
+                        label: 'Conversas',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.settings),
+                        label: 'Adoções',
                       ),
                     ],
                     selectedItemColor: principalOngAppController.corItemSelecionado,
@@ -84,7 +86,9 @@ class MyPrincipalOngAppPage extends StatelessWidget {
                       children: <Widget>[
                         SettingsPage(),
                         InsertAnimalPage(),
-                        ChatPage()
+                        ChatPage(),
+                        TodasAdocoesPage(),
+                       
                         
                       ],
                     ),

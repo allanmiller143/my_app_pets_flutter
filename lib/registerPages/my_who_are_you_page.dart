@@ -111,10 +111,10 @@ class MyWhoAreYouPage extends StatelessWidget {
                                           'Pets preferidos': [],
                                           'Data': false
                                         };
-                                        userTypeController.meuControllerGlobal.salvarTipo('comum');                                    
-                                        await BancoDeDados.adicionarInformacoesUsuario(info, userTypeController.meuControllerGlobal.obterId());
+                                        userTypeController.meuControllerGlobal.usuario.addAll(info);                                   
+                                        await BancoDeDados.adicionarInformacoesUsuario(info, userTypeController.meuControllerGlobal.usuario['Id']);
+                                        userTypeController.meuControllerGlobal.petsSistema = await BancoDeDados.obterPets();
 
-                                        
 
                                         Get.toNamed('/principalAppPage');
                                         //userTypeController.abrirTelaDeDados('/');    
