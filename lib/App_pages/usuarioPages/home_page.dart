@@ -15,6 +15,12 @@ class HomePageController extends GetxController {
     meuControllerGlobal = Get.find();
     usuario = meuControllerGlobal.usuario;
     pets = meuControllerGlobal.petsSistema;
+
+
+    for (var pet in pets){
+      print(pet['Nome animal']);
+
+    };
     return pets;
   }
 }
@@ -181,7 +187,7 @@ class HomePage extends StatelessWidget {
                                         ),
                                         SizedBox(
                                           width: double.infinity,
-                                          height: 235,
+                          
                                           child: SingleChildScrollView(
                                             scrollDirection: Axis.horizontal,
                                             child: Row(

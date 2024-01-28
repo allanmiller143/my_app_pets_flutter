@@ -7,6 +7,7 @@ import 'package:replica_google_classroom/widgets/mybutton.dart';
 
 class AdoptConfirmPageController extends GetxController {
   late MeuControllerGlobal meuControllerGlobal;
+  var ongPetInfo = Get.arguments[0];
   dynamic imagem = Get.arguments[0]['Imagem'];
   String nome = Get.arguments[0]['Nome animal'];
 
@@ -171,10 +172,10 @@ class AdoptConfirmPage extends StatelessWidget {
                                     label: 'Continuar',
                                     onPressed: () {
                                       if(adoptConfirmPageController.meuControllerGlobal.usuario['Data'] == false){
-                                        Get.toNamed('/insertUserDataPage',arguments: ['Insira seus dados','Para completar a adoção insira suas informações']);
+                                        Get.toNamed('/insertUserDataPage',arguments: ['Insira seus dados','Para completar a adoção insira suas informações',adoptConfirmPageController.ongPetInfo]);
                                       }
                                       else{
-                                        Get.toNamed('/userDataPage');
+                                        Get.toNamed('/userDataPage',arguments: [adoptConfirmPageController.ongPetInfo]);
  
                                       }
 

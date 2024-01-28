@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:random_string/random_string.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
+import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class BancoDeDados{
 
@@ -356,6 +357,18 @@ class BancoDeDados{
     return await FirebaseFirestore.instance.collection('users').where('Pesquisa', isEqualTo: nome[0]).get();
   }
 
+  static Future<QuerySnapshot> getPetPorId(String ongId, String petId) async {
+  return await FirebaseFirestore.instance
+      .collection('users')
+      .doc(ongId)
+      .collection('pets')
+      .where('Id animal', isEqualTo: petId)  
+      .get();
+}
+
+
+
+
   static criaChatRoom(String chatRoomId,Map<String,dynamic> chatRoomInfoMap) async{
     // cria uma chat novo se nao existe.
 
@@ -386,12 +399,12 @@ class BancoDeDados{
   }
 
   static Future<Stream<QuerySnapshot>> getChatRooms(String id) async {
-  return FirebaseFirestore
-      .instance
-      .collection('chatrooms')
-      .orderBy('time',descending: true)
-      .where('users', arrayContains: id)
-      .snapshots();
+    return FirebaseFirestore
+        .instance
+        .collection('chatrooms')
+        .orderBy('time',descending: true)
+        .where('users', arrayContains: id)
+        .snapshots();
 }
 
   static Future<Stream<QuerySnapshot>> getMensagens(String chatRoomId) async {
@@ -403,6 +416,102 @@ class BancoDeDados{
     .orderBy('time',descending: false)
     .snapshots();
   }
+
+
+
+ 
+static adotar(String idAdocao, Map<String,dynamic> info) async {
+  // Cria uma adoção nova se não existe.
+  final snapshot = await FirebaseFirestore.instance.collection('adocoes').doc(idAdocao).get();
+
+  final querySnapshot = await FirebaseFirestore.instance
+      .collection('adocoes')
+      .where('Id animal', isEqualTo: info['Id animal'])
+      .get();
+
+  if (snapshot.exists) {
+    print('Já existia');
+    print(idAdocao);
+    mySnackBar('Você já abriu um processo de adoção nesse pet', false);
+    return true;
+  } else if (querySnapshot.docs.isNotEmpty) {
+    // Verifica se a consulta não está vazia (ou seja, se já existe uma adoção para o mesmo pet).
+    mySnackBar('Um usuário já abriu um processo de adoção para esse pet', false);
+  } else {
+    mySnackBar('Aguarde a ONG analisar o seu pedido', true);
+
+
+    FirebaseFirestore.instance
+    .collection('users')
+    .doc(info['Id ong'])
+    .collection('pets')
+    .doc(info['Id animal'])
+    .update({'Em processo de adoção': true});
+
+
+
+    return FirebaseFirestore.instance.collection('adocoes').doc(idAdocao).set(info);
+  }
+}
+
+
+  static Future<Stream<QuerySnapshot>> getAdocoes(String id) async {
+    print(id);
+    return FirebaseFirestore
+        .instance
+        .collection('adocoes')    
+        .where('Id ong', isEqualTo: id)
+        .orderBy('Hora adoção',descending: true)
+        .snapshots();
+}
+
+  static AlterarStatusAdocao(String id,String status) async {
+    try {
+      print(id);
+      await FirebaseFirestore.instance.collection('adocoes').doc(id).update({'Status': status});
+     
+      print('Informações da adocao atualizadas com sucesso!');
+    } catch (e) {
+      print('Erro ao atualizar informações da adoção: $e');
+    }
+  }
+
+
+
+
+  static Future<Stream<QuerySnapshot>> getAdocoesUsuario(String id) async {
+    return FirebaseFirestore
+        .instance
+        .collection('adocoes')    
+        .where('Id usuario', isEqualTo: id)
+
+        .snapshots();
+}
+
+  static Future<Stream<QuerySnapshot>> getAdocaoUsuario(String id) async {
+    return FirebaseFirestore
+        .instance
+        .collection('adocoes')    
+        .where('Id adoção', isEqualTo: id)
+        .snapshots();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
 }

@@ -51,6 +51,7 @@ class InsertAnimalController extends GetxController {
     Map<String, dynamic> animalData = animal.toMap();
 
     animalData['Imagem'] = imageFile;
+    animalData['Em processo de adoção'] = false;
 
     String retorno = animal.validaCampos(imageFile);
     if (retorno == '') {

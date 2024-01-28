@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/chat/chat.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/home_page.dart';
+import 'package:replica_google_classroom/App_pages/usuarioPages/perfil.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/pets_page.dart';
 
 class PrincipaAppController extends GetxController {
 
-  RxInt opcaoSelecionada = 0.obs;
+  RxInt opcaoSelecionada = 3.obs;
   Color corItemSelecionado = const Color.fromARGB(255, 0, 0, 0);
   Color corItemNaoSelecionado = const  Color.fromARGB(255, 255, 255, 255);
   late String emailUsuario;
@@ -74,6 +75,10 @@ class MyPrincipalAppPage extends StatelessWidget {
                         icon: Icon(Icons.settings),
                         label: 'chat',
                       ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.settings),
+                        label: 'Perfil',
+                      ),
                     ],
                     selectedItemColor: principaAppController.corItemSelecionado,
                     unselectedItemColor:principaAppController.corItemNaoSelecionado,
@@ -93,8 +98,8 @@ class MyPrincipalAppPage extends StatelessWidget {
                         HomePage(),
                         PetsPage(),
                         ChatPage(),
-                        //StatusPage(),
-                        //SettingsPage(),
+                        PerfilUsuarioPage(),
+                        
                       ],
                     ),
                 );
