@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/servicos/banco/firebase.dart';
 
 import '../app_widgets/my_animal_card.dart';
 import '../ongPages/componentesOngPerfil/my_pick_pet_widget.dart';
@@ -28,7 +27,6 @@ class PetsAuxController extends GetxController {
     favoritPetIds = [];
     usuario = meuControllerGlobal.usuario;
     favoritPetIds = usuario!['Pets preferidos'];
-    meuControllerGlobal.petsSistema = await BancoDeDados.obterPets();
     pets = meuControllerGlobal.petsSistema;
     return 'allan';
 }

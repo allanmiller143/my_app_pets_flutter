@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/servicos/mongodb.dart';
+import 'package:replica_google_classroom/services/mongodb.dart';
 import '../app_widgets/my_animal_card.dart';
 
 class FavoritsController extends GetxController {

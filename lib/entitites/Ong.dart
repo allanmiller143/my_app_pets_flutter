@@ -1,4 +1,4 @@
-import 'package:replica_google_classroom/servicos/banco/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 class Ong {
   String nomeOng;

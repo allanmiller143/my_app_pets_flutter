@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/ongPhoto.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/cardFeed.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/servicos/banco/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 class SettingsPageController extends GetxController {
   //variaveis 

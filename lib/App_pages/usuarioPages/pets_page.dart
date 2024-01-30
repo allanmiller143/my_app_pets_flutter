@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/servicos/banco/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 import '../app_widgets/my_animal_card.dart';
 import '../ongPages/componentesOngPerfil/my_pick_pet_widget.dart';
 import 'package:flutter/material.dart';
