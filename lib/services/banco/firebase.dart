@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls
 
 import 'dart:io';
 
@@ -6,18 +6,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:random_string/random_string.dart';
-import 'package:replica_google_classroom/App_pages/ongPages/listas.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class BancoDeDados{
 
-  static Future<bool> verificarCpfExistente(String cpf) async {
+  static Future<bool> verificarCpfExistente(String cpf,String campo) async {
     // Consulta se existe algum usuário com o mesmo CPF
     QuerySnapshot query = await FirebaseFirestore.instance
         .collection('users')
-        .where('cpf representante', isEqualTo: cpf)
+        .where(campo, isEqualTo: cpf)
         .get();
 
     return query.docs.isNotEmpty;
@@ -311,10 +310,6 @@ class BancoDeDados{
       await storageReference.putFile(imageFile);
       // Obter a URL do arquivo no Firebase Storage
       String downloadURL = await storageReference.getDownloadURL();
-
-      
-      
-      
       String id = randomAlphaNumeric(10);
 
       var feedImagem = {
@@ -324,10 +319,7 @@ class BancoDeDados{
 
       // crio uma instancia no controlador global para salvar o dado da foto de perfil do usuario 
       MeuControllerGlobal meuControllerGlobal;
-      SettingsPageController settingsController;
       meuControllerGlobal = Get.find();
-      settingsController = Get.find();
-
       meuControllerGlobal.usuario['Imagens feed'].add(feedImagem);
 
       await FirebaseFirestore
@@ -503,6 +495,7 @@ static adotar(String idAdocao, Map<String,dynamic> info) async {
         .snapshots();
 }
 
+  // ignore: non_constant_identifier_names
   static AlterarStatusAdocao(String id,String status) async {
     try {
       print(id);

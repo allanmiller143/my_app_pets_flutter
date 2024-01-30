@@ -1,5 +1,7 @@
+// ignore_for_file: avoid_print
+
 import 'package:get/get.dart';
-import 'package:replica_google_classroom/servicos/banco/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 class MeuControllerGlobal extends GetxController {
   final nome = ''.obs;

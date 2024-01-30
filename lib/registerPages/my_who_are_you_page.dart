@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/servicos/banco/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 import 'package:get/get.dart';
 //import 'package:replica_google_classroom/load_widget.dart';
@@ -43,7 +43,7 @@ class MyWhoAreYouPage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
                     height: 300,
                     child: Column(

@@ -6,7 +6,7 @@ import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 //import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 
-import 'package:replica_google_classroom/servicos/banco/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 class ImageViewerController extends GetxController {
   dynamic imagem;
@@ -114,7 +114,7 @@ class ImageViewerController extends GetxController {
                         Get.toNamed('/OngInfoEditPage', arguments: [infoEditavel, info['Id animal']]);
                       },
                     )
-                  : SizedBox()
+                  : const SizedBox()
             ],
           ),
         );

@@ -26,7 +26,7 @@ class CustomTextFormField extends StatelessWidget {
     );
 
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, 3),
+      padding:const  EdgeInsets.fromLTRB(0, 0, 0, 3),
       width: width,
       height: 42, // Aumentei a altura para acomodar o rótulo acima
       decoration: BoxDecoration(

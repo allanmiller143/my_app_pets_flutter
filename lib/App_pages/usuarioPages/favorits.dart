@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/servicos/mongodb.dart';
+import 'package:replica_google_classroom/services/mongodb.dart';
 import '../app_widgets/my_animal_card.dart';
 
 class FavoritsController extends GetxController {
@@ -69,7 +69,7 @@ class FavoritsController extends GetxController {
 }
 
 class FavoritsPage extends StatelessWidget {
-  FavoritsPage({Key? key}) : super(key: key);
+  FavoritsPage({super.key});
   var favoritsController = Get.put(FavoritsController());
   @override
   Widget build(BuildContext context) {
@@ -147,7 +147,7 @@ class FavoritsPage extends StatelessWidget {
                       ),
                     ), 
                 
-                    Container(
+                    SizedBox(
                       width: double.infinity,
                       height: 610,
                         child: Padding(
@@ -164,7 +164,7 @@ class FavoritsPage extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                             Container(
+                             SizedBox(
                                   width:MediaQuery.of(context).size.width - 40,
                                   height: 550,
                                   child: SingleChildScrollView(

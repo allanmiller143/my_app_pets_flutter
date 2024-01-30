@@ -6,7 +6,7 @@ import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:random_string/random_string.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/servicos/banco/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 
 class SignUpController extends GetxController {
@@ -236,12 +236,12 @@ class MySignUpPage extends StatelessWidget {
                       ],
                     );
                   } else {
-                    return Text('Nenhum dado disponível');
+                    return const Text('Nenhum dado disponível');
                   }
                 } else if (snapshot.hasError) {
                   return Text('Erro ao carregar a lista de pets: ${snapshot.error}');
                 } else {
-                  return Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 253, 72, 0),));
+                  return const Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 253, 72, 0),));
                 }
               },
             ),

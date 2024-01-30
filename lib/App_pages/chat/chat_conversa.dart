@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:random_string/random_string.dart';
 import 'package:replica_google_classroom/App_pages/chat/chat.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/servicos/banco/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 class ChatConversaController extends GetxController {
   late MeuControllerGlobal meuControllerGlobal;

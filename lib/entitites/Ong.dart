@@ -1,4 +1,4 @@
-import 'package:replica_google_classroom/servicos/banco/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 class Ong {
   String nomeOng;
@@ -160,7 +160,7 @@ class Ong {
       camposInvalidos.add('Telefone\n');
     }
 
-    if (await BancoDeDados.verificarCpfExistente(cpfRepresentante)){
+    if (await BancoDeDados.verificarCpfExistente('cpf representante',cpfRepresentante)){
       camposInvalidos.add('cpf já cadastrado\n');
     }
     if (await BancoDeDados.verificarTelefoneExistente(telefone)){

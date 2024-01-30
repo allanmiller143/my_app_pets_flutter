@@ -34,7 +34,7 @@ class PrincipaAppController extends GetxController {
 
 
 class MyPrincipalAppPage extends StatelessWidget {
-  MyPrincipalAppPage({Key? key}) : super(key: key);
+  const MyPrincipalAppPage({super.key});
 
   @override
   Widget build(BuildContext context) {
