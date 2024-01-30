@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:random_string/random_string.dart';
+import 'package:replica_google_classroom/App_pages/ongPages/listas.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
@@ -367,6 +368,16 @@ class BancoDeDados{
 }
 
 
+  static Future<QuerySnapshot> getPetPorIdAdotado(String ongId, String petId) async {
+  return await FirebaseFirestore.instance
+      .collection('users')
+      .doc(ongId)
+      .collection('pets adotados')
+      .where('Id animal', isEqualTo: petId)  
+      .get();
+}
+
+
 
 
   static criaChatRoom(String chatRoomId,Map<String,dynamic> chatRoomInfoMap) async{
@@ -422,35 +433,62 @@ class BancoDeDados{
  
 static adotar(String idAdocao, Map<String,dynamic> info) async {
   // Cria uma adoção nova se não existe.
-  final snapshot = await FirebaseFirestore.instance.collection('adocoes').doc(idAdocao).get();
+  final snapshot = await FirebaseFirestore.instance.collection('adocoes').where('Id adoção',isEqualTo: idAdocao).get();
+  final querySnapshot = await FirebaseFirestore.instance.collection('adocoes').where('Id animal', isEqualTo: info['Id animal']).get();
+         
+  if (snapshot.docs.isNotEmpty ) {
+    if(snapshot.docs[0]['Status'] == "Cancelada por usuário"){
+      if(querySnapshot.docs.isNotEmpty){
+        bool alguem = false;
+        querySnapshot.docs.forEach((QueryDocumentSnapshot doc) {
+        print('entrei');
+        if(doc['Status'] != "Cancelada por usuário"){
+          alguem = true;
+        }
+      });
+      if(alguem){
+        mySnackBar('Um usuário já abriu um processo de adoção para esse pet', false);
+        return true;
+      }else{
+        FirebaseFirestore.instance.collection('users').doc(info['Id ong']).collection('pets').doc(info['Id animal']).update({'Em processo de adoção': true});
+        mySnackBar('Processo de adoção reaberto, aguarde a ong analisar seu pedido', true);
+        return FirebaseFirestore.instance.collection('adocoes').doc(idAdocao).set(info);
+      }
 
-  final querySnapshot = await FirebaseFirestore.instance
-      .collection('adocoes')
-      .where('Id animal', isEqualTo: info['Id animal'])
-      .get();
+      }
 
-  if (snapshot.exists) {
-    print('Já existia');
-    print(idAdocao);
-    mySnackBar('Você já abriu um processo de adoção nesse pet', false);
-    return true;
+    }
+    else{
+      mySnackBar('Você já abriu um processo de adoção nesse pet', false);
+      return true;
+    }
+ 
   } else if (querySnapshot.docs.isNotEmpty) {
+    bool alguem = false;
+    querySnapshot.docs.forEach((QueryDocumentSnapshot doc) {
+      print('entrei');
+      if(doc['Status'] != "Cancelada por usuário" && doc['Status'] != "Adoção negada" ){
+        alguem = true;
+      }
+    });
+
+    if(alguem){
+      mySnackBar('Um usuário já abriu um processo de adoção para esse pet', false);
+      return true;
+    }
+    else{
+      mySnackBar('Aguarde a ONG analisar o seu pedido', true);
+      FirebaseFirestore.instance.collection('users').doc(info['Id ong']).collection('pets').doc(info['Id animal']).update({'Em processo de adoção': true});
+      return FirebaseFirestore.instance.collection('adocoes').doc(idAdocao).set(info);
+
+    }
     // Verifica se a consulta não está vazia (ou seja, se já existe uma adoção para o mesmo pet).
-    mySnackBar('Um usuário já abriu um processo de adoção para esse pet', false);
+    
   } else {
     mySnackBar('Aguarde a ONG analisar o seu pedido', true);
-
-
-    FirebaseFirestore.instance
-    .collection('users')
-    .doc(info['Id ong'])
-    .collection('pets')
-    .doc(info['Id animal'])
-    .update({'Em processo de adoção': true});
-
-
-
+    FirebaseFirestore.instance.collection('users').doc(info['Id ong']).collection('pets').doc(info['Id animal']).update({'Em processo de adoção': true});
     return FirebaseFirestore.instance.collection('adocoes').doc(idAdocao).set(info);
+    
   }
 }
 
@@ -498,6 +536,41 @@ static adotar(String idAdocao, Map<String,dynamic> info) async {
 
 
 
+static Future<void> moverPetParaPetsAdotados(String userId, String petId, String url) async {
+  try {
+    // Referência ao documento do pet dentro da coleção 'pets' do usuário
+    DocumentReference petReference = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('pets')
+        .doc(petId);
+
+    // Obtém os dados do pet
+    DocumentSnapshot petSnapshot = await petReference.get();
+
+    if (petSnapshot.exists) {
+      // Move o pet para a coleção 'pets adotados' do usuário
+      await FirebaseFirestore
+          .instance
+          .collection('users')
+          .doc(userId)
+          .collection('pets adotados')
+          .doc(petId)
+          .set(petSnapshot.data() as Map<String, dynamic>);
+
+
+
+      // Exclui o documento do pet da coleção 'pets'
+      await petReference.delete();
+
+      print('Pet movido para "pets adotados" com sucesso!');
+    } else {
+      print('Pet não encontrado na coleção "pets".');
+    }
+  } catch (e) {
+    print('Erro ao mover pet: $e');
+  }
+}
 
 
 

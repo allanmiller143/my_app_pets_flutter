@@ -1,9 +1,11 @@
+// ignore_for_file: unnecessary_string_escapes
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/servicos/banco/firebase.dart';
 
 class AdocaoController extends GetxController {
   late MeuControllerGlobal meuControllerGlobal;
@@ -23,14 +25,23 @@ class AdocaoController extends GetxController {
         for (DocumentSnapshot<Map<String, dynamic>> ds in snapshot.docs) {
           var idContato = '${ds.data()?['Id usuario']}-${ds.data()?['Id animal']}'; 
           var user = await BancoDeDados.getUsuarioPorId(ds.data()?['Id usuario']);
-          var pet = await BancoDeDados.getPetPorId(ds.data()?['Id ong'],ds.data()?['Id animal']);
-         Timestamp timestamp = ds.data()?['Hora adoção'] as Timestamp;
-        // Converter Timestamp para DateTime
-        DateTime dateTime = timestamp.toDate();
-        // Formatar a hora como uma string (você pode ajustar o formato conforme necessário)
-        String data = DateFormat('dd/MM/yyyy').format(dateTime);
-        // Remover a parte do fuso horário
-        data = data.replaceAll(' UTC-3', '');
+
+          var pet;
+          if( ds.data()?['Status'] == 'Finalizada'){
+            pet = await BancoDeDados.getPetPorIdAdotado(ds.data()?['Id ong'],ds.data()?['Id animal']);
+          }else{
+            pet = await BancoDeDados.getPetPorId(ds.data()?['Id ong'],ds.data()?['Id animal']);
+          }
+
+          
+
+          Timestamp timestamp = ds.data()?['Hora adoção'] as Timestamp;
+          // Converter Timestamp para DateTime
+          DateTime dateTime = timestamp.toDate();
+          // Formatar a hora como uma string (você pode ajustar o formato conforme necessário)
+          String data = DateFormat('dd/MM/yyyy').format(dateTime);
+          // Remover a parte do fuso horário
+          data = data.replaceAll(' UTC-3', '');
           var info = {
             'Nome usuario': user.docs[0]['Nome'],
             'Rua': user.docs[0]['Rua'],
@@ -54,6 +65,7 @@ class AdocaoController extends GetxController {
             'Id usuario': ds.data()?['Id usuario'],
             'Status': ds.data()?['Status'],
             'Id adoção': ds.data()?['Id adoção'],
+            'Id ong': ds.data()?['Id ong']
           };
         
           if(filtro == 'Todas adoções'){
@@ -106,7 +118,7 @@ class AdocaoController extends GetxController {
                 color: const Color.fromARGB(255, 255, 255, 255),
                 borderRadius: BorderRadius.circular(15)
               ),
-              padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+              padding: const  EdgeInsets.fromLTRB(20, 10, 20, 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,11 +126,11 @@ class AdocaoController extends GetxController {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(info['Status'],style: TextStyle(fontWeight: FontWeight.w200,fontSize: 10),),
-                      Text(info['Hora adoção'],style: TextStyle(fontWeight: FontWeight.w200,fontSize: 10),),
+                      Text(info['Status'],style: const TextStyle(fontWeight: FontWeight.w200,fontSize: 10),),
+                      Text(info['Hora adoção'],style:const  TextStyle(fontWeight: FontWeight.w200,fontSize: 10),),
                     ],
                   ),
-                  SizedBox(height: 5,),
+                  const SizedBox(height: 5,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -142,9 +154,9 @@ class AdocaoController extends GetxController {
                             children: [
                               SizedBox(
                                 width: 150,
-                                child: Text('${info['Nome animal']} - ${info['Idade']}',style: TextStyle(overflow: TextOverflow.ellipsis),)
+                                child: Text('${info['Nome animal']} - ${info['Idade']}',style:const  TextStyle(overflow: TextOverflow.ellipsis),)
                                 ),
-                              Text(info['Raça'],style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10),),
+                              Text(info['Raça'],style:const  TextStyle(fontWeight: FontWeight.w300, fontSize: 10),),
                                   
                             ],
                           ),
@@ -157,10 +169,10 @@ class AdocaoController extends GetxController {
                         };
                         await BancoDeDados.criaChatRoom(chatRoomId, chatRoomInfoMap);
                         Get.toNamed('/chatConversa',arguments: [info['Id usuario'], info['Nome usuario']]);
-                      }, icon: Icon(Icons.chat,size: 18,))
+                      }, icon:const  Icon(Icons.chat,size: 18,))
                     ],
                   ),
-                  Divider(),
+                 const  Divider(),
                   Text(info['Nome-numero'], 
                     style: const TextStyle(
                         fontSize: 16,
@@ -189,11 +201,11 @@ class AdocaoController extends GetxController {
                       ),
                     ],
                   ),
-                  Divider(),
+                  const Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ( filtro != 'Todas adoções' && filtro != 'Finalizada' && filtro != 'Negadas')?
+                      ( filtro != 'Todas adoções' && filtro != 'Finalizada'&& filtro != 'Negadas')?
                       
                       GestureDetector(
                         onTap: () async {
@@ -203,7 +215,19 @@ class AdocaoController extends GetxController {
                           if(filtro == 'Aguardando avalição dos dados'){
                             status = 'Domentação aprovada';
                           }else {
-                            status = 'Finalizada';  
+                            status = 'Finalizada';                             
+                            
+                            for(var animal in  meuControllerGlobal.usuario['Pets']){
+                              if(animal['Id animal'] == info['Id animal']){
+                                print(animal);
+                                meuControllerGlobal.usuario['Pets'].remove(animal);
+                                break;
+                              }
+
+                            }
+                            
+                            await BancoDeDados.moverPetParaPetsAdotados(info['Id ong'], info['Id animal'], info['Imagem']);
+
                           }
 
                           await BancoDeDados.AlterarStatusAdocao(id,status);
@@ -211,7 +235,7 @@ class AdocaoController extends GetxController {
                         child: const Text('Confirmar adoção',style: TextStyle(color: Colors.blueAccent)
                         )
                       ):
-                      SizedBox(),
+                      const SizedBox(),
                       ( filtro != 'Todas adoções' && filtro != 'Finalizada' && filtro != 'Negadas')?
                       GestureDetector(
                         onTap: () async {
@@ -221,13 +245,13 @@ class AdocaoController extends GetxController {
                           if(filtro == 'Aguardando avalição dos dados'){
                             status = 'Adoção negada';
                           }
-
                           await BancoDeDados.AlterarStatusAdocao(id,status);
+                          await BancoDeDados.alterarPetInfo({'Em processo de adoção': false}, meuControllerGlobal.usuario['Id'], info['Id animal']);
                         },
                         child: const Text('Negar adoção',style: TextStyle(color: Color.fromARGB(255, 255, 68, 68))
                         )
                       ):
-                      SizedBox(),
+                      const SizedBox(),
                     ],
                   )
                 ],

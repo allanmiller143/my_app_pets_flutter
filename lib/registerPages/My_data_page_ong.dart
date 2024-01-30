@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/servicos/banco/firebase.dart';
 import '../widgets/load_widget.dart';
 import '../widgets/my_textformfield.dart';
 import '../widgets/mybutton.dart';
 import '../entitites/Ong.dart';
-import '../services/Complete_cep.dart';
+import '../servicos/Complete_cep.dart';
 
 class DataOngController extends GetxController {
   late MeuControllerGlobal meuControllerGlobal;  

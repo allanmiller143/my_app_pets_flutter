@@ -22,7 +22,7 @@ import 'package:replica_google_classroom/firebase_options.dart';
 import 'App_pages/ongPages/componentesOngPerfil/ImageViewerPage.dart';
 import 'loginPages/signIn.dart';
 import 'loginPages/signUp.dart';
-import 'services/mongodb.dart';
+import 'servicos/mongodb.dart';
 import 'loginPages/esqueciSenha.dart';
 import 'registerPages/My_data_page_ong.dart';
 import 'registerPages/my_who_are_you_page.dart';
