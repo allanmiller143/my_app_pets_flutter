@@ -32,6 +32,15 @@ login(context) async{
         tipo = "${querySnapshot.docs[0]['Tipo']}";
 
         if(tipo == '-1'){
+
+           meuControllerGlobal.usuario = {
+              'Nome' : querySnapshot.docs[0]['Nome'],
+              'Id' : querySnapshot.docs[0]['Id'],
+              'E-mail' : querySnapshot.docs[0]['E-mail'],
+              'ImagemPerfil' :querySnapshot.docs[0]['ImagemPerfil'],
+              'Tipo' : querySnapshot.docs[0]['Tipo'],
+
+           };
            Get.toNamed('/whoAreYouPage');
         }
         else{
