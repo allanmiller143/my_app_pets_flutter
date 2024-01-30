@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/adopt_pages/user/validar.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/services/Complete_cep.dart';
-import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/servicos/Complete_cep.dart';
+import 'package:replica_google_classroom/servicos/banco/firebase.dart';
 import 'package:replica_google_classroom/widgets/load_Widget.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 

@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/ongPhoto.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/cardFeed.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/servicos/banco/firebase.dart';
 
 class SettingsPageController extends GetxController {
   //variaveis 
@@ -37,6 +37,13 @@ class SettingsPageController extends GetxController {
     }else{
       args = true;
       usuario = Get.arguments[0];
+      var pets = await BancoDeDados.obterPetsDoUsuario(usuario['Id']);
+      var imagensFeed =  await BancoDeDados.obterImagensFeedDoUsuario(usuario['Id']);
+      usuario['Pets'] =pets;
+      usuario['Imagens feed'] = imagensFeed;  
+      print('----------------------------------------------------');
+      print(usuario);
+      print('----------------------------------------------------');
     }
 
     localizacao.value = '${usuario['Cidade']},${usuario['Estado']}'; 
@@ -555,15 +562,16 @@ class SettingsPage extends StatelessWidget {
                                   ),
                                 ),
                                 Obx(
-                                  () => Container(
-                                  height: (Get.arguments == null) ?MediaQuery.of(context).size.height * 0.39 : MediaQuery.of(context).size.height * 0.45,
-                                    color: const Color.fromARGB(255, 255, 255, 255),
-                                    child: SingleChildScrollView(
-                                      child: settingsPageController.opcao.value == 0 ? Column(
-                                         children: settingsPageController.mostraFeed(context,settingsPageController.info,1),
-                                      ) : 
-                                      Column(
-                                         children: settingsPageController.mostraFeed(context,settingsPageController.petsInfo,2),
+                                  () => Expanded(
+                                    child: Container(
+                                      color: const Color.fromARGB(255, 255, 255, 255),
+                                      child: SingleChildScrollView(
+                                        child: settingsPageController.opcao.value == 0 ? Column(
+                                           children: settingsPageController.mostraFeed(context,settingsPageController.info,1),
+                                        ) : 
+                                        Column(
+                                           children: settingsPageController.mostraFeed(context,settingsPageController.petsInfo,2),
+                                        ),
                                       ),
                                     ),
                                   ),

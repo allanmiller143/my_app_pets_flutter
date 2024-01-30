@@ -10,7 +10,7 @@ import 'package:replica_google_classroom/App_pages/usuarioPages/pets_page.dart';
 
 class PrincipaAppController extends GetxController {
 
-  RxInt opcaoSelecionada = 3.obs;
+  RxInt opcaoSelecionada = 0.obs;
   Color corItemSelecionado = const Color.fromARGB(255, 0, 0, 0);
   Color corItemNaoSelecionado = const  Color.fromARGB(255, 255, 255, 255);
   late String emailUsuario;

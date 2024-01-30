@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/servicos/banco/firebase.dart';
 
 class StatusAdocaoController extends GetxController {
   late MeuControllerGlobal meuControllerGlobal;
@@ -72,6 +72,8 @@ class StatusAdocaoController extends GetxController {
                   onTap: () async {
                     print('cancelar adocao');
                     await BancoDeDados.AlterarStatusAdocao(ds.data()?['Id adoção'],'Cancelada por usuário');
+                    await BancoDeDados.alterarPetInfo({'Em processo de adoção': false},ds.data()?['Id ong'],ds.data()?['Id animal']);
+
 
                   },
                   child: Material(

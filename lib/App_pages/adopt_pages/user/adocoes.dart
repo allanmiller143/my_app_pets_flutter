@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:replica_google_classroom/App_pages/adopt_pages/ong/adocoes.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/servicos/banco/firebase.dart';
 
 
 class UsuarioAdocoesController extends GetxController {
@@ -24,7 +24,16 @@ class UsuarioAdocoesController extends GetxController {
         for (DocumentSnapshot<Map<String, dynamic>> ds in snapshot.docs) {
           var idContato = '${ds.data()?['Id usuario']}-${ds.data()?['Id animal']}'; 
           var user = await BancoDeDados.getUsuarioPorId(ds.data()?['Id usuario']);
-          var pet = await BancoDeDados.getPetPorId(ds.data()?['Id ong'],ds.data()?['Id animal']);
+
+          QuerySnapshot<Object?> pet;
+          if(ds.data()?['Status'] == 'Finalizada'){
+             pet = await BancoDeDados.getPetPorIdAdotado(ds.data()?['Id ong'],ds.data()?['Id animal']);
+             print(pet.docs[0]);
+          }
+          else{
+             pet = await BancoDeDados.getPetPorId(ds.data()?['Id ong'],ds.data()?['Id animal']);
+          }
+            
         
           var info = {
             'Nome usuario': user.docs[0]['Nome'],
@@ -208,10 +217,12 @@ class UsuarioAdocoesPage extends StatelessWidget {
                       usuarioAdocoesController.atualiza.value != -1 ?
                        Padding(
                          padding: const EdgeInsets.fromLTRB(20,20,20,0),
-                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: usuarioAdocoesController.listaAdocoes
-                                               ),
+                         child: SingleChildScrollView(
+                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: usuarioAdocoesController.listaAdocoes
+                                                 ),
+                         ),
                        ): SizedBox()
                     );
                   } else {

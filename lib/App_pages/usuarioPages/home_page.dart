@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
+import 'package:replica_google_classroom/servicos/banco/firebase.dart';
 import '../app_widgets/my_custom_card_home_page.dart';
 import '../app_widgets/my_animal_card.dart';
 
@@ -14,13 +15,8 @@ class HomePageController extends GetxController {
   Future<List<Map<String,dynamic>>> alteraLista() async {
     meuControllerGlobal = Get.find();
     usuario = meuControllerGlobal.usuario;
+    meuControllerGlobal.petsSistema = await BancoDeDados.obterPets();
     pets = meuControllerGlobal.petsSistema;
-
-
-    for (var pet in pets){
-      print(pet['Nome animal']);
-
-    };
     return pets;
   }
 }
