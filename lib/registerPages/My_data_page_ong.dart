@@ -6,7 +6,6 @@ import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/Complete_cep.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
 import '../widgets/load_widget.dart';
-import '../widgets/my_textformfield.dart';
 import '../widgets/mybutton.dart';
 import '../entitites/Ong.dart';
 
@@ -27,8 +26,9 @@ class DataOngController extends GetxController {
   var nomeRepresentante = TextEditingController();
   var cpfRepresentante = TextEditingController();
   var emailRepresentante = TextEditingController();
+  var ruaAtivado  = false.obs;
+  var bairroAtivado  = false.obs;
   List<TextEditingController> controllers = [];
-
 
   Future<String> func() async {
     meuControllerGlobal = Get.find();
@@ -43,6 +43,64 @@ class DataOngController extends GetxController {
     bairro.text = dados['bairro'];
     rua.text = dados['logradouro'];
   }
+
+
+List<Widget> gerarTextFields() {
+    return [
+      buildTextField('Nome ong', nomeOng),
+      buildTextField('CEP', cep, maxLength: 8,teclado: 'number'),
+      buildTextField('cnpj', cnpj, maxLength: 14,teclado: 'number'),
+      buildTextField('Estado', estado,maxLength:  2,ativado: false),
+      buildTextField('Cidade', cidade,ativado: false),
+      Obx(()=> buildTextField('Bairro', bairro, ativado: bairroAtivado.value)),
+      Obx(()=> buildTextField('Rua', rua,ativado: ruaAtivado.value)),
+      buildTextField('Telefone/com ddd', telefone, maxLength: 11),
+      buildTextField('Numero', numero, maxLength: 3,teclado: 'number'),
+      buildTextField('cpf representante', cpfRepresentante, maxLength: 11),
+      buildTextField('Email representante', emailRepresentante, maxLength: 11),
+      buildTextField('Nome representante', nomeRepresentante,teclado: 'number'),
+    ];
+  }
+
+
+  
+Widget buildTextField(String text, TextEditingController controller, {String teclado = 'texto', int maxLength = 1, bool ativado = true, Color backgroundColor = Colors.white}) {
+  return Padding(
+    padding: maxLength == 1 ? const EdgeInsets.fromLTRB(0, 0, 0, 16) : const EdgeInsets.fromLTRB(0, 0, 0, 0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(text,style: TextStyle(fontWeight: FontWeight.bold),),
+        TextFormField(
+          onChanged: (value) async {
+            if (text == 'CEP' && value.length == 8) {
+              await completarEndereco(cep.text);
+            }
+          },
+          keyboardType: teclado == 'texto' ? TextInputType.text : TextInputType.number,
+          maxLength: maxLength == 1 ? null : maxLength,
+          enabled: ativado,
+          controller: controller,
+          style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500),
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: backgroundColor, // Define a cor de fundo desejada aqui
+            border: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black87)),
+            contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+            suffixIcon: IconButton(
+              icon: const Icon(Icons.clear, size: 18),
+              onPressed: () {
+                controller.clear();
+              },
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+
 
   Future<void> fazerCadastro(BuildContext context) async {
     var ong = Ong(
@@ -74,29 +132,31 @@ class DataOngController extends GetxController {
 
     if (faltaCampo == false) {
       retorno = await ong.validaCampos(cpfRepresentante.text,cnpj.text, cep.text, telefone.text);
-      if (retorno == '') {
-          
-          meuControllerGlobal.nomeOng.value = ongDataMap['Nome ong']!;
-          meuControllerGlobal.cnpj.value = ongDataMap['cnpj']!;
-          meuControllerGlobal.cep.value = ongDataMap['cep']!;
-          meuControllerGlobal.numero.value = ongDataMap['Numero']!;
-          meuControllerGlobal.bairro.value = ongDataMap['Bairro']!;
-          meuControllerGlobal.telefone.value = ongDataMap['Telefone']!;
-          meuControllerGlobal.rua.value = ongDataMap['Rua']!;
-          meuControllerGlobal.numero.value = ongDataMap['Numero']!;
-          meuControllerGlobal.estado.value = ongDataMap['Estado']!;
-          meuControllerGlobal.cidade.value = ongDataMap['Cidade']!;
-          meuControllerGlobal.nomeRepresentante.value = ongDataMap['Nome representante']!;
-          meuControllerGlobal.emailRepresentante.value = ongDataMap['Email representante']!;
-          meuControllerGlobal.cpfRepresentante.value = ongDataMap['cpf representante']!;
-          meuControllerGlobal.tipo.value = 'ong';
-          ongDataMap['Pets'] = [];
-          ongDataMap['Imagens feed'] = [];
-          ongDataMap['Bio'] = '';
+      if (retorno == '') {    
+          var usuario = {
+              'Pets' : [],
+              'Nome ong' : nomeOng.text,
+              'cnpj' : cnpj.text,
+              'Rua' : rua.text,
+              'Numero' : numero.text,
+              'Estado' : estado.text,
+              'Cidade' : cidade.text,
+              'Bairro' : bairro.text,
+              'cep' : cep.text,
+              'Telefone' : telefone.text,
+              'Nome representante' : nomeRepresentante.text,
+              'Email representante' : emailRepresentante.text,
+              'cpf representante' : cpfRepresentante.text,
+              'ImagemPerfil' : '',
+              'Bio' : '',
+              'Imagens feed' : [],
+              'Tipo': 'ong'
+            };  
+            meuControllerGlobal.usuario.addAll(usuario);
+            Get.toNamed('/principalOngAppPage');
 
-          await BancoDeDados.adicionarInformacoesUsuario(ongDataMap, meuControllerGlobal.obterId());
-          await meuControllerGlobal.criaUsuarioSignUp();
-  
+          await BancoDeDados.adicionarInformacoesUsuario(usuario, meuControllerGlobal.usuario['Id']);
+
           mySnackBar('Cadastro bem sucedido',true);
           Get.toNamed('/principalOngAppPage');
       }
@@ -138,152 +198,58 @@ class MyOngDataPage extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(20.0),
-                          child: SizedBox(
-                            height: 600,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                    
-                                        Get.back();
-                                      },
-                                      icon: const Icon(
-                                        Icons.arrow_back_ios,
-                                        size: 30,
+                          child: SingleChildScrollView(
+                            child: SizedBox(
+                         
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                      
+                                          Get.back();
+                                        },
+                                        icon: const Icon(
+                                          Icons.arrow_back_ios,
+                                          size: 30,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Image.asset(
-                                  'assets/minhaLogo.png',
-                                  width: 250,
-                                  height: 50,
-                                ),
-                                const Text(
-                                  "Complete seu cadastro!",
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w600,
+                                    ],
                                   ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CustomTextFormField(
-                                      hintText: 'Nome ONG',
-                                      controller: dataOngController.nomeOng,
-                                      width: 190,
+                                  Image.asset(
+                                    'assets/minhaLogo.png',
+                                    width: 250,
+                                    height: 50,
+                                  ),
+                                  const Text(
+                                    "Complete seu cadastro!",
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                    CustomTextFormField(
-                                      hintText: 'CNPJ',
-                                      controller: dataOngController.cnpj,
-                                      width: 150,
-                                      keyboardType: TextInputType.number,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CustomTextFormField(
-                                      onChanged: (value) async {
-                                        if (value.length == 8) {
-                                          await dataOngController.completarEndereco(value);
-                                        }
-                                      },
-                                      hintText: 'CEP sede',
-                                      controller: dataOngController.cep,
-                                      width: 95,
-                                      keyboardType: TextInputType.number,
-                                    ),
-                                    CustomTextFormField(
-                                      hintText: 'Bairro sede',
-                                      controller: dataOngController.bairro,
-                                      width: 130,
-                                      onChanged: (value) async {
-                                        if (value.length == 8) {
-                                          await dataOngController.completarEndereco(value);
-                                        }
-                                      },
-                                    ),
-                                    CustomTextFormField(
-                                      hintText: 'Telefone sede',
-                                      controller: dataOngController.telefone,
-                                      width: 115,
-                                      keyboardType: TextInputType.number,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CustomTextFormField(
-                                      hintText: 'Rua sede',
-                                      controller: dataOngController.rua,
-                                      width: 280,
-                                    ),
-                                    CustomTextFormField(
-                                      hintText: 'n°',
-                                      controller: dataOngController.numero,
-                                      width: 60,
-                                      keyboardType: TextInputType.number,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CustomTextFormField(
-                                      hintText: 'Estado sede',
-                                      controller: dataOngController.estado,
-                                      width: 90,
-                                    ),
-                                    CustomTextFormField(
-                                      hintText: 'Cidade sede',
-                                      controller: dataOngController.cidade,
-                                      width: 230,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CustomTextFormField(
-                                      hintText: 'Nome representante',
-                                      controller: dataOngController.nomeRepresentante,
-                                      width: 210,
-                                    ),
-                                    CustomTextFormField(
-                                      hintText: 'cpf representante',
-                                      controller: dataOngController.cpfRepresentante,
-                                      width: 140,
-                                      keyboardType: TextInputType.number,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    CustomTextFormField(
-                                      hintText: 'email representante',
-                                      controller: dataOngController.emailRepresentante,
-                                      width: 250,
-                                    ),
-                                  ],
-                                ),
-                                CustomIconButton(
-                                  label: 'Confirmar',
-                                  onPressed: ()  {
-                                    dataOngController.fazerCadastro(context);
-                                  },
-                                  width: double.infinity,
-                                  alinhamento: MainAxisAlignment.center,
-                                ),
-                              ],
+                                  ),
+                                  SizedBox(height: 15,),
+                                  
+                                  Column(
+                                      children: dataOngController.gerarTextFields()
+                                  ),
+                            
+                                  
+                              
+                            
+                                  CustomIconButton(
+                                    label: 'Confirmar',
+                                    onPressed: ()  {
+                                      dataOngController.fazerCadastro(context);
+                                    },
+                                    width: double.infinity,
+                                    alinhamento: MainAxisAlignment.center,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
