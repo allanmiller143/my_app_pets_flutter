@@ -36,7 +36,7 @@ class OngPhoto extends StatelessWidget {
             image: imageProvider,
             fit: BoxFit.cover,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(15)),
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
         ),
         child: 
         args == false ?
@@ -52,9 +52,9 @@ class OngPhoto extends StatelessWidget {
                   height: 30,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Color.fromARGB(255, 255, 94, 7),
+                    color:const  Color.fromARGB(255, 255, 94, 7),
                   ),
-                  child: Icon(Icons.add, size: 16, color: const Color.fromARGB(255, 255, 255, 255)),
+                  child: const Icon(Icons.add, size: 16, color: Color.fromARGB(255, 255, 255, 255)),
                 ),
               ),
             )

@@ -69,7 +69,7 @@ class FavoritsController extends GetxController {
 }
 
 class FavoritsPage extends StatelessWidget {
-  FavoritsPage({Key? key}) : super(key: key);
+  FavoritsPage({super.key});
   var favoritsController = Get.put(FavoritsController());
   @override
   Widget build(BuildContext context) {
@@ -147,7 +147,7 @@ class FavoritsPage extends StatelessWidget {
                       ),
                     ), 
                 
-                    Container(
+                    SizedBox(
                       width: double.infinity,
                       height: 610,
                         child: Padding(
@@ -164,7 +164,7 @@ class FavoritsPage extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                             Container(
+                             SizedBox(
                                   width:MediaQuery.of(context).size.width - 40,
                                   height: 550,
                                   child: SingleChildScrollView(

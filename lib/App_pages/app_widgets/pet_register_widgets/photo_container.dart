@@ -31,7 +31,7 @@ class PhotoContainer extends StatelessWidget {
           onLongPress: () {
             pressed = true;
           },
-          child: Container(
+          child: SizedBox(
             width: 130,
             height: 130,
             child: image != null
@@ -78,7 +78,7 @@ class PhotoContainer extends StatelessWidget {
               ),
             ),
           ),
-        ):SizedBox(),
+        ):const SizedBox(),
       ],
     );
   }

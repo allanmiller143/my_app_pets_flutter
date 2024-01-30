@@ -52,7 +52,7 @@ class XPage extends StatelessWidget {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
-                  color: Color.fromARGB(6, 236, 180, 12),
+                  color:const  Color.fromARGB(6, 236, 180, 12),
                 ),
               ),
               Positioned(
@@ -70,13 +70,13 @@ class XPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
+                            SizedBox(
                               width: 35,
                               height: 40,
                               child: IconButton(
-                                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                padding:const  EdgeInsets.fromLTRB(10, 0, 0, 0),
                                 onPressed: () {Get.back();},
-                                icon: Icon( size: 30,color:const Color.fromARGB(255, 255, 255, 255),Icons.arrow_back_ios,), 
+                                icon:const  Icon( size: 30,color: Color.fromARGB(255, 255, 255, 255),Icons.arrow_back_ios,), 
                               ),
                             ),
                           ],
@@ -91,7 +91,7 @@ class XPage extends StatelessWidget {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.6,
-                  decoration: BoxDecoration(
+                  decoration:const  BoxDecoration(
                       color: Color.fromARGB(255, 255, 255, 255),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(65),
@@ -112,15 +112,15 @@ class XPage extends StatelessWidget {
                                   padding:const EdgeInsets.fromLTRB(5, 0, 5, 0),    
                                   child: Text(
                                     xController.ongPetInfo['nome'],
-                                    style: TextStyle(fontFamily: 'AsapCondensed-Bold',fontSize: 28),
+                                    style:const  TextStyle(fontFamily: 'AsapCondensed-Bold',fontSize: 28),
    
                                   ),
                                 ),
                                 Row(
                                   children: [
-                                    Icon(Icons.place_outlined,color: Color.fromARGB(255, 255, 94, 0),size: 15,),
+                                    const Icon(Icons.place_outlined,color: Color.fromARGB(255, 255, 94, 0),size: 15,),
                                     Text(xController.ongPetInfo['localizacao'],
-                                    style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontSize: 15))      
+                                    style: const TextStyle(fontFamily: 'AsapCondensed-Medium',fontSize: 15))      
                                   ],
                                 )
                               ],
@@ -184,7 +184,7 @@ class XPage extends StatelessWidget {
                                   child: Container(
                                     width: MediaQuery.of(context).size.width * 0.875,
                                     height: 80,
-                                    decoration: BoxDecoration(
+                                    decoration:const  BoxDecoration(
                                       borderRadius:BorderRadius.all(Radius.circular(15)),   
                                     ),
                                     child: Row(
@@ -197,7 +197,7 @@ class XPage extends StatelessWidget {
                                               Container(
                                                 width: 60,
                                                 height: 60,
-                                                decoration: BoxDecoration(
+                                                decoration:const  BoxDecoration(
                                                   color: Color.fromARGB(255, 211, 248, 247),   
                                                   borderRadius: BorderRadius.all(Radius.circular(50),),
                                                   image: DecorationImage(
@@ -212,11 +212,11 @@ class XPage extends StatelessWidget {
                                                   children: [
                                                     Text(
                                                         Get.arguments[0]['nomeOng'],
-                                                        style: TextStyle(fontFamily:'AsapCondensed-Bold',fontSize: 13)),      
+                                                        style:const  TextStyle(fontFamily:'AsapCondensed-Bold',fontSize: 13)),      
                                                     Text(
                                                         Get.arguments[0]['email'],
-                                                        style: TextStyle(fontFamily:'AsapCondensed-Medium',fontSize: 13)),    
-                                                    Row(
+                                                        style:const  TextStyle(fontFamily:'AsapCondensed-Medium',fontSize: 13)),    
+                                                    const Row(
                                                       children: [
                                                         Icon(Icons.verified,size: 15,),
                                                         Text('verificado',style: TextStyle( fontFamily:'AsapCondensed-Medium',fontSize: 13))       
@@ -230,7 +230,7 @@ class XPage extends StatelessWidget {
                                         ),
                                         IconButton(
                                             onPressed: () {},
-                                            icon: Icon(
+                                            icon: const Icon(
                                               Icons.message,
                                               color: Color.fromARGB(
                                                   255, 252, 116, 5),
@@ -248,9 +248,9 @@ class XPage extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
+                                const Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(5, 0, 0, 5),
+                                       EdgeInsets.fromLTRB(5, 0, 0, 5),
                                   child: Text("Detalhes da Raça",
                                       style: TextStyle(
                                           fontFamily: 'AsapCondensed-Bold',
@@ -259,9 +259,9 @@ class XPage extends StatelessWidget {
                                 Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(5, 0, 0, 5),
-                                  child: Container(
+                                  child: SizedBox(
                                     width: MediaQuery.of(context).size.width * 0.875,
-                                    child: Text(
+                                    child: const Text(
                                         'Os vira-latas são cães sem raça definida, conhecidos por sua inteligência, lealdade e capacvalor de adaptação. São frequentemente encontrados em situações de resgate e fazem companheiros amorosos. Adotar um vira-lata é uma oportunvalor de dar um lar a um cão necessitado e fazer a diferença no mundo dos animais.',
                                         maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
@@ -276,9 +276,9 @@ class XPage extends StatelessWidget {
                                   child: GestureDetector(
                                     onTap: () {
                                       Get.toNamed('/insertUserDataPage');
-                                      print('veja mais');
+                        
                                     },
-                                    child: Text('Veja Mais',
+                                    child: const Text('Veja Mais',
                                         style: TextStyle(
                                             fontFamily: 'AsapCondensed-Bold',
                                             fontSize: 14,

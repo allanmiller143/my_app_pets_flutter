@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -35,13 +37,13 @@ class PerfilUsuarioPage extends StatelessWidget {
                       Container(
                       width: double.infinity,
                       height: 165,
-                      color: Color.fromARGB(255, 255, 255, 255),
+                      color:const  Color.fromARGB(255, 255, 255, 255),
                       child: Stack(
                         children: [
                           Container(
                             width: double.infinity,
                             height: 130,
-                            decoration: BoxDecoration(
+                            decoration:const  BoxDecoration(
                               color: Color.fromARGB(255, 255, 51, 0),
                               borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(20),
@@ -54,7 +56,7 @@ class PerfilUsuarioPage extends StatelessWidget {
                                 Container(
                                   width: 250,
                                   height: 50,
-                                  decoration: BoxDecoration(
+                                  decoration:const  BoxDecoration(
                                       image: DecorationImage(
                                         image: AssetImage('assets/5.png'),
                                         fit: BoxFit.cover)
@@ -68,13 +70,13 @@ class PerfilUsuarioPage extends StatelessWidget {
                             left: 15,
                             child: Card(
                               elevation: 8,
-                              shape: RoundedRectangleBorder(
+                              shape:const  RoundedRectangleBorder(
                                 borderRadius:BorderRadius.all(Radius.circular(30))  
                               ),
                               child: Container(
                                 width: MediaQuery.of(context).size.width*0.9,
                                 height: 55,
-                                decoration: BoxDecoration(
+                                decoration:const  BoxDecoration(
                                   color: Color.fromARGB(255, 255, 255, 255),
                                   borderRadius: BorderRadius.all(Radius.circular(30))     
                                 ),
@@ -117,7 +119,7 @@ class PerfilUsuarioPage extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 20,),
+                                  const SizedBox(height: 20,),
                                   GestureDetector(
                                     onTap: (){
                                       print('Pets favoritados');

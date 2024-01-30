@@ -112,7 +112,7 @@ class DataOngController extends GetxController {
 
 }
 class MyOngDataPage extends StatelessWidget {
-  MyOngDataPage({Key? key}) : super(key: key);
+  MyOngDataPage({super.key});
 
   final dataOngController = Get.put(DataOngController());
 
@@ -138,7 +138,7 @@ class MyOngDataPage extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(20.0),
-                          child: Container(
+                          child: SizedBox(
                             height: 600,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -290,10 +290,10 @@ class MyOngDataPage extends StatelessWidget {
                       ],
                     );
                   } else {
-                    return Text('erro');
+                    return const Text('erro');
                   }
                 } else {
-                  return Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 253, 72, 0),));
+                  return const Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 253, 72, 0),));
                 }
               },
             ),

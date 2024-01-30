@@ -27,7 +27,7 @@ class CustomDropdownButton extends StatelessWidget {
             elevation: 8,
             menuMaxHeight: 200,
 
-            style: TextStyle(color: Colors.black), // Estilo do texto
+            style: const TextStyle(color: Colors.black), // Estilo do texto
             underline: Container(
               color: Colors.transparent,
             ),
@@ -38,7 +38,7 @@ class CustomDropdownButton extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                   child: Text(
                     value,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Color.fromARGB(255, 0, 0, 0),
                       fontFamily: 'AsapCondensed-Bold',

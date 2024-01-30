@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, unused_catch_clause
+// ignore_for_file: avoid_print, unused_catch_clause, non_constant_identifier_names
 
 import 'package:mongo_dart/mongo_dart.dart';
 import 'dart:developer';
@@ -135,7 +135,7 @@ class MongoDataBase {
 
 static Future<void> inserePet(String ongCnpj, Map<String, dynamic> petData) async {
   try {
-    var uuid = Uuid(); // Crie uma instância de Uuid para gerar IDs únicos.
+    var uuid = const Uuid(); // Crie uma instância de Uuid para gerar IDs únicos.
     String petId = uuid.v4(); // Gere um novo ID único para o pet.
 
     // Adicione o ID único ao objeto de dados do pet.

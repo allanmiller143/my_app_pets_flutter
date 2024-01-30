@@ -43,7 +43,7 @@ class MyWhoAreYouPage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
                     height: 300,
                     child: Column(

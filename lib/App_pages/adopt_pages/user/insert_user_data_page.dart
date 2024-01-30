@@ -11,6 +11,7 @@ import 'package:replica_google_classroom/widgets/mybutton.dart';
 class InsertUserDataPageController extends GetxController {
   String titulo = Get.arguments[0];
   String subtitulo = Get.arguments[1];
+  var ongPetInfo = Get.arguments[2];
   late MeuControllerGlobal meuControllerGlobal;
   
   var cpf = TextEditingController();
@@ -129,7 +130,7 @@ List<Widget> gerarTextFields() {
       mySnackBar('preencha todos os campos', false);
     }else{
       String mensagemRetorno = 'Campos ínvalidos:\n';
-      if(!validarCPF(cpf.text)){ // aqui verificar se o cpf ja consta no sistema.
+      if(!validarCPF(cpf.text)){ // aqui verificar se o cpf existe
         mensagemRetorno = '${mensagemRetorno}cpf\n';
       }
       if(!validarTelefone(telefone.text)){
@@ -138,6 +139,10 @@ List<Widget> gerarTextFields() {
       if(!validarCEP(cep.text)){
         mensagemRetorno = '${mensagemRetorno}CEP\n';
       }
+      if(await BancoDeDados.verificarCpfExistente(cpf.text, 'cpf')){
+        mensagemRetorno = '${mensagemRetorno}cpf ja cadastrado no sistema\n';
+      }
+
 
       if(mensagemRetorno == 'Campos ínvalidos:\n'){
         
@@ -157,7 +162,7 @@ List<Widget> gerarTextFields() {
       
         meuControllerGlobal.usuario.addAll(info);
         await BancoDeDados.adicionarInformacoesUsuario(info, meuControllerGlobal.usuario['Id']);
-        Get.toNamed('/userDataPage');
+        Get.toNamed('/userDataPage',arguments: [ongPetInfo]);
         
       }else {
         mySnackBar(mensagemRetorno, false);

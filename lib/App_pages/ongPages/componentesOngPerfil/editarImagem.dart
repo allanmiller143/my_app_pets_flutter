@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
@@ -207,7 +209,7 @@ class EditarCampoImagemPage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return Text('Nenhum pet disponível');
+                    return const Text('Nenhum pet disponível');
                   }
                 } else if (snapshot.hasError) {
                   return Text(

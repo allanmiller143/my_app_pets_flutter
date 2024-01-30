@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_interpolations, avoid_print, unnecessary_brace_in_string_interps
+
 import 'dart:core';
 
 import 'package:flutter/material.dart';
@@ -36,7 +38,7 @@ List<Widget> campoEditar(BuildContext context, ) {
       child: ListTile(
           title:Text('$key'), 
           subtitle: Text('${item}'),
-          trailing: Icon(Icons.arrow_drop_down),
+          trailing: const Icon(Icons.arrow_drop_down),
           onTap: (){
             if(petId.isNotEmpty){
               if(key == 'Idade' || key == 'Raça' || key == 'Porte' || key == 'Sexo'){
@@ -72,7 +74,7 @@ List<Widget> campoEditar(BuildContext context, ) {
     );
       
     rows.add(
-      Container(
+      SizedBox(
         width: double.infinity,
         height: (key != 'Endereço' || key != 'Imagem') ? MediaQuery.of(context).size.height * 0.07 : MediaQuery.of(context).size.height * 0.11,
         child: row,

@@ -114,7 +114,7 @@ class ImageViewerController extends GetxController {
                         Get.toNamed('/OngInfoEditPage', arguments: [infoEditavel, info['Id animal']]);
                       },
                     )
-                  : SizedBox()
+                  : const SizedBox()
             ],
           ),
         );

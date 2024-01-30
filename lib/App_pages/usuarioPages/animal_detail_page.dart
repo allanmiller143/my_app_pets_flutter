@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_string_escapes, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -77,7 +77,7 @@ class AnimalInsertPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
+                            SizedBox(
                               width: 35,
                               height: 40,
                               child: IconButton(
@@ -276,7 +276,7 @@ class AnimalInsertPage extends StatelessWidget {
                                 Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(5, 0, 0, 5),
-                                  child: Container(
+                                  child: SizedBox(
                                     width: MediaQuery.of(context).size.width * 0.875,
                                     child: Text(
                                         'Os vira-latas são cães sem raça definida, conhecidos por sua inteligência, lealdade e capacvalor de adaptação. São frequentemente encontrados em situações de resgate e fazem companheiros amorosos. Adotar um vira-lata é uma oportunvalor de dar um lar a um cão necessitado e fazer a diferença no mundo dos animais.',
