@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/imageFeedDetail.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-//import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
-
 import 'package:replica_google_classroom/services/banco/firebase.dart';
 import 'package:replica_google_classroom/widgets/load_widget.dart';
 
@@ -144,31 +142,23 @@ class ImageViewerPage extends StatelessWidget {
         init: ImageViewerController(),
         builder: (_) {
           return Scaffold(
+            appBar: AppBar(
+              toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+              backgroundColor: const Color.fromARGB(255, 250, 63, 6),
+              centerTitle: true,
+              title: Text(
+                imageViewerController.meuControllerGlobal.usuario['Nome'],
+                style: TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Medium', fontWeight: FontWeight.w500, color: Color.fromARGB(255, 255, 255, 255)),
+              ),
+              leading: IconButton(onPressed: () => Get.back(), icon: const Icon(Icons.arrow_back_ios_new,size: 18, color: Color.fromARGB(255, 255, 255, 255))),  
+              actions: [
+                imageViewerController.settingsController.args == false ?
+                  IconButton(onPressed: () => imageViewerController.showBottomSheet(context), icon: const Icon(Icons.menu_sharp, color: Color.fromARGB(255, 255, 255, 255))):
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.menu_sharp, color: Color.fromARGB(255, 255, 255, 255)))
+              ],
+           ),
             body: Column(
               children: [
-    
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  color: const Color.fromARGB(255, 255, 73, 1),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                       IconButton(onPressed: () => Get.back(), icon: const Icon(Icons.arrow_back_ios_new,size: 18, color: Color.fromARGB(255, 255, 255, 255))),
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Ong dos Animais', style: TextStyle(fontSize: 16,color: Color.fromARGB(255, 255, 255, 255))),
-                        ),
-                        imageViewerController.settingsController.args == false ?
-                        IconButton(onPressed: () => imageViewerController.showBottomSheet(context), icon: const Icon(Icons.menu_sharp, color: Color.fromARGB(255, 255, 255, 255))):
-                        IconButton(onPressed: () {}, icon: const Icon(Icons.menu_sharp, color: Color.fromARGB(255, 255, 255, 255)))
-
-                      ],
-                    ),
-                  ),
-                ),
                 imageViewerController.tipo == 2 ?
                 FeedDetail(imagembd: imageViewerController.imagem,tipoPet: imageViewerController.info['tipo animal'],):
                 FeedDetail(imagembd: imageViewerController.imagem),

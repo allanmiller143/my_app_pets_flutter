@@ -7,11 +7,11 @@ class CustomDropdownButton extends StatelessWidget {
   final List<String> items;
   final RxString controller;
 
-  CustomDropdownButton({required this.items, required this.controller});
+  const CustomDropdownButton({super.key, required this.items, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Container(
+    return Obx(() => SizedBox(
           width: 95,
           height: 40,
           child: DropdownButton<String>(

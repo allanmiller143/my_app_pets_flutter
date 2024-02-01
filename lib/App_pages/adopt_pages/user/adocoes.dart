@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, unnecessary_string_escapes
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -102,7 +104,7 @@ class UsuarioAdocoesController extends GetxController {
             borderRadius: BorderRadius.circular(5),
             child: Container(
               width: double.infinity,
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
               ),
@@ -112,10 +114,10 @@ class UsuarioAdocoesController extends GetxController {
                   children: [
                     Row(
                       children: [
-                        Text('Situação: ${info['Status']}',style: TextStyle(fontWeight: FontWeight.w400,fontSize: 12),)
+                        Text('Situação: ${info['Status']}',style:const  TextStyle(fontWeight: FontWeight.w400,fontSize: 12),)
                       ],
                     ),
-                    Divider()
+                    const Divider()
                   ],
                 ),
                 Row(
@@ -128,25 +130,25 @@ class UsuarioAdocoesController extends GetxController {
                           image: DecorationImage(image: NetworkImage(info['Imagem']),fit: BoxFit.cover)
                       ),
                     ),
-                    SizedBox(width: 10,),
+                    const SizedBox(width: 10,),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           '${info['Nome animal']}, ${info['Raça']}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,fontWeight: FontWeight.bold, color: Color.fromARGB(235, 0, 0, 0),overflow: TextOverflow.ellipsis
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           width: 200,
                           child: Text(
                             textoDeApoio,
-                            style: TextStyle(fontSize: 9,fontWeight: FontWeight.w200, color: Color.fromARGB(235, 0, 0, 0),overflow: TextOverflow.ellipsis),
+                            style: const TextStyle(fontSize: 9,fontWeight: FontWeight.w200, color: Color.fromARGB(235, 0, 0, 0),overflow: TextOverflow.ellipsis),
                           ),
                         ),
-                        SizedBox(height: 5,),
-                        Text('Ver detalhes',
+                        const SizedBox(height: 5,),
+                        const Text('Ver detalhes',
                         style: TextStyle(fontSize: 10,fontWeight: FontWeight.w400, color: Colors.blue,overflow: TextOverflow.ellipsis),
       
                         )
@@ -159,7 +161,7 @@ class UsuarioAdocoesController extends GetxController {
               ),
             ),
           ),
-          SizedBox(height: 15,),
+          const SizedBox(height: 15,),
         ],
       ),
     );
@@ -221,7 +223,7 @@ class UsuarioAdocoesPage extends StatelessWidget {
                             children: usuarioAdocoesController.listaAdocoes
                                                  ),
                          ),
-                       ): SizedBox()
+                       ): const SizedBox()
                     );
                   } else {
                     return const Text('Nenhum pet disponível');
