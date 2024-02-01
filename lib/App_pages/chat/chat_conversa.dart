@@ -233,7 +233,7 @@ class ChatMessageReceiverWidget extends StatelessWidget {
   final String horaMinuto;
 
 
-  const ChatMessageReceiverWidget({Key? key, required this.message, required this.horaMinuto}) : super(key: key);
+  const ChatMessageReceiverWidget({super.key, required this.message, required this.horaMinuto});
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +280,7 @@ class ChatMessageSenderWidget extends StatelessWidget {
   final String message;
   final String horaMinuto;
 
-  const ChatMessageSenderWidget({Key? key, required this.message, required this.horaMinuto}) : super(key: key);
+  const ChatMessageSenderWidget({super.key, required this.message, required this.horaMinuto});
 
   @override
   Widget build(BuildContext context) {

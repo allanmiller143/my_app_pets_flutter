@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_string_escapes
+// ignore_for_file: unnecessary_string_escapes, prefer_typing_uninitialized_variables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

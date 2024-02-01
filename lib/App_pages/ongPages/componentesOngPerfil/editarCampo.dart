@@ -182,37 +182,23 @@ class EditarCampoPage extends StatelessWidget {
         init: EditarCampoController(),
         builder: (_) {
           return Scaffold(
+            appBar: AppBar(
+              toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+              backgroundColor: const Color.fromARGB(255, 250, 63, 6),
+              centerTitle: true,
+              title: Text(
+                editarCampoController.chave,
+                style: const TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Medium', fontWeight: FontWeight.w500, color: Color.fromARGB(255, 255, 255, 255)),
+              ),
+              leading: IconButton(onPressed: () => Get.back(), icon: const Icon(Icons.arrow_back_ios_new,size: 18, color: Color.fromARGB(255, 255, 255, 255))),  
+              
+            ),
             body: FutureBuilder(
               future: editarCampoController.func(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
                     return Column(children: [
-                      Container(
-                        width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 0.1,
-                        color: const Color.fromARGB(255, 255, 84, 16),
-                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconButton(
-                              iconSize: 18,
-                              onPressed: () {
-                                Get.back();
-                              },
-                              icon: const Icon(Icons.arrow_back_ios,
-                                  color: Color.fromARGB(255, 255, 255, 255)),
-                            ),
-                            Text(editarCampoController.chave,
-                                style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Color.fromARGB(255, 255, 255, 255))),
-                            const SizedBox(
-                                width: 48),
-                          ],
-                        ),
-                      ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                         child: TextFormField(

@@ -42,34 +42,20 @@ class OngEditBioProfilePage extends StatelessWidget {
         init: OngEditBioPageController(),
         builder: (_) {
           return  Scaffold(
+             appBar: AppBar(
+              toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+              backgroundColor: const Color.fromARGB(255, 250, 63, 6),
+              centerTitle: true,
+              title:const Text(
+                'Bio',
+                style: TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Medium', fontWeight: FontWeight.w500, color: Color.fromARGB(255, 255, 255, 255)),
+              ),
+              leading: IconButton(onPressed: () => Get.back(), icon: const Icon(Icons.arrow_back_ios_new,size: 18, color: Color.fromARGB(255, 255, 255, 255))),  
+              
+            ),
            body:Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
-                  height: MediaQuery.of(context).size.height *0.1,
-                  color: const Color.fromARGB(255, 255, 84, 16),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(5,15,5,0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                       IconButton(
-                                  iconSize: 18,
-                                  onPressed:(){
-                                    Get.back();
-                                  },
-                                  icon: const Icon(Icons.arrow_back_ios,color: Color.fromARGB(255, 255, 255, 255)),                       
-                                ),
-                  
-                        const Text('Bio',style: TextStyle(fontSize: 20,color: Color.fromARGB(255, 255, 255, 255)),),
-                       const SizedBox(width: 48), // Espaço para alinhar o texto "Publicação" no centro
-                  
-                      ],
-                    ),
-                  ),
-                ),
-                
-            
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(        

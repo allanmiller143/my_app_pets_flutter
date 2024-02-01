@@ -1,5 +1,5 @@
 
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unnecessary_string_escapes
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

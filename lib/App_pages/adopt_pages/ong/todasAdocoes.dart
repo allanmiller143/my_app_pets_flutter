@@ -190,14 +190,14 @@ class TodasAdocoesPage extends StatelessWidget {
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *0.28,
                                       height: MediaQuery.of(context).size.width *0.1,
-                                      child: Text('Finalizada',style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontWeight: FontWeight.w300),)
+                                      child: const Text('Finalizada',style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontWeight: FontWeight.w300),)
                                     ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 10,),
+                          const SizedBox(height: 10,),
                           Row(
                             children: [
                               GestureDetector(
@@ -229,7 +229,7 @@ class TodasAdocoesPage extends StatelessWidget {
                                       ],
                                     ),
                               ),
-                                  SizedBox(width: 15,),
+                                 const  SizedBox(width: 15,),
                               GestureDetector(
                                 onTap: (){
                                   Get.toNamed('/adocoes',arguments: ['Negadas']);
