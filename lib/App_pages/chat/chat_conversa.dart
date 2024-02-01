@@ -119,7 +119,7 @@ class ChatConversaPage extends StatelessWidget {
         init: ChatConversaController(),
         builder: (_) {
           return Scaffold(
-            backgroundColor:const Color.fromARGB(222, 243, 91, 2),
+            backgroundColor:const Color.fromARGB(255, 255, 51, 0),
             body: FutureBuilder(
               future: chatConversaController.func(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {

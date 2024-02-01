@@ -23,6 +23,7 @@ class PetsController extends GetxController {
     pets = meuControllerGlobal.petsSistema;
     return 'allan';
   }
+  
   void retornaLista(String filtro, int init) {
     petsInfo = [];
     petsInfo2 = [];

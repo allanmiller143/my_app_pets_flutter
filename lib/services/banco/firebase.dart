@@ -529,6 +529,21 @@ static adotar(String idAdocao, Map<String,dynamic> info) async {
 
 
 
+static Future<int> numeroDeAdocoes(String idOng, String valor) async {
+  int quantidade = 0;
+
+  QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('adocoes')
+    .where('Id ong', isEqualTo: idOng)
+    .where('Status', isEqualTo: valor)
+    .get();
+
+  quantidade = querySnapshot.docs.length;
+
+  return quantidade;
+}
+
+
+
 static Future<void> moverPetParaPetsAdotados(String userId, String petId, String url) async {
   try {
     // Referência ao documento do pet dentro da coleção 'pets' do usuário

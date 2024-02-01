@@ -509,75 +509,76 @@ class SettingsPage extends StatelessWidget {
                             ),
                           ),
                       
-                          SizedBox(
-                            height: (Get.arguments == null) ?MediaQuery.of(context).size.height * 0.43 : MediaQuery.of(context).size.height * 0.5,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                 SizedBox(
-                                  width: double.infinity,
-                                  height: MediaQuery.of(context).size.height * 0.04,     
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(15,4,15,4),
-                                        child: Obx(()=> SizedBox(
-                                          width: 110,
-                                          child: 
-                                          settingsPageController.opcao.value == 0 ?
-                                          ElevatedButton(
-                                            onPressed: (){ 
-                                              settingsPageController.opcao.value = 0;
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                               backgroundColor: const Color.fromARGB(255, 255, 94, 0),
-                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
-                                              ),
-                                              child:  const Text('Feed',style: TextStyle(color:  Color.fromARGB(255, 255, 255, 255)),)
-                                            ):
-                                            ElevatedButton(
-                                            onPressed: (){
-                                              settingsPageController.opcao.value = 0;
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                               backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
-                                              ),
-                                              child:  const Text('Feed',style: TextStyle(color:  Color.fromARGB(255, 255, 94, 0),),)
-                                            )
-                                          )
-                                        ),
-                                      ),
-                                      Obx(
-                                        ()=> Padding(
+                          Expanded(
+                           
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                   SizedBox(
+                                    width: double.infinity,
+                                    height: MediaQuery.of(context).size.height * 0.04,     
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Padding(
                                           padding: const EdgeInsets.fromLTRB(15,4,15,4),
-                                          child: settingsPageController.opcao.value == 1 ? 
-                                          SizedBox(width: 110,child: ElevatedButton(onPressed: (){settingsPageController.opcao.value = 1;},style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 255, 94, 0),shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))), child:  const Text('Pets',style: TextStyle(color:  Color.fromARGB(255, 255, 255, 255)),))):
-                                          SizedBox(width: 110,child: ElevatedButton(onPressed: (){settingsPageController.opcao.value = 1;},style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 255, 255, 255),shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))), child:  const Text('Pets',style: TextStyle(color:  Color.fromARGB(255, 255, 94, 0)),))),
+                                          child: Obx(()=> SizedBox(
+                                            width: 110,
+                                            child: 
+                                            settingsPageController.opcao.value == 0 ?
+                                            ElevatedButton(
+                                              onPressed: (){ 
+                                                settingsPageController.opcao.value = 0;
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                 backgroundColor: const Color.fromARGB(255, 255, 94, 0),
+                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
+                                                ),
+                                                child:  const Text('Feed',style: TextStyle(color:  Color.fromARGB(255, 255, 255, 255)),)
+                                              ):
+                                              ElevatedButton(
+                                              onPressed: (){
+                                                settingsPageController.opcao.value = 0;
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                 backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
+                                                ),
+                                                child:  const Text('Feed',style: TextStyle(color:  Color.fromARGB(255, 255, 94, 0),),)
+                                              )
+                                            )
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                    
+                                        Obx(
+                                          ()=> Padding(
+                                            padding: const EdgeInsets.fromLTRB(15,4,15,4),
+                                            child: settingsPageController.opcao.value == 1 ? 
+                                            SizedBox(width: 110,child: ElevatedButton(onPressed: (){settingsPageController.opcao.value = 1;},style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 255, 94, 0),shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))), child:  const Text('Pets',style: TextStyle(color:  Color.fromARGB(255, 255, 255, 255)),))):
+                                            SizedBox(width: 110,child: ElevatedButton(onPressed: (){settingsPageController.opcao.value = 1;},style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 255, 255, 255),shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))), child:  const Text('Pets',style: TextStyle(color:  Color.fromARGB(255, 255, 94, 0)),))),
+                                          ),
+                                        ),
+                                      ],
+                                      
+                                    ),
                                   ),
-                                ),
-                                Obx(
-                                  () => Expanded(
-                                    child: Container(
-                                      color: const Color.fromARGB(255, 255, 255, 255),
-                                      child: SingleChildScrollView(
-                                        child: settingsPageController.opcao.value == 0 ? Column(
-                                           children: settingsPageController.mostraFeed(context,settingsPageController.info,1),
-                                        ) : 
-                                        Column(
-                                           children: settingsPageController.mostraFeed(context,settingsPageController.petsInfo,2),
+                                  Obx(
+                                    () => Expanded(
+                                      child: Container(
+                                        color: const Color.fromARGB(255, 255, 255, 255),
+                                        child: SingleChildScrollView(
+                                          child: settingsPageController.opcao.value == 0 ? Column(
+                                             children: settingsPageController.mostraFeed(context,settingsPageController.info,1),
+                                          ) : 
+                                          Column(
+                                             children: settingsPageController.mostraFeed(context,settingsPageController.petsInfo,2),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
+                          
                           ),
                         ],
                       );

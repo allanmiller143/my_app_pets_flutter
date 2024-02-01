@@ -7,6 +7,7 @@ import 'package:replica_google_classroom/controller/userController.dart';
 //import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 
 import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class ImageViewerController extends GetxController {
   dynamic imagem;
@@ -42,14 +43,22 @@ class ImageViewerController extends GetxController {
   }
 
   void excluirPet() async {
-    settingsController.petsInfo.remove(info);
-    meuControllerGlobal.pets.remove(info);
-    meuControllerGlobal.usuario['Pets'].remove(info);
-    settingsController.opcao.value = 1;
-    settingsController.opcao.value = 0;
-    Get.back();
-    Get.back();
-    await BancoDeDados.removerPet(meuControllerGlobal.usuario['Id'],info['Id animal'],info['Imagem']);
+
+    if(info['Em processo de adoção'] == false){
+      settingsController.petsInfo.remove(info);
+      meuControllerGlobal.pets.remove(info);
+      meuControllerGlobal.usuario['Pets'].remove(info);
+      settingsController.opcao.value = 1;
+      settingsController.opcao.value = 0;
+      Get.back();
+      Get.back();
+      await BancoDeDados.removerPet(meuControllerGlobal.usuario['Id'],info['Id animal'],info['Imagem']);
+    }
+    else{
+      mySnackBar('Esse pet está em processo de adoção, para excluir ele, conclua o processo primeiro!!!', false);
+    }
+
+    
   }
 
   void showBottomSheet(BuildContext context) {
