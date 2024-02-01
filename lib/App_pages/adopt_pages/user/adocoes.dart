@@ -57,6 +57,7 @@ class UsuarioAdocoesController extends GetxController {
             'Id usuario': ds.data()?['Id usuario'],
             'Status': ds.data()?['Status'],
             'Id adoção':  ds.data()?['Id adoção'],
+            'Id ong':  ds.data()?['Id ong'],
           };
         
 
@@ -113,8 +114,22 @@ class UsuarioAdocoesController extends GetxController {
                 Column(
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Situação: ${info['Status']}',style:const  TextStyle(fontWeight: FontWeight.w400,fontSize: 12),)
+                        Text('Situação: ${info['Status']}',style:const  TextStyle(fontWeight: FontWeight.w400,fontSize: 12),),
+                        GestureDetector(
+                          onTap: () async{
+                            var chatRoomId = getChatRoomByUserName(meuControllerGlobal.usuario['Id'],info['Id ong']); // quem envia e quem recebe 
+                            Map<String, dynamic> chatRoomInfoMap = {
+                              'users' : [meuControllerGlobal.usuario['Id'],info['Id ong']],
+                            };
+                            await BancoDeDados.criaChatRoom(chatRoomId, chatRoomInfoMap);
+                            Get.toNamed('/chatConversa',arguments: [info['Id ong'], 'Converse com a ong']);
+                          },
+                          child :const  Icon(Icons.chat,size: 18,)
+                        )
+                       
+                       
                       ],
                     ),
                     const Divider()

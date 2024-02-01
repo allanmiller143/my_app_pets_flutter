@@ -12,17 +12,47 @@ class StatusAdocaoController extends GetxController {
   var info = Get.arguments[0];
   List<Widget> listaStatus = [];
   int etapa = 1;
-
+  Stream<QuerySnapshot<Map<String, dynamic>>>? stream;
+  
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>?>func(context) async {
     meuControllerGlobal = Get.find();
     //await imprimirValoresDaConsulta();
     print(info);
     await getAdaocao(context);
     return stream;
-    
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>>? stream;
+  void mostrarDialogoDeConfirmacao(context,idAdocao,idOng,idAnimal) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title:const  Text('Cancelar Adoção'),
+          content: const Text('Tem certeza que deseja cancelar a adoção?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); 
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () async{
+                await BancoDeDados.AlterarStatusAdocao(idAdocao,'Cancelada por usuário');
+                await BancoDeDados.alterarPetInfo({'Em processo de adoção': false},idOng,idAnimal);
+                
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).pop(); // Fecha o dialogo
+              },
+              child: const  Text('Confirmar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  
 
   getAdaocao(context) async {
     if(info['Id adoção'] != null ) {
@@ -51,7 +81,9 @@ class StatusAdocaoController extends GetxController {
               children: [
                 SizedBox(
                   width: double.infinity,
-                  child: Text('Aqui voçe pode acompanhar o andamento da adoção do/a ${info['Nome animal']} '),
+                  child: Text('Aqui você pode acompanhar o andamento da adoção do/a ${info['Nome animal']}',
+                  style: const TextStyle(),
+                  ),
                 ),
                 Stepper(
                   currentStep: etapa,
@@ -60,21 +92,19 @@ class StatusAdocaoController extends GetxController {
                   },
                   steps:
                   [
-                    Step(title: const Text('Em análise'), content: const Text('Aguardando a ong analisar o pedido'),isActive: etapa == 0 ? true:false),
-                    Step(title: const Text('Dados analisados'), content: const Text('Você ja pode ir buscar seu peludo na ong'),isActive: etapa == 1 ? true:false),
-                    Step(title: const Text('Finalizada'), content: const Text('Adoção finalizada, Cuide Muito bem do seu pet'),isActive: etapa == 2? true:false)
+                    Step(title: const Text('Em análise',style: TextStyle(fontFamily: 'AsapCondensed-Bold',fontSize: 18),), content: const Text('Aguardando a ong analisar o pedido',style: TextStyle(fontFamily: 'AsapCondensed-Medium'),),isActive: etapa == 0 ? true:false),
+                    Step(title: const Text('Dados analisados',style: TextStyle(fontFamily: 'AsapCondensed-Bold',fontSize: 18),), content: const Text('Você ja pode ir buscar seu peludo na ong',style: TextStyle(fontFamily: 'AsapCondensed-Medium'),),isActive: etapa == 1 ? true:false),
+                    Step(title: const Text('Finalizada',style: TextStyle(fontFamily: 'AsapCondensed-Bold',fontSize: 18),), content: const Text('Adoção finalizada, Cuide Muito bem do seu pet',style: TextStyle(fontFamily: 'AsapCondensed-Medium'),),isActive: etapa == 2? true:false)
                   ]
                 ),
                 const SizedBox(height: 20,),
 
                 ds.data()?['Status'] != 'Finalizada' ?
+
                 GestureDetector(
                   onTap: () async {
                     print('cancelar adocao');
-                    await BancoDeDados.AlterarStatusAdocao(ds.data()?['Id adoção'],'Cancelada por usuário');
-                    await BancoDeDados.alterarPetInfo({'Em processo de adoção': false},ds.data()?['Id ong'],ds.data()?['Id animal']);
-
-
+                    mostrarDialogoDeConfirmacao(context,ds.data()?['Id adoção'],ds.data()?['Id ong'],ds.data()?['Id animal']);
                   },
                   child: Material(
                     color: const Color.fromARGB(255, 250, 63, 6),
@@ -162,7 +192,6 @@ class StatusAdocaoPage extends StatelessWidget {
                   if (snapshot.hasData) {
                     return Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height *0.85,
                       padding: const EdgeInsets.fromLTRB(15, 15, 15, 10),
                       child: Obx(
                         () =>
