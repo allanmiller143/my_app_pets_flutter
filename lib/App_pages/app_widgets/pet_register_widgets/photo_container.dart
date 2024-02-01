@@ -24,7 +24,7 @@ class PhotoContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageProvider = imagembd != null ? convertBase64ToImageProvider(imagembd):const AssetImage('assets/ame.png');
+    final imageProvider = imagembd != null ? convertBase64ToImageProvider(imagembd):const AssetImage('assets/perfilPet.png');
     return Stack(
       children: [
         GestureDetector(

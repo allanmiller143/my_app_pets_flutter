@@ -265,11 +265,10 @@ class InsertAnimalPage extends StatelessWidget {
                                                   insertAnimalController.showBottomSheet(context);   
                                                 },
                                                 image:insertAnimalController.imageFile,
-                                                tipo: 2
+                                                 tipo: 2
                                                     
                                               ),
-                  
-                                              //insertAnimalController.imageFile !=null? FileImage(insertAnimalController.imageFile!): null
+                
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,

@@ -115,6 +115,13 @@ flutter:
      - assets/eu.png
      - assets/fundoOngProfile.png
      - assets/fundoOng.png
+     - assets/finalizada.png
+     - assets/esperandoUsuario.png
+     - assets/aguardandoAvaliacao.png
+     - assets/perfilPet.png
+
+     
+
      
      
 

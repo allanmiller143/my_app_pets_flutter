@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 
 class TodasAdocoesController extends GetxController {
@@ -8,14 +9,16 @@ class TodasAdocoesController extends GetxController {
   List<Widget> listaAdocoes = [];
   var listaDeIds = [];
   RxInt atualiza = 0.obs;
-
+  RxInt aguardandoAvaliacao = 0.obs;
+  RxInt aguardandoUsuario = 0.obs;
 
   Future<String> func(context) async {
     meuControllerGlobal = Get.find();
+    aguardandoAvaliacao.value = await BancoDeDados.numeroDeAdocoes(meuControllerGlobal.usuario['Id'],'Aguardando avalição dos dados');
+    aguardandoUsuario.value = await BancoDeDados.numeroDeAdocoes(meuControllerGlobal.usuario['Id'],'Domentação aprovada');
     return'allan';
   }
 
- 
 }
 
 // ignore: must_be_immutable
@@ -46,13 +49,13 @@ class TodasAdocoesPage extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
                     return Container(
-                      margin: EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(5),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 10,),
-                          Text('Gerencie suas adoções aqui',style: TextStyle( fontFamily: 'AsapCondensed-Medium',fontWeight: FontWeight.w300,fontSize: 20),),
-                          SizedBox(height: 10,),
+                          const SizedBox(height: 10,),
+                          const Text('Gerencie suas adoções aqui',style: TextStyle( fontFamily: 'AsapCondensed-Medium',fontWeight: FontWeight.w300,fontSize: 20),),
+                          const SizedBox(height: 10,),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -67,13 +70,45 @@ class TodasAdocoesPage extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width *0.3,
                                       decoration: BoxDecoration(
                                         color: Colors.black12,
-                                        borderRadius: BorderRadius.circular(15)
+                                        borderRadius: BorderRadius.circular(15),
+                                        image:const DecorationImage(image:
+                                          AssetImage(
+                                            "assets/aguardandoAvaliacao.png",
+                                          ),
+                                          fit: BoxFit.cover
+                                        )
                                       ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            width: 20,
+                                            height: 20,
+                                            decoration:const  BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                       
+                                                topLeft: Radius.circular(5)
+                                              ),
+                                              color: Color.fromARGB(255, 255, 98, 0)
+
+                                            ),
+                                            child: Obx(
+                                            () => Center(
+                                                child: Text(
+                                                  '${todasAdocoesController.aguardandoAvaliacao.value}',style:const  TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                                                )
+                                              )
+                                            ),
+                                          )
+                                        ],
+                                      )
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *0.28,
                                       height: MediaQuery.of(context).size.width *0.1,
-                                      child: Text('Aguardando avaliação',style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontWeight: FontWeight.w300),)
+                                      child: const Text('Aguardando avaliação',style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontWeight: FontWeight.w300),)
+                                      
                                     ),
                                   ],
                                 ),
@@ -89,13 +124,44 @@ class TodasAdocoesPage extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width *0.3,
                                       decoration: BoxDecoration(
                                         color: Colors.black12,
-                                        borderRadius: BorderRadius.circular(15)
+                                        borderRadius: BorderRadius.circular(15),
+                                         image:const DecorationImage(image:
+                                          AssetImage(
+                                            "assets/esperandoUsuario.png",
+                                          ),
+                                          fit: BoxFit.cover
+                                        )
                                       ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            width: 20,
+                                            height: 20,
+                                            decoration:const  BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(5)
+                                              ),
+                                              color: Color.fromARGB(255, 255, 98, 0)
+
+                                            ),
+                                            child: Obx(
+                                            () => Center(
+                                                child: Text(
+                                                  '${todasAdocoesController.aguardandoUsuario.value}',style:const  TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                                                )
+                                              )
+                                            ),
+                                          )
+                                        ],
+                                      )
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *0.28,
                                       height: MediaQuery.of(context).size.width *0.1,
-                                      child: Text('Aguardando usuário',style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontWeight: FontWeight.w300),)
+                                      child:const  Text('Aguardando usuário',style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontWeight: FontWeight.w300),)
+                                    
                                     ),
                                   ],
                                 ),
@@ -111,7 +177,14 @@ class TodasAdocoesPage extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width *0.3,
                                       decoration: BoxDecoration(
                                         color: Colors.black12,
-                                        borderRadius: BorderRadius.circular(15)
+                                        borderRadius: BorderRadius.circular(15),
+                                         image:const DecorationImage(image:
+                                          AssetImage(
+                                            "assets/finalizada.png",
+                                          ),
+                                          fit: BoxFit.cover
+                                        )
+                                        
                                       ),
                                     ),
                                     SizedBox(
@@ -138,7 +211,13 @@ class TodasAdocoesPage extends StatelessWidget {
                                           width: MediaQuery.of(context).size.width *0.3,
                                           decoration: BoxDecoration(
                                             color: Colors.black12,
-                                            borderRadius: BorderRadius.circular(15)
+                                            borderRadius: BorderRadius.circular(15),
+                                            image:const DecorationImage(image:
+                                              AssetImage(
+                                                "assets/fundo.png",
+                                              ),
+                                              fit: BoxFit.cover
+                                            )
                                           ),
                                         ),
                                         SizedBox(
@@ -162,7 +241,13 @@ class TodasAdocoesPage extends StatelessWidget {
                                           width: MediaQuery.of(context).size.width *0.3,
                                           decoration: BoxDecoration(
                                             color: Colors.black12,
-                                            borderRadius: BorderRadius.circular(15)
+                                            borderRadius: BorderRadius.circular(15),
+                                            image:const DecorationImage(image:
+                                              AssetImage(
+                                                "assets/fundoOngProfile.png",
+                                              ),
+                                              fit: BoxFit.cover
+                                            )
                                           ),
                                         ),
                                         SizedBox(

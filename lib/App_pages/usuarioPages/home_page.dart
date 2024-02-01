@@ -187,7 +187,9 @@ class HomePage extends StatelessWidget {
                                           child: SingleChildScrollView(
                                             scrollDirection: Axis.horizontal,
                                             child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
+                                                homePageController.pets.length > 0 ?
                                                 AnimalCard(
                                                 pet: homePageController.pets[0],
                                                 onPressed: () {
@@ -197,7 +199,8 @@ class HomePage extends StatelessWidget {
                                                 },
                                                 meuControllerGlobal: homePageController.meuControllerGlobal,
                                                         
-                                              ),
+                                              ): Text('Estamos sem nenhum pet no sistema'),
+                                              homePageController.pets.length > 1 ?
                                               AnimalCard(
                                                 pet: homePageController.pets[1],
                                                 onPressed: () {
@@ -205,14 +208,15 @@ class HomePage extends StatelessWidget {
                                                 },     
                                                 meuControllerGlobal: homePageController.meuControllerGlobal,
                                                         
-                                              ),
+                                              ):SizedBox(),
+                                              homePageController.pets.length > 2 ?
                                               AnimalCard(
                                                 pet: homePageController.pets[2],
                                                 onPressed: () {
                                                   Get.toNamed('/animalDetail', arguments: [homePageController.pets[2],homePageController.usuario]);    
                                                 },
                                                 meuControllerGlobal: homePageController.meuControllerGlobal,
-                                              ),
+                                              ):SizedBox()
                                               ],
                                             ),
                                             
