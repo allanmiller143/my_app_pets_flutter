@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
@@ -12,12 +13,17 @@ class HomePageController extends GetxController {
   List<Map<String, dynamic>> pets = [];
   dynamic usuario;
 
-  Future<List<Map<String,dynamic>>> alteraLista() async {
+  alteraLista() async {
     meuControllerGlobal = Get.find();
     usuario = meuControllerGlobal.usuario;
+    try{
     meuControllerGlobal.petsSistema = await BancoDeDados.obterPets();
     pets = meuControllerGlobal.petsSistema;
     return pets;
+    }on FirebaseException catch(e){
+      print(e);
+      return true;
+    }
   }
 }
 

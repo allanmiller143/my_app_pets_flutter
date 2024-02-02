@@ -2,75 +2,76 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/services/mongodb.dart';
 import '../app_widgets/my_animal_card.dart';
 
 class FavoritsController extends GetxController {
-  static FavoritsController get to => Get.find(); 
   List<Map<String, dynamic>> pets = [];
   List<dynamic> favoritPetIds = [];
-  List<Map<String, dynamic>> petsInfo = [];
-  List<Map<String, dynamic>> petsInfo2 = [];
-  Map<String,dynamic>? usuario;
-
   late MeuControllerGlobal meuControllerGlobal;
 
-  Future<List<Map<String,dynamic>>> alteraLista() async {
+  Future<List<Map<String, dynamic>>> alteraLista() async {
     meuControllerGlobal = Get.find();
-    pets = await MongoDataBase.retornaListaPets();
-    usuario = await MongoDataBase.retornaUsuarioCompleto(Get.arguments[1]);
-    favoritPetIds = [];
-    favoritPetIds = await MongoDataBase.retornaPetIds(Get.arguments[0]);
+    pets = meuControllerGlobal.petsSistema;
+    favoritPetIds = meuControllerGlobal.usuario['Pets preferidos'];
     return pets;
   }
 
-  List<Widget> generateAnimalCards(petsInfo) {
-    List<Widget> cards = [];
-    for (var petInfo in petsInfo) {
-      cards.add(
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-          child: AnimalCard(
-            pet: petInfo,
-            onPressed: () {
-              int p = petInfo['posicao']; 
-               Get.toNamed('/animalDetail', arguments: [pets[p],usuario]); 
-            },
-            meuControllerGlobal: meuControllerGlobal,
+  List<Widget> mostraFeed() {
+    List<Widget> rows = [];
+    if (pets.isEmpty) {
+      rows.add(
+        const Padding(
+          padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+          child: Center(
+            child: Text(
+              "Você não possui Pets\nfavoritados",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
           ),
         ),
       );
+      return rows;
     }
-    return cards;
-  }
+    int contador = 0;
 
-  void retornaLista() {
-    petsInfo = [];
-    petsInfo2 = [];
-
-    int tamanhoLista = pets.length;
-
-    int cont = 1;
-    if (tamanhoLista != 0) {
-      for (int i = 0; i < tamanhoLista; i++) {
-        pets[i]['posicao'] = i; // adiciona a posicao para poder poder controlar as informcaoes quando chamar a tela de detalhes 
-        if(favoritPetIds.contains(pets[i]['id'])){
-          if(cont%2 != 0){
-            petsInfo.add(pets[i]);
-          }
-          else{
-            petsInfo2.add(pets[i]);
-          }
-          cont++;
+    for (int i = 0; i < pets.length; i += 2) {
+      List<Widget> rowChildren = [];
+      for (int j = i; j < i + 2 && j < pets.length; j++) {
+        if (favoritPetIds.contains(pets[j]['Id animal'])) {
+          contador++;
+          rowChildren.add(
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+              child: AnimalCard(
+                pet: pets[j],
+                onPressed: () {
+                  Get.toNamed('/animalDetail', arguments: [pets[j], meuControllerGlobal.usuario]);
+                },
+                meuControllerGlobal: meuControllerGlobal,
+              ),
+            ),
+          );
         }
       }
+      if (contador == 2 || i + 2 >= pets.length) {
+        contador = 0;
+        rows.add(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: rowChildren,
+          ),
+        );
+      }
     }
+
+    return rows;
   }
 }
 
 class FavoritsPage extends StatelessWidget {
   FavoritsPage({super.key});
   var favoritsController = Get.put(FavoritsController());
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -82,128 +83,113 @@ class FavoritsPage extends StatelessWidget {
             appBar: AppBar(
               forceMaterialTransparency: true,
               toolbarHeight: 85,
-              leading: GestureDetector( onTap: () {  Get.back();}, child: Icon(Icons.arrow_back_ios,color: const Color.fromARGB(255, 255, 255, 255),)),
+              leading: GestureDetector(
+                onTap: () {
+                  Get.back();
+                },
+                child: Icon(Icons.arrow_back_ios, color: const Color.fromARGB(255, 255, 255, 255)),
+              ),
             ),
-            body:FutureBuilder(
-            future: favoritsController.alteraLista(), // Remova os parênteses para não executar a função aqui
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData) {
-                  favoritsController.retornaLista();
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                      width: double.infinity,
-                      height: 165,
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            height: 130,
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 255, 51, 0),
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(20)
-                              )
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 250,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage('assets/5.png'),
-                                        fit: BoxFit.cover)
-                                  ),
-                                ),
-                              ],
-                            )
-                          ),
-                          Positioned(
-                            top: 95,
-                            left: 15,
-                            child: Card(
-                              elevation: 8,
-                              shape: RoundedRectangleBorder(
-                                borderRadius:BorderRadius.all(Radius.circular(30))  
-                              ),
-                              child: Container(
-                                width: 360,
-                                height: 55,
+            body: FutureBuilder(
+              future: favoritsController.alteraLista(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: 165,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                height: 130,
                                 decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 255, 255, 255),
-                                  borderRadius: BorderRadius.all(Radius.circular(30))     
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ), 
-                
-                    SizedBox(
-                      width: double.infinity,
-                      height: 610,
-                        child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                    color: Color.fromARGB(255, 255, 51, 0),
+                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(15,0,10,0),
-                                      child: Text('Seus favoritos',style: TextStyle(fontSize: 25,fontFamily:'AsapCondensed-Bold'),),
+                                    Container(
+                                      width: 250,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(image: AssetImage('assets/5.png'), fit: BoxFit.cover)),
                                     ),
                                   ],
                                 ),
-                             SizedBox(
-                                  width:MediaQuery.of(context).size.width - 40,
-                                  height: 550,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisAlignment:MainAxisAlignment.spaceBetween,   
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children:[
-                                            Column(
-                                              children: favoritsController.generateAnimalCards(favoritsController.petsInfo), // Use a função para gerar os cards             
-                                            ),
-                                            Column(
-                                              children: favoritsController.generateAnimalCards(favoritsController.petsInfo2) // Gere mais cards conforme necessário               
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
+                              ),
+                              Positioned(
+                                top: 95,
+                                left: 15,
+                                child: Card(
+                                  elevation: 8,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                                  ),
+                                  child: Container(
+                                    width: 360,
+                                    height: 55,
+                                    decoration: BoxDecoration(
+                                        color: Color.fromARGB(255, 255, 255, 255),
+                                        borderRadius: BorderRadius.all(Radius.circular(30))),
                                   ),
                                 ),
-                          ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    )  
-                    ],
-                  );
+                        Expanded(
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
+                                        child: Text(
+                                          'Seus favoritos',
+                                          style: TextStyle(fontSize: 25, fontFamily: 'AsapCondensed-Bold'),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width - 40,
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          children: favoritsController.mostraFeed(),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+                  } else {
+                    return Text('Nenhum pet disponível');
+                  }
+                } else if (snapshot.hasError) {
+                  return Text('Erro ao carregar a lista de pets: ${snapshot.error}');
                 } else {
-                  return Text('Nenhum pet disponível');
+                  return Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 253, 72, 0)));
                 }
-              } else if (snapshot.hasError) {
-                return Text('Erro ao carregar a lista de pets: ${snapshot.error}');
-              } else {
-                return Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 253, 72, 0),));
-              }
-            },
-          ),
-
+              },
+            ),
           );
         },
       ),

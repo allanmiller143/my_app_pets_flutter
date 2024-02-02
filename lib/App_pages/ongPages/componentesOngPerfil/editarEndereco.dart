@@ -122,12 +122,7 @@ class EditarEnderecoController extends GetxController {
       meuControllerGlobal.usuario['Rua'] = rua.text;
       meuControllerGlobal.usuario['Numero'] = numero.text;
       
-      meuControllerGlobal.estado.value = estado.text;
-      meuControllerGlobal.cidade.value = cidade.text;
-      meuControllerGlobal.bairro.value = bairro.text;
-      meuControllerGlobal.rua.value = rua.text;
-      meuControllerGlobal.numero.value = numero.text;
-      meuControllerGlobal.cep.value = cep.text;
+
 
       Get.back();Get.back();
       await BancoDeDados.adicionarInformacoesUsuario(dados, meuControllerGlobal.usuario['Id']);

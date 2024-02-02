@@ -7,7 +7,9 @@ Future<void> showLoad(BuildContext context) async {
     context: context,
     barrierDismissible: false, // Impede o fechamento ao tocar fora do diálogo
     builder: (context) {
-      return const Center(child: CircularProgressIndicator(color:Color.fromARGB(255, 250, 63, 6),));
+      return const Center(
+        child: CircularProgressIndicator(color:Color.fromARGB(255, 250, 63, 6),)
+      );
     },
   );
 }

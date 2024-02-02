@@ -22,7 +22,6 @@ class OngEditBioPageController extends GetxController {
 
   Future<void> concluirEdicao() async{
     settingsController.bio.value = bioText.text;
-    meuControllerGlobal.bio.value = bioText.text;
     meuControllerGlobal.usuario['Bio'] = bioText.text;
 
     Get.back();

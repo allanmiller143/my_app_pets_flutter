@@ -288,7 +288,7 @@ class BancoDeDados{
       // crio uma instancia no controlador global para salvar o dado da foto de perfil do usuario 
       MeuControllerGlobal meuControllerGlobal;
       meuControllerGlobal = Get.find();
-      meuControllerGlobal.salvarImagemPerfil(downloadURL);
+      meuControllerGlobal.usuario['ImagemPerfil'] = downloadURL;
 
       // insire os dados no firesrtore
       await FirebaseFirestore
@@ -583,10 +583,19 @@ static Future<void> moverPetParaPetsAdotados(String userId, String petId, String
 
 
 
+static Future<void> favoritaPet(String idUsuario, bool inserirRetirar, String petId) async {
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-
-
-
+  if (inserirRetirar) {
+    await users.doc(idUsuario).update({
+      'Pets preferidos': FieldValue.arrayUnion([petId]),
+    });
+  } else {
+    await users.doc(idUsuario).update({
+      'Pets preferidos': FieldValue.arrayRemove([petId]),
+    });
+  }
+}
 
 
 

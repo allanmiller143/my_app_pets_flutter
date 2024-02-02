@@ -417,7 +417,7 @@ class SettingsPage extends StatelessWidget {
                                                         Obx(()=> Text(settingsPageController.nunmeroDePostagens.toString(),style: const TextStyle(fontSize: 20),)),
                                                         GestureDetector(
                                                           onTap: (){
-                                                            print(settingsPageController.meuControllerGlobal.pets[0]['nomeOng']);
+                                                 
 
                                                           },
                                                           child: const Text('publicações',style: TextStyle(fontSize: 12),)),

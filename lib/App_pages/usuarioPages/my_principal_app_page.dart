@@ -13,14 +13,7 @@ class PrincipaAppController extends GetxController {
   RxInt opcaoSelecionada = 0.obs;
   Color corItemSelecionado = const Color.fromARGB(255, 0, 0, 0);
   Color corItemNaoSelecionado = const  Color.fromARGB(255, 255, 255, 255);
-  late String emailUsuario;
-  File? imageFile;
-  File? imageFeedFile;
-  Map<String,dynamic>? usuario;
-
   Future<String> func() async{
-    
-    emailUsuario = 'millerallan17@gmail.com';
     return 'allan';
   }
 
@@ -104,7 +97,7 @@ class MyPrincipalAppPage extends StatelessWidget {
                     ),
                 );
                   } else {
-                    return const Text('Nenhum pet dispongdfgfdgfdgfdgfdgfdgfível');
+                    return const Text('Nenhum pet');
                   }
                 } else if (snapshot.hasError) {
                   return Text(
