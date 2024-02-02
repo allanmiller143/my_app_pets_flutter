@@ -51,6 +51,8 @@ class ChatConversaController extends GetxController {
 
   void addMensagem(String mensagem) async {
   if (mensagem.isNotEmpty) {
+
+    try{
     addSingleMessage.value += 1;
     DateTime now = DateTime.now();
     var saoPaulo = now.toLocal().toUtc().add(const Duration(hours: -3)); 
@@ -83,6 +85,11 @@ class ChatConversaController extends GetxController {
       BancoDeDados.atualizaUltimaMensagem(chatRoomId, ultimaMensagemEnviadaMap);
     });
     idMensagem = '';
+
+    }on Exception catch(e){
+      print(e);
+
+    }
   }  
 }
 

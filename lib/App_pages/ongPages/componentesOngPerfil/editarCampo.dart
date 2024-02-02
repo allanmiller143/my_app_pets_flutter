@@ -105,7 +105,7 @@ class EditarCampoController extends GetxController {
         return false;
       }
       settingsController.usuario['Telefone'] = novoValor.text;
-      meuControllerGlobal.telefone.value = novoValor.text;
+
       meuControllerGlobal.usuario['Telefone'] = novoValor.text;
 
       Get.back();Get.back();
@@ -119,7 +119,6 @@ class EditarCampoController extends GetxController {
       if (novoValor.text.isNotEmpty) {
         settingsController.nomeOng.value = novoValor.text;
         settingsController.usuario['Nome ong'] = novoValor.text;
-        meuControllerGlobal.nomeOng.value = novoValor.text;
         meuControllerGlobal.usuario['Nome ong'] = novoValor.text;
         Get.back();Get.back();
         await BancoDeDados.adicionarInformacoesUsuario({'Nome ong' : novoValor.text}, meuControllerGlobal.usuario['Id']);
@@ -129,7 +128,6 @@ class EditarCampoController extends GetxController {
     } else if (chave == 'Nome representante') {
       if (novoValor.text.isNotEmpty) {
         settingsController.usuario['nome representante'] = novoValor.text;
-        meuControllerGlobal.nomeRepresentante.value = novoValor.text;
         meuControllerGlobal.usuario['Nome representante'] = novoValor.text;
 
         Get.back();Get.back();
@@ -140,7 +138,6 @@ class EditarCampoController extends GetxController {
     }else if (chave == 'cpf representante') {
       if (validarCPF(novoValor.text)) {
         settingsController.usuario['cpf representante'] = novoValor.text;
-        meuControllerGlobal.cpfRepresentante.value = novoValor.text;
         meuControllerGlobal.usuario['cpf representante'] = novoValor.text;
         Get.back();Get.back();
         await BancoDeDados.adicionarInformacoesUsuario({'cpf representante' : novoValor.text}, meuControllerGlobal.usuario['Id']);

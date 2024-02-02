@@ -3,6 +3,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
+import 'package:replica_google_classroom/services/banco/firebase.dart';
 
 class AnimalCard extends StatelessWidget {
   final VoidCallback onPressed;
@@ -17,7 +18,7 @@ class AnimalCard extends StatelessWidget {
   });
 
   void verificaFavorito() {
-    if (meuControllerGlobal.usuario['Pets preferidos'].contains(pet)) {
+    if (meuControllerGlobal.usuario['Pets preferidos'].contains(pet['Id animal'])) {
       preferido.value = true;
     }
   }
@@ -116,7 +117,6 @@ class AnimalCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     pet['Em processo de adoção'] == true?
-
                     const Padding(
                       padding:  EdgeInsets.fromLTRB(10,0,0,0),
                       child: Text('Em adoção',style: TextStyle(color: Color.fromARGB(141, 255, 0, 0),fontSize: 10,fontWeight: FontWeight.bold),),
@@ -126,8 +126,8 @@ class AnimalCard extends StatelessWidget {
                     GestureDetector(
                       onTap: () async {
                         preferido.value = !preferido.value;
-                        //MongoDataBase.favoritaPet(meuControllerGlobal.usuario['E-mail'], preferido.value, pet['id']);
-                        //meuControllerGlobal.favoritaPet(pet['id'],preferido.value);
+                        BancoDeDados.favoritaPet(meuControllerGlobal.usuario['Id'], preferido.value, pet['Id animal']);
+                        meuControllerGlobal.favoritaPet(pet['Id animal'],preferido.value);
                       },
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),

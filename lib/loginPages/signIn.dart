@@ -75,6 +75,7 @@ login(context) async{
           else{
             data = querySnapshot.docs[0]['Data'];
             meuControllerGlobal.petsSistema = await BancoDeDados.obterPets();
+            print('pets preferidos : ${querySnapshot.docs[0]['Pets preferidos']}');
             if(data == true){
                meuControllerGlobal.usuario = {
                 'Id' : querySnapshot.docs[0]['Id'],

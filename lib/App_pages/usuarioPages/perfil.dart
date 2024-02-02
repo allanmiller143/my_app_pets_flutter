@@ -123,6 +123,7 @@ class PerfilUsuarioPage extends StatelessWidget {
                                   GestureDetector(
                                     onTap: (){
                                       print('Pets favoritados');
+                                      Get.toNamed('/favorits');
                                     },
                                     child: Material(
                                       elevation: 5,
