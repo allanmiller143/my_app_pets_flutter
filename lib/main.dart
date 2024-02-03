@@ -17,6 +17,7 @@ import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil
 import 'package:replica_google_classroom/App_pages/ongPages/my_principal_ong_page.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/x.dart';
+import 'package:replica_google_classroom/controller/dependency_injection.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/firebase_options.dart';
 import 'App_pages/ongPages/componentesOngPerfil/ImageViewerPage.dart';
@@ -45,6 +46,8 @@ void main() async {
 
   Get.put(MeuControllerGlobal());
   runApp(const MyApp());
+  DependencyInjection.init();
+
 }
 
 // para usar roteamento usando o getx preciso retornar um getMaterialApp, definir

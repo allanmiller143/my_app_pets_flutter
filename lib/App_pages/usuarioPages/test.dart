@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 
 import '../app_widgets/my_animal_card.dart';
@@ -16,19 +17,24 @@ class PetsAuxController extends GetxController {
   List<Map<String, dynamic>> petsInfo = [];
   List<Map<String, dynamic>> petsInfo2 = [];
 
-  Future<String> alteraLista(tipo,argumentsUsed)async {
+  alteraLista(tipo,argumentsUsed)async {
     if(tipo != '-1'){
       if(argumentsUsed == false){
           selectedType.value = tipo;
       } 
     }
+    
     meuControllerGlobal = Get.find();
+    
+    if(meuControllerGlobal.internet.value){
+      favoritPetIds = [];
+      usuario = meuControllerGlobal.usuario;
+      favoritPetIds = usuario!['Pets preferidos'];
+      pets = meuControllerGlobal.petsSistema;
+      return 'allan';
+    }
 
-    favoritPetIds = [];
-    usuario = meuControllerGlobal.usuario;
-    favoritPetIds = usuario!['Pets preferidos'];
-    pets = meuControllerGlobal.petsSistema;
-    return 'allan';
+    
 }
 
 
@@ -391,7 +397,7 @@ class PetsAuxPage extends StatelessWidget {
                  
                 );
                 } else {
-                  return Text('Nenhum pet disponível');
+                  return const SemInternetWidget();
                 }
               } else if (snapshot.hasError) {
                 return Text('Erro ao carregar a lista de pets: ${snapshot.error}');

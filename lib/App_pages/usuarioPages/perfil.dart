@@ -2,12 +2,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
+import 'package:replica_google_classroom/controller/userController.dart';
 
 
 class PerfilUsuarioController extends GetxController {
+  late MeuControllerGlobal meuControllerGlobal;
 
-  Future<String> func() async {
-    return 'allan';
+  func() async {
+    meuControllerGlobal = Get.find();
+
+    if(meuControllerGlobal.internet.value){
+      return 'allan';
+    }
+
   }
 
  
@@ -177,8 +185,9 @@ class PerfilUsuarioPage extends StatelessWidget {
                       ) 
                     ],
                   );
-                  } else {
-                    return const Text('Nenhum pet disponível');
+                  } 
+                  else {
+                    return const SemInternetWidget();
                   }
                 } else if (snapshot.hasError) {
                   return Text(

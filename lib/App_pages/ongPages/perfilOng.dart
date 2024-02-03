@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/ongPhoto.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/cardFeed.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
@@ -29,35 +30,40 @@ class SettingsPageController extends GetxController {
   
   bool args = false; // serve para controlar as funções de usuario e ong 
 
-  Future<String> func() async {
-    if(Get.arguments == null){
-      meuControllerGlobal = Get.find();
-      usuario = meuControllerGlobal.usuario;
-  
-    }else{
-      args = true;
-      usuario = Get.arguments[0];
-      var pets = await BancoDeDados.obterPetsDoUsuario(usuario['Id']);
-      var imagensFeed =  await BancoDeDados.obterImagensFeedDoUsuario(usuario['Id']);
-      usuario['Pets'] =pets;
-      usuario['Imagens feed'] = imagensFeed;  
-      print('----------------------------------------------------');
-      print(usuario);
-      print('----------------------------------------------------');
+  func() async {
+
+    meuControllerGlobal = Get.find();
+
+    if(meuControllerGlobal.internet.value){
+
+    
+
+      if(Get.arguments == null){
+        
+        usuario = meuControllerGlobal.usuario;
+    
+      }else{
+        args = true;
+        usuario = Get.arguments[0];
+        var pets = await BancoDeDados.obterPetsDoUsuario(usuario['Id']);
+        var imagensFeed =  await BancoDeDados.obterImagensFeedDoUsuario(usuario['Id']);
+        usuario['Pets'] =pets;
+        usuario['Imagens feed'] = imagensFeed;  
+      }
+
+      localizacao.value = '${usuario['Cidade']},${usuario['Estado']}'; 
+      nomeOng.value = usuario['Nome'];
+      imagembd = usuario['ImagemPerfil'];
+      bio.value = usuario['Bio'];
+      info = usuario['Imagens feed'];
+      petsInfo = usuario['Pets'];
+      emailOng = usuario['E-mail'];
+      nunmeroDePostagens.value = info.length;
+
+    
+      // quando puxa do banco de dados, se tiver vazio(null), atribui uma lista vazia 
+      return 'allan';
     }
-
-    localizacao.value = '${usuario['Cidade']},${usuario['Estado']}'; 
-    nomeOng.value = usuario['Nome'];
-    imagembd = usuario['ImagemPerfil'];
-    bio.value = usuario['Bio'];
-    info = usuario['Imagens feed'];
-    petsInfo = usuario['Pets'];
-    emailOng = usuario['E-mail'];
-    nunmeroDePostagens.value = info.length;
-
-   
-    // quando puxa do banco de dados, se tiver vazio(null), atribui uma lista vazia 
-    return 'allan';
   }
   List<Widget> mostraFeed(context,conteudo,feed) {
     List<Widget> rows = [];
@@ -583,7 +589,7 @@ class SettingsPage extends StatelessWidget {
                         ],
                       );
                   } else {
-                    return const Text('Nenhum pet disponível');
+                    return const SemInternetWidget();
                   }
                 } else if (snapshot.hasError) {
                   return Text(
