@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
@@ -15,9 +16,12 @@ class AnimalDetailPageController extends GetxController {
   String imagemFavorito = (Get.arguments[1]['Pets preferidos'].contains(Get.arguments[0]['Id'])) ? 'assets/ame.png': 'assets/ame2.png';  
 
 
-  Future<String> func() async {
+  func() async {
     meuControllerGlobal = Get.find();
-    return 'allan';
+    if(meuControllerGlobal.internet.value){
+      return 'allan';
+    }
+    
   }
 
   getChatRoomByUserName(String a,String b){
@@ -329,7 +333,7 @@ class AnimalInsertPage extends StatelessWidget {
             ],
           ));
                   } else {
-                    return const Text('Nenhum pet disponível');
+                    return const SemInternetWidget();
                   }
                 } else if (snapshot.hasError) {
                   return Text(

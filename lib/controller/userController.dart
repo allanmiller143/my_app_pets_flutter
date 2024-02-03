@@ -8,6 +8,7 @@ class MeuControllerGlobal extends GetxController {
   var imagensFeed = [];
   late Map<String,dynamic> usuario;
   double tamanhoTela = 0;
+  RxBool internet = true.obs;
 
   void favoritaPet(idPet,preferido){
     if(preferido){

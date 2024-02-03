@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
 
@@ -14,13 +15,12 @@ class ChatController extends GetxController {
   var queryResultado = [];
   var tempSearchStore = [];
   var temp = [];
-  late String meuNome;
-  late String meuEmail;
   late String meuId;
   List<Widget> listachats = [];
   Stream<QuerySnapshot<Map<String, dynamic>>>? stream;
   var listaDeIds = [];
   File? imageFile;
+  RxBool internet = true.obs;
 
   getChatrooms() async {
     stream = (await BancoDeDados.getChatRooms(meuId)) as Stream<QuerySnapshot<Map<String, dynamic>>>?;
@@ -160,13 +160,17 @@ class ChatController extends GetxController {
     );
   }
 
-  Future<Stream<QuerySnapshot<Map<String, dynamic>>>?> func() async {
+  func() async {
     meuControllerGlobal = Get.find();
-    meuNome = meuControllerGlobal.usuario['Nome'];
-    meuEmail = meuControllerGlobal.usuario['E-mail'];
-    meuId = meuControllerGlobal.usuario['Id'];
-    await getChatrooms();
-    return stream;
+    internet.value = meuControllerGlobal.internet.value;
+
+
+    if(meuControllerGlobal.internet.value){
+      meuId = meuControllerGlobal.usuario['Id'];
+      await getChatrooms();
+      return stream;
+    }
+    
   }
 }
 
@@ -179,7 +183,7 @@ class ChatPage extends StatelessWidget {
       home: GetBuilder<ChatController>(
         builder: (_) {
           return Scaffold(
-            backgroundColor: Color.fromARGB(255, 255, 51, 0),
+            backgroundColor: chatController.internet.value? Color.fromARGB(255, 255, 51, 0) : Color.fromARGB(255, 255, 255, 255),
             body: FutureBuilder(
               future: chatController.func(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -260,7 +264,7 @@ class ChatPage extends StatelessWidget {
                       ],
                     );
                   } else {
-                    return Text('erro');
+                    return SemInternetWidget();
                   }
                 } else if (snapshot.hasError) {
                   return Text('Erro ao carregar a tela: ${snapshot.error}');

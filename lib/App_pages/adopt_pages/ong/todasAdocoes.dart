@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
 
@@ -12,11 +13,13 @@ class TodasAdocoesController extends GetxController {
   RxInt aguardandoAvaliacao = 0.obs;
   RxInt aguardandoUsuario = 0.obs;
 
-  Future<String> func(context) async {
+  func(context) async {
     meuControllerGlobal = Get.find();
-    aguardandoAvaliacao.value = await BancoDeDados.numeroDeAdocoes(meuControllerGlobal.usuario['Id'],'Aguardando avalição dos dados');
-    aguardandoUsuario.value = await BancoDeDados.numeroDeAdocoes(meuControllerGlobal.usuario['Id'],'Domentação aprovada');
-    return'allan';
+    if(meuControllerGlobal.internet.value){
+      aguardandoAvaliacao.value = await BancoDeDados.numeroDeAdocoes(meuControllerGlobal.usuario['Id'],'Aguardando avalição dos dados');
+      aguardandoUsuario.value = await BancoDeDados.numeroDeAdocoes(meuControllerGlobal.usuario['Id'],'Domentação aprovada');
+      return'allan';
+    }
   }
 
 }
@@ -268,7 +271,7 @@ class TodasAdocoesPage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return const Text('Nenhum pet disponível');
+                    return const SemInternetWidget();
                   }
                 } else if (snapshot.hasError) {
                   return Text(

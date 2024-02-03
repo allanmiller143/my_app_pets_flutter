@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
 import '../app_widgets/my_custom_card_home_page.dart';
@@ -13,16 +14,14 @@ class HomePageController extends GetxController {
   List<Map<String, dynamic>> pets = [];
   dynamic usuario;
 
+
   alteraLista() async {
     meuControllerGlobal = Get.find();
     usuario = meuControllerGlobal.usuario;
-    try{
-    meuControllerGlobal.petsSistema = await BancoDeDados.obterPets();
-    pets = meuControllerGlobal.petsSistema;
-    return pets;
-    }on FirebaseException catch(e){
-      print(e);
-      return true;
+    if(meuControllerGlobal.internet.value == true){
+      meuControllerGlobal.petsSistema = await BancoDeDados.obterPets();
+      pets = meuControllerGlobal.petsSistema;
+      return pets;
     }
   }
 }
@@ -240,7 +239,7 @@ class HomePage extends StatelessWidget {
                     ],
                   );
                 } else {
-                  return Text('Nenhum pet disponível');
+                  return SemInternetWidget();
                 }
               } else if (snapshot.hasError) {
                 return Text('Erro ao carregar a lista de pets: ${snapshot.error}');

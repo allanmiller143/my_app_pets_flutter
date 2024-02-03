@@ -133,30 +133,7 @@ class MongoDataBase {
     return true;
   }
 
-static Future<void> inserePet(String ongCnpj, Map<String, dynamic> petData) async {
-  try {
-    var uuid = const Uuid(); // Crie uma instância de Uuid para gerar IDs únicos.
-    String petId = uuid.v4(); // Gere um novo ID único para o pet.
 
-    // Adicione o ID único ao objeto de dados do pet.
-    petData['id'] = petId;
-
-    var consultaOng = where.eq('cnpj', ongCnpj);
-    var ong = await collection.findOne(consultaOng);
-
-    if (ong != null) {
-      List<dynamic> petList = ong['petList'] ?? [];
-      petList.add(petData);
-      ong['petList'] = petList;
-      await collection.update(consultaOng, ong);
-      print('Pet inserido com sucesso na lista de pets da Ong. ID: $petId');
-    } else {
-      print('Ong não encontrada com o CNPJ fornecido.');
-    }
-  } catch (e) {
-    print('Erro ao inserir o pet na lista de pets da Ong: $e');
-  }
-}
 
 
 static Future<List<Map<String, dynamic>>> retornaListaPets() async {
