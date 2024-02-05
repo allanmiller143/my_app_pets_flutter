@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:random_string/random_string.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/App_pages/chat/chat.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
@@ -93,11 +94,14 @@ class ChatConversaController extends GetxController {
   }  
 }
 
-  Future<Stream<QuerySnapshot<Map<String, dynamic>>>?> func() async {
+   func() async {
     chatController = Get.find();
     meuControllerGlobal = Get.find();
-    await getMensagens();
-    return streamMensagem;
+    if(meuControllerGlobal.internet.value){
+      await getMensagens();
+      return streamMensagem;
+    }
+    
   }
 
   void chatMensagemTile(String mensagem,String horaMinuto,String nomeUsuario, bool enviadoPorMim){
@@ -218,7 +222,7 @@ class ChatConversaPage extends StatelessWidget {
                       ],
                     );
                   } else {
-                    return const Text('erro');
+                    return SemInternetWidget();
                   }
                 } else if (snapshot.hasError) {
                   return Text('Erro ao carregar a tela: ${snapshot.error}');

@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
 
@@ -184,11 +185,13 @@ class UsuarioAdocoesController extends GetxController {
 
 
 
-  Future<Stream<QuerySnapshot<Map<String, dynamic>>>?>func() async {
+  func() async {
     meuControllerGlobal = Get.find();
-    //await imprimirValoresDaConsulta();
-    await getAdocoes();
-    return stream;
+    if(meuControllerGlobal.internet.value){
+      await getAdocoes();
+      return stream;
+    }
+    
     
   }
 
@@ -241,7 +244,7 @@ class UsuarioAdocoesPage extends StatelessWidget {
                        ): const SizedBox()
                     );
                   } else {
-                    return const Text('Nenhum pet disponível');
+                    return const SemInternetWidget();
                   }
                 } else if (snapshot.hasError) {
                   return Text(

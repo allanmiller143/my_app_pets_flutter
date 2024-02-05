@@ -36,48 +36,8 @@ class XPage extends StatelessWidget {
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
-                    return Column(
-                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 200,
-                      color: Colors.amber,
-                    ),
-                     Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.toNamed('/insertUserDataPage');
-                                    },
-                                    child: CustomCard(
-                                      valor: xController.ongPetInfo['sexo'],
-                                      campo: 'Sexo',
-                                      backgroundImage: 'assets/card1.png',
-                                    ),
-                                  ),
-                                  CustomCard(
-                                    valor: xController.ongPetInfo['idade'],
-                                    campo: 'valor',
-                                    backgroundImage: 'assets/card2.png',
-                                  ),
-                                  CustomCard(
-                                    valor: xController.ongPetInfo['porte'],
-                                    campo: 'Porte',
-                                    backgroundImage: 'assets/card3.png',
-                                  ),
-                                  CustomCard(
-                                    valor: xController.ongPetInfo['raca'],
-                                    campo: 'Raça',
-                                    backgroundImage: 'assets/card4.png',
-                                  ),
-                                ],
-                              ),
-                            ),
-                   ],
-                 );
+                    return Text('data');
+                 
                   } else {
                     return const Text('Nenhum pet disponível');
                   }

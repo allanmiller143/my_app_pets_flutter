@@ -1,6 +1,7 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/Complete_cep.dart';
@@ -46,17 +47,21 @@ class EditarEnderecoController extends GetxController {
     bairro.text = dados['bairro'];
     rua.text = dados['logradouro'];
   }
-  Future<String> func() async {
+  func() async {
     settingsController = Get.find();
     meuControllerGlobal = Get.find();
+
+    if(meuControllerGlobal.internet.value){
     // coletar os valores antigos
-    rua.text = valores['Rua'];
-    numero.text = valores['Numero'];
-    cep.text = valores['cep'];
-    cidade.text = valores['Cidade'];
-    bairro.text = valores['Bairro'];
-    estado.text = valores['Estado'];
-    return 'allan';
+        rua.text = valores['Rua'];
+        numero.text = valores['Numero'];
+        cep.text = valores['cep'];
+        cidade.text = valores['Cidade'];
+        bairro.text = valores['Bairro'];
+        estado.text = valores['Estado'];
+        return 'allan';
+    }
+    
   }
   List<Widget> gerarTextFields() {
     return [
@@ -150,6 +155,17 @@ class EditarEnderecoPage extends StatelessWidget {
         init: EditarEnderecoController(),
         builder: (_) {
           return Scaffold(
+             appBar: AppBar(
+              toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+              backgroundColor: const Color.fromARGB(255, 250, 63, 6),
+              centerTitle: true,
+              title: const Text(
+                'Endereço',
+                style: TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Medium', fontWeight: FontWeight.w500, color: Color.fromARGB(255, 255, 255, 255)),
+              ),
+              leading: IconButton(onPressed: () => Get.back(), icon: const Icon(Icons.arrow_back_ios_new,size: 18, color: Color.fromARGB(255, 255, 255, 255))),  
+              
+            ),
             body: FutureBuilder(
               future: editarEnderecoController.func(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -158,27 +174,7 @@ class EditarEnderecoPage extends StatelessWidget {
                     return SingleChildScrollView(
                       child: Column(
                         children: [
-                          Container(
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height * 0.1,
-                            color: const Color.fromARGB(255, 255, 84, 16),
-                            padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                IconButton(
-                                  iconSize: 18,
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  icon: const Icon(Icons.arrow_back_ios,
-                                      color: Color.fromARGB(255, 255, 255, 255)),
-                                ),
-                                const Text('Endereço',style:  TextStyle(fontSize: 20,color: Color.fromARGB(255, 255, 255, 255))),
-                                const SizedBox( width: 48),      
-                              ],
-                            ),
-                          ),
+                          
                           Column(
                             children: editarEnderecoController.gerarTextFields()
                           ),
@@ -201,7 +197,7 @@ class EditarEnderecoPage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return const Text('Nenhum pet disponível');
+                    return const SemInternetWidget();
                   }
                 } else if (snapshot.hasError) {
                   return Text(

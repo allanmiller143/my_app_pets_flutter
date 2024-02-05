@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
 
@@ -16,10 +17,12 @@ class StatusAdocaoController extends GetxController {
   
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>?>func(context) async {
     meuControllerGlobal = Get.find();
-    //await imprimirValoresDaConsulta();
-    print(info);
-    await getAdaocao(context);
-    return stream;
+    if(meuControllerGlobal.internet.value){
+      await getAdaocao(context);
+      return stream;
+    }
+  
+    
   }
 
   void mostrarDialogoDeConfirmacao(context,idAdocao,idOng,idAnimal) {
@@ -204,7 +207,7 @@ class StatusAdocaoPage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return const Text('Nenhum pet disponível');
+                    return const SemInternetWidget();
                   }
                 } else if (snapshot.hasError) {
                   return Text(

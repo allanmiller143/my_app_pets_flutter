@@ -12,7 +12,7 @@ class CustomDropdownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => SizedBox(
-          width: 95,
+          width: 90,
           height: 40,
           child: DropdownButton<String>(
             isExpanded: true,

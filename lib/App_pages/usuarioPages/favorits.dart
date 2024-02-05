@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import '../app_widgets/my_animal_card.dart';
 
@@ -9,11 +10,14 @@ class FavoritsController extends GetxController {
   List<dynamic> favoritPetIds = [];
   late MeuControllerGlobal meuControllerGlobal;
 
-  Future<List<Map<String, dynamic>>> alteraLista() async {
+   alteraLista() async {
     meuControllerGlobal = Get.find();
-    pets = meuControllerGlobal.petsSistema;
-    favoritPetIds = meuControllerGlobal.usuario['Pets preferidos'];
-    return pets;
+    if(meuControllerGlobal.internet.value){
+        pets = meuControllerGlobal.petsSistema;
+        favoritPetIds = meuControllerGlobal.usuario['Pets preferidos'];
+        return pets;
+    }
+    
   }
 
   List<Widget> mostraFeed() {
@@ -132,7 +136,7 @@ class FavoritsPage extends StatelessWidget {
                                     borderRadius: BorderRadius.all(Radius.circular(30)),
                                   ),
                                   child: Container(
-                                    width: 360,
+                                    width: MediaQuery.of(context).size.width *0.9,
                                     height: 55,
                                     decoration: BoxDecoration(
                                         color: Color.fromARGB(255, 255, 255, 255),
@@ -181,7 +185,7 @@ class FavoritsPage extends StatelessWidget {
                       ],
                     );
                   } else {
-                    return Text('Nenhum pet disponível');
+                    return SemInternetWidget();
                   }
                 } else if (snapshot.hasError) {
                   return Text('Erro ao carregar a lista de pets: ${snapshot.error}');

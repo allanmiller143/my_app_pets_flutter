@@ -229,7 +229,7 @@ class PetsAuxPage extends StatelessWidget {
                                 borderRadius:BorderRadius.all(Radius.circular(30))  
                               ),
                               child: Container(
-                                width: 360,
+                                width: MediaQuery.of(context).size.width *0.9,
                                 height: 55,
                                 decoration: BoxDecoration(
                                   color: Color.fromARGB(255, 255, 255, 255),
@@ -365,7 +365,7 @@ class PetsAuxPage extends StatelessWidget {
                                 ),
                                 SizedBox(
                                   width:MediaQuery.of(context).size.width - 40,
-                                  height: MediaQuery.of(context).size.height * 0.53,
+                                  height: MediaQuery.of(context).size.height * 0.47,
                                   child: SingleChildScrollView(
                                     child: Column(
                                       mainAxisAlignment:MainAxisAlignment.spaceBetween,   
