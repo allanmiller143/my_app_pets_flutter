@@ -31,23 +31,16 @@ class SettingsPageController extends GetxController {
   bool args = false; // serve para controlar as funções de usuario e ong 
 
   func() async {
-
     meuControllerGlobal = Get.find();
-
     if(meuControllerGlobal.internet.value){
-
-    
-
       if(Get.arguments == null){
-        
         usuario = meuControllerGlobal.usuario;
-    
       }else{
         args = true;
         usuario = Get.arguments[0];
         var pets = await BancoDeDados.obterPetsDoUsuario(usuario['Id']);
         var imagensFeed =  await BancoDeDados.obterImagensFeedDoUsuario(usuario['Id']);
-        usuario['Pets'] =pets;
+        usuario['Pets'] = pets;
         usuario['Imagens feed'] = imagensFeed;  
       }
 
@@ -85,9 +78,9 @@ class SettingsPageController extends GetxController {
           GestureDetector(
             onTap: () {
               if(feed == 1){
-                Get.toNamed('/imageViewerPage',arguments: [conteudo[j],1]);
+                Get.toNamed('/imageViewerPage',arguments: [conteudo[j],1,usuario]);
               }else{
-                Get.toNamed('/imageViewerPage',arguments: [conteudo[j],2]);
+                Get.toNamed('/imageViewerPage',arguments: [conteudo[j],2,usuario]);
               }
               
             },
@@ -250,7 +243,7 @@ class SettingsPageController extends GetxController {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return Container(
+        return SizedBox(
           // Conteúdo do BottomSheet
           height: 200,
 
@@ -314,6 +307,13 @@ class SettingsPageController extends GetxController {
     opcao.value = 0;
     
   }
+}
+@override
+void onInit(){
+  if(Get.arguments != null){
+     args = true;
+  }
+  super.onInit();
 }
 
 }
@@ -463,7 +463,7 @@ class SettingsPage extends StatelessWidget {
                                           
                                           settingsPageController.args == false ?
                                           SizedBox(
-                                            height: 35,
+                                            height: 30,
                                             width: MediaQuery.of(context).size.width * 0.52,
                                             child: Row(
                                               mainAxisAlignment: MainAxisAlignment.end,
@@ -492,7 +492,7 @@ class SettingsPage extends StatelessWidget {
                         ),
                           // define um limite maximo de caracteres que o texto pode ter na tela
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0,5,0,0),
+                            padding: const EdgeInsets.fromLTRB(0,10,0,10),
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.9,
                               height: MediaQuery.of(context).size.height*0.08,

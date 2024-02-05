@@ -200,7 +200,7 @@ class MyEmailPage extends StatelessWidget {
                                 child: Container(
                                   color: Color.fromRGBO(126, 129, 60, 0.397),
                                   padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
-                                  width: 400,
+                        
                                   child: BackdropFilter(
                                     filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                     child: Column(
@@ -274,30 +274,32 @@ class MyEmailPage extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(height: 10),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Não possui conta?  ',
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                color: const Color.fromARGB(255, 255, 255, 255),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Get.toNamed('/signUp');
-                                              },
-                                              child: Text(
-                                                'Cadastre-se',
+                                        SizedBox(
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Não possui conta?  ',
                                                 style: TextStyle(
                                                   fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: const Color.fromARGB(255, 236, 71, 6),
+                                                  color: const Color.fromARGB(255, 255, 255, 255),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Get.toNamed('/signUp');
+                                                },
+                                                child: Text(
+                                                  'Cadastre-se',
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: const Color.fromARGB(255, 236, 71, 6),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         
                                       ],

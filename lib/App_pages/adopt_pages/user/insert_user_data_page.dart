@@ -26,12 +26,9 @@ class InsertUserDataPageController extends GetxController {
   var cep = TextEditingController();
   var nome = TextEditingController();
 
-  Future<String> func() async {
 
-    return 'allan';
-  } 
 
-   @override
+  @override
   void onInit() {
     // verificar se o usuario ja possui dados cadastrados no sistema, se sim, essa tela vai ser de alteração, se nap se inserção
     meuControllerGlobal = Get.find();

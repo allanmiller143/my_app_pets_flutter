@@ -1,6 +1,7 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/imageFeedDetail.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
@@ -15,18 +16,27 @@ class ImageViewerController extends GetxController {
   dynamic info = [];
 
   @override
-  void onInit() {
+  void onInit(){
+    meuControllerGlobal = Get.find();
     settingsController = Get.find(); // Encontra a instância existente
+    super.onInit();
+  }
+
+  func() async {
     meuControllerGlobal = Get.find();
 
-    if (Get.arguments[1] == 2) {
-      imagem = Get.arguments[0]['Imagem'];
-      info = Get.arguments[0];
-    } else {
-      imagem = Get.arguments[0]['Imagem'];
-      info = Get.arguments[0];
+    if(meuControllerGlobal.internet.value){
+      settingsController = Get.find(); // Encontra a instância existente
+
+      if (Get.arguments[1] == 2) {
+        imagem = Get.arguments[0]['Imagem'];
+        info = Get.arguments[0];
+      } else {
+        imagem = Get.arguments[0]['Imagem'];
+        info = Get.arguments[0];
+      }
+      return 'allan';
     }
-    super.onInit();
   }
 
   void excluir() async {
@@ -130,10 +140,13 @@ class ImageViewerController extends GetxController {
   }
 }
 
+
+
+
+// ignore: must_be_immutable
 class ImageViewerPage extends StatelessWidget {
-  // ignore: use_key_in_widget_constructors
-  ImageViewerPage({Key? key});
-  final imageViewerController = Get.put(ImageViewerController());
+  ImageViewerPage({super.key});
+  var imageViewerController = Get.put(ImageViewerController());
 
   @override
   Widget build(BuildContext context) {
@@ -147,8 +160,8 @@ class ImageViewerPage extends StatelessWidget {
               backgroundColor: const Color.fromARGB(255, 250, 63, 6),
               centerTitle: true,
               title: Text(
-                imageViewerController.meuControllerGlobal.usuario['Nome'],
-                style: TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Medium', fontWeight: FontWeight.w500, color: Color.fromARGB(255, 255, 255, 255)),
+                imageViewerController.settingsController.nomeOng.value,
+                style: const TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Medium', fontWeight: FontWeight.w500, color: Color.fromARGB(255, 255, 255, 255)),
               ),
               leading: IconButton(onPressed: () => Get.back(), icon: const Icon(Icons.arrow_back_ios_new,size: 18, color: Color.fromARGB(255, 255, 255, 255))),  
               actions: [
@@ -157,12 +170,33 @@ class ImageViewerPage extends StatelessWidget {
                   IconButton(onPressed: () {}, icon: const Icon(Icons.menu_sharp, color: Color.fromARGB(255, 255, 255, 255)))
               ],
            ),
-            body: Column(
-              children: [
-                imageViewerController.tipo == 2 ?
-                FeedDetail(imagembd: imageViewerController.imagem,tipoPet: imageViewerController.info['tipo animal'],):
-                FeedDetail(imagembd: imageViewerController.imagem),
-              ],
+            body: FutureBuilder(
+              future: imageViewerController.func(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
+                    return Column(
+                    children: [
+                      imageViewerController.tipo == 2 ?
+                      FeedDetail(imagembd: imageViewerController.imagem,tipoPet: imageViewerController.info['tipo animal'],):
+                      FeedDetail(imagembd: imageViewerController.imagem),
+                    ],
+                  );
+                 
+                  } else {
+                    return const SemInternetWidget();
+                  }
+                } else if (snapshot.hasError) {
+                  return Text(
+                      'Erro ao carregar a lista de pets: ${snapshot.error}');
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Color.fromARGB(255, 253, 72, 0),
+                    ),
+                  );
+                }
+              },
             ),
           );
         },

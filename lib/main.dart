@@ -47,7 +47,6 @@ void main() async {
   Get.put(MeuControllerGlobal());
   runApp(const MyApp());
   DependencyInjection.init();
-
 }
 
 // para usar roteamento usando o getx preciso retornar um getMaterialApp, definir

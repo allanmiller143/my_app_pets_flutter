@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/OngInfoEditPage.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
@@ -25,37 +26,41 @@ class EditarCampoIdadeController extends GetxController {
  
   late OngInfoEditPageController ongInfoEditPageController;
   
-  Future<String> func() async {
-    ongInfoEditPageController= Get.find(); 
-    meuControllerGlobal = Get.find();
-    meuControllerGlobal = Get.find();
-    if(chave == 'Idade'){
-      lista = idades;
-      x = selectedAge;
-    }else if(chave == 'Raça'){
-      if(ongInfoEditPageController.infoEditavel['Tipo'] == '1'){
-        lista = racasDeCachorro;
-      }
-      else if(ongInfoEditPageController.infoEditavel['Tipo'] == '2'){
-        lista = racasDeGato;
-      }
-      else{
-        lista = avesDeEstimacao;
-      }
-      x = selectedRace;
-    }else if(chave == 'Tipo'){
-      x = selectedType;
-      lista = tipoList;
-    }else if(chave == 'Sexo'){
-      x = selectedSex;
-      lista = sexoList;
-    }else if(chave == 'Porte'){
-      x = selectedPorte;
-      lista = portes;
-    }
+  func() async {
+      ongInfoEditPageController= Get.find(); 
+      meuControllerGlobal = Get.find();
+      if(meuControllerGlobal.internet.value){
 
-    settingsController = Get.find(); // Encontra a instância existente
-    return 'allan';
+      
+
+      if(chave == 'Idade'){
+        lista = idades;
+        x = selectedAge;
+      }else if(chave == 'Raça'){
+        if(ongInfoEditPageController.infoEditavel['Tipo'] == '1'){
+          lista = racasDeCachorro;
+        }
+        else if(ongInfoEditPageController.infoEditavel['Tipo'] == '2'){
+          lista = racasDeGato;
+        }
+        else{
+          lista = avesDeEstimacao;
+        }
+        x = selectedRace;
+      }else if(chave == 'Tipo'){
+        x = selectedType;
+        lista = tipoList;
+      }else if(chave == 'Sexo'){
+        x = selectedSex;
+        lista = sexoList;
+      }else if(chave == 'Porte'){
+        x = selectedPorte;
+        lista = portes;
+      }
+
+      settingsController = Get.find(); // Encontra a instância existente
+      return 'allan';
+    }
   }
 
   Future<void> validar() async{
@@ -107,7 +112,6 @@ class EditarCampoIdadePage extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              
                                const Padding(
                                 padding:  EdgeInsets.fromLTRB(5, 5, 5, 5),
                                 child: Text(
@@ -138,7 +142,7 @@ class EditarCampoIdadePage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return const Text('Nenhum pet disponível');
+                    return const SemInternetWidget();
                   }
                 } else if (snapshot.hasError) {
                   return Text(
