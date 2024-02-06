@@ -490,7 +490,7 @@ class SettingsPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                          // define um limite maximo de caracteres que o texto pode ter na tela
+    
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0,5,0,0),
                             child: SizedBox(

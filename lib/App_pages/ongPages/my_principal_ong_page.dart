@@ -8,7 +8,7 @@ import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
 
 
 class PrincipalOngAppController extends GetxController {
-  var opcaoSelecionada = 3.obs;
+  var opcaoSelecionada = 0.obs;
   Color corItemSelecionado = const Color.fromARGB(255, 0, 0, 0);
   Color corItemNaoSelecionado = const  Color.fromARGB(255, 255, 255, 255);
 
