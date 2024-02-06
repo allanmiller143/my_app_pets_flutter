@@ -153,9 +153,8 @@ class PetsPage extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
                   petsController.retornaLista(petsController.selectedType.value, 1);
-                  return SingleChildScrollView(
-                    child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
                         width: double.infinity,
@@ -189,7 +188,7 @@ class PetsPage extends StatelessWidget {
                               )
                             ),
                             Positioned(
-                              top: 95,
+                              top: MediaQuery.of(context).size.height * 0.10985,
                               left: 15,
                               child: Card(
                                 elevation: 8,
@@ -197,7 +196,7 @@ class PetsPage extends StatelessWidget {
                                   borderRadius:BorderRadius.all(Radius.circular(30))  
                                 ),
                                 child: Container(
-                                  width: 360,
+                                  width: MediaQuery.of(context).size.width *0.9,
                                   height: 55,
                                   decoration: BoxDecoration(
                                     color: Color.fromARGB(255, 255, 255, 255),
@@ -222,6 +221,7 @@ class PetsPage extends StatelessWidget {
                                         ),     
                                         child: IconButton(
                                           onPressed: (){
+                                            print(MediaQuery.of(context).size.width);
                                             petsController.showBottomSheet(context);
                                             
                                           },
@@ -326,18 +326,19 @@ class PetsPage extends StatelessWidget {
                                   ),
                                   SizedBox(
                                     width:MediaQuery.of(context).size.width - 40,
-                                    height: MediaQuery.of(context).size.height * 0.53,
+                                    height: MediaQuery.of(context).size.height * 0.47,
                                     child: SingleChildScrollView(
                                       child: Column(
                                         mainAxisAlignment:MainAxisAlignment.spaceBetween,   
                                         children: [
                                           Row(
-                                            mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:MainAxisAlignment.center,
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children:[
                                               Column(
                                                 children: petsController.generateAnimalCards(petsController.petsInfo), // Use a função para gerar os cards             
                                               ),
+                                              SizedBox(width: 5,),
                                               Column(
                                                 children: petsController.generateAnimalCards(petsController.petsInfo2) // Gere mais cards conforme necessário               
                                               ),
@@ -354,7 +355,7 @@ class PetsPage extends StatelessWidget {
                         ),
                       ),
                     ], 
-                                    ),
+                    
                   );
                 } 
                 else {

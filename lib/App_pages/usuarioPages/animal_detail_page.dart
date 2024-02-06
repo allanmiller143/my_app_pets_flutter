@@ -194,7 +194,7 @@ class AnimalInsertPage extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: Container(
-                                    width: MediaQuery.of(context).size.width * 0.875,
+                                    width: MediaQuery.of(context).size.width * 0.86,
                                     height: 80,
                                     decoration: BoxDecoration(
                                       borderRadius:BorderRadius.all(Radius.circular(15)),   
@@ -374,8 +374,8 @@ class CustomCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Container(
-        width: 75,
-        height: 75,
+        width: MediaQuery.of(context).size.height *0.098,
+        height: MediaQuery.of(context).size.height *0.098,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
           image: DecorationImage(

@@ -1,6 +1,4 @@
-// ignore_for_file: must_be_immutable
-import 'dart:io';
-
+// ignore_for_file: must_be_immutabl
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/chat/chat.dart';
@@ -9,7 +7,6 @@ import 'package:replica_google_classroom/App_pages/usuarioPages/perfil.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/pets_page.dart';
 
 class PrincipaAppController extends GetxController {
-
   RxInt opcaoSelecionada = 0.obs;
   Color corItemSelecionado = const Color.fromARGB(255, 0, 0, 0);
   Color corItemNaoSelecionado = const  Color.fromARGB(255, 255, 255, 255);

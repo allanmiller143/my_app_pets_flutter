@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 
 class DetalhesAdocaoController extends GetxController {
@@ -9,9 +10,12 @@ class DetalhesAdocaoController extends GetxController {
   Map<String,dynamic> listInfo = Get.arguments[0];
   String titulo = Get.arguments[1];
 
-  Future<String> func() async {
+  func() async {
     meuControllerGlobal = Get.find();
-    return 'allan';
+    if(meuControllerGlobal.internet.value){
+      return 'allan';
+    }
+    
   }
 
   List<Widget> construirInfo(){
@@ -104,7 +108,7 @@ class DetalhesAdocaoPage extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return const Text('Nenhum pet disponível');
+                    return const SemInternetWidget();
                   }
                 } else if (snapshot.hasError) {
                   return Text(

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 
@@ -11,9 +12,13 @@ class AdoptConfirmPageController extends GetxController {
   dynamic imagem = Get.arguments[0]['Imagem'];
   String nome = Get.arguments[0]['Nome animal'];
 
-  Future<String> func() async {
+   func() async {
     meuControllerGlobal = Get.find();
-    return 'allan';
+    if(meuControllerGlobal.internet.value){
+      return 'allan';
+    }
+    
+    
   }
 }
 
@@ -191,7 +196,7 @@ class AdoptConfirmPage extends StatelessWidget {
                       ],
                     );
                   } else {
-                    return const Text('Nenhum pet disponível');
+                    return const SemInternetWidget();
                   }
                 } else if (snapshot.hasError) {
                   return Text('Erro ao carregar a lista de pets: ${snapshot.error}');

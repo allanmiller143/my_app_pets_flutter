@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
@@ -19,6 +18,7 @@ class HomePageController extends GetxController {
     meuControllerGlobal = Get.find();
     usuario = meuControllerGlobal.usuario;
     if(meuControllerGlobal.internet.value == true){
+      print('entrei aqui hihi');
       meuControllerGlobal.petsSistema = await BancoDeDados.obterPets();
       pets = meuControllerGlobal.petsSistema;
       return pets;
@@ -85,7 +85,7 @@ class HomePage extends StatelessWidget {
                                 borderRadius:BorderRadius.all(Radius.circular(30))  
                               ),
                               child: Container(
-                                width: 360,
+                                width: MediaQuery.of(context).size.width *0.9,
                                 height: 55,
                                 decoration: BoxDecoration(
                                   color: Color.fromARGB(255, 255, 255, 255),
@@ -109,7 +109,7 @@ class HomePage extends StatelessWidget {
                                   children: [
                                     Container(
                                       width: double.infinity,
-                                      height: 145,
+                                      height: MediaQuery.of(context).size.width *0.4,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
                                         image: DecorationImage(
@@ -194,7 +194,7 @@ class HomePage extends StatelessWidget {
                                             child: Row(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
-                                                homePageController.pets.length > 0 ?
+                                                homePageController.pets.isNotEmpty ?
                                                 AnimalCard(
                                                 pet: homePageController.pets[0],
                                                 onPressed: () {

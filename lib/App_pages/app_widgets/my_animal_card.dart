@@ -36,7 +36,7 @@ class AnimalCard extends StatelessWidget {
           ),
           elevation: 8,
           child: Container(
-            width: 160,
+            width: MediaQuery.of(context).size.width * 0.4,
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 255, 250, 248),
               borderRadius: BorderRadius.circular(15),
@@ -46,8 +46,8 @@ class AnimalCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
                   child: Container(
-                    width: 150,
-                    height: 120,
+                    width: MediaQuery.of(context).size.width * 0.38,
+                    height: MediaQuery.of(context).size.width * 0.30,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(
                         Radius.circular(15),
