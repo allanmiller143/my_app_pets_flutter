@@ -219,6 +219,7 @@ class AdocaoController extends GetxController {
                           if(filtro == 'Aguardando avalição dos dados'){
                             status = 'Domentação aprovada';
                             todasAdocoesController.aguardandoAvaliacao.value -= 1;
+                            todasAdocoesController.aguardandoUsuario.value += 1;    
                           }else {
                             status = 'Finalizada';
                             todasAdocoesController.aguardandoUsuario.value -= 1;                             

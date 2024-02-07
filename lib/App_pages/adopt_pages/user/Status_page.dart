@@ -143,7 +143,7 @@ class StatusAdocaoController extends GetxController {
           listaStatus.add(
             const SizedBox(
               width: double.infinity,
-              child: Text('Voçe cancelou esse processo!!!'),
+              child: Text('Você cancelou esse processo!!!'),
             )
           );
 

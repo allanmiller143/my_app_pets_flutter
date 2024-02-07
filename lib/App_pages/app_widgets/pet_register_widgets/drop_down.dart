@@ -39,7 +39,7 @@ class CustomDropdownButton extends StatelessWidget {
                   child: Text(
                     value,
                     style: const TextStyle(
-                      fontSize: 16,
+                      
                       color: Color.fromARGB(255, 0, 0, 0),
                       fontFamily: 'AsapCondensed-Bold',
                     ),

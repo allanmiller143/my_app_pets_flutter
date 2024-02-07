@@ -48,17 +48,17 @@ class DataOngController extends GetxController {
 List<Widget> gerarTextFields() {
     return [
       buildTextField('Nome ong', nomeOng),
-      buildTextField('CEP', cep, maxLength: 8,teclado: 'number'),
       buildTextField('cnpj', cnpj, maxLength: 14,teclado: 'number'),
+      buildTextField('CEP', cep, maxLength: 8,teclado: 'number'),
       buildTextField('Estado', estado,maxLength:  2,ativado: false),
       buildTextField('Cidade', cidade,ativado: false),
       Obx(()=> buildTextField('Bairro', bairro, ativado: bairroAtivado.value)),
       Obx(()=> buildTextField('Rua', rua,ativado: ruaAtivado.value)),
-      buildTextField('Telefone/com ddd', telefone, maxLength: 11),
       buildTextField('Numero', numero, maxLength: 3,teclado: 'number'),
+      buildTextField('Telefone/com ddd', telefone, maxLength: 11),
       buildTextField('cpf representante', cpfRepresentante, maxLength: 11),
-      buildTextField('Email representante', emailRepresentante, maxLength: 11),
-      buildTextField('Nome representante', nomeRepresentante,teclado: 'number'),
+      buildTextField('Email representante', emailRepresentante),
+      buildTextField('Nome representante', nomeRepresentante),
     ];
   }
 

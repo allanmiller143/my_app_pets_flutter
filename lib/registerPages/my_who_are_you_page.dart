@@ -84,27 +84,17 @@ class MyWhoAreYouPage extends StatelessWidget {
                                   padding:const EdgeInsets.fromLTRB(0, 0, 0, 8), 
                                   child: CustomIconButton(
                                     label: 'Sou ONG',
-                                    icon: 
-                                      Transform.scale(
-                                        scale: 1.5,
-                                        child: const Icon(
-                                          Icons.person,
-                                          color: Color.fromARGB(255, 255, 255, 255),
-                                        )),
+                                   
                                       onPressed: () {
                                       userTypeController.abrirTelaDeDados('dataOngPage');    
                                     },
-                                    width: 150),
+                                    width: 200,
+                                    alinhamento: MainAxisAlignment.center,
+                                    ),
                                 ),
                                 CustomIconButton(
                                   label: 'Sou usuário',
-                                  icon: Transform.scale(
-                                      scale: 1.5,
-                                      child: const Icon(
-                                        Icons.person,
-                                        color: Color.fromARGB(255, 255, 255, 255),
-                                            
-                                      )),
+                                  
                                       onPressed: () async {
                                         dynamic info = {
                                           'Tipo': "comum",
@@ -119,7 +109,9 @@ class MyWhoAreYouPage extends StatelessWidget {
                                         Get.toNamed('/principalAppPage');
                                         //userTypeController.abrirTelaDeDados('/');    
                                     },
-                                  width: 150)
+                                  width: 200,
+                                  alinhamento: MainAxisAlignment.center,
+                                  )
                               ],
                             ),
                           ],

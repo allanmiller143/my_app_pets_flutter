@@ -21,6 +21,7 @@ class ChatController extends GetxController {
   var listaDeIds = [];
   File? imageFile;
   RxBool internet = true.obs;
+  RxBool vazia = false.obs;
 
   getChatrooms() async {
     stream = (await BancoDeDados.getChatRooms(meuId)) as Stream<QuerySnapshot<Map<String, dynamic>>>?;
@@ -51,7 +52,11 @@ class ChatController extends GetxController {
           }
           barraDePesquisa.value = !barraDePesquisa.value;
           barraDePesquisa.value = !barraDePesquisa.value;
+          vazia.value = false;
         }
+      }else{
+        vazia.value = true;
+
       }
     });
   }
@@ -200,18 +205,15 @@ class ChatPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                padding:const EdgeInsets.fromLTRB(0, 0, 0, 0),
                                 child: GestureDetector(
                                   onTap: () {},
                                   child: Row(
                                     children: [
                                       Text(
-                                        chatController
-                                            .meuControllerGlobal.usuario['Nome'],
+                                        chatController.meuControllerGlobal.usuario['Nome'],           
                                         style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 255, 255, 255),
+                                            color: Color.fromARGB(255, 255, 255, 255),
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -236,22 +238,9 @@ class ChatPage extends StatelessWidget {
                             child: Obx(
                               () => Column(
                                 children: [
-                                  (chatController.barraDePesquisa.value ==
-                                              true &&
-                                          chatController
-                                              .tempSearchStore.isNotEmpty)
-                                      ? SingleChildScrollView(
-                                          child: ListView(
-                                            primary: false,
-                                            shrinkWrap: true,
-                                            children: chatController
-                                                .tempSearchStore
-                                                .map((e) {
-                                              return chatController
-                                                  .contruirCard(e);
-                                            }).toList(),
-                                          ),
-                                        )
+                                  (chatController.barraDePesquisa.value == true || chatController.vazia.value == true  )
+                                                
+                                      ? Center(child: Text('Você ainda não possui conversas'))
                                       : SingleChildScrollView(
                                           child: Column(
                                           children: chatController.listachats,

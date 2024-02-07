@@ -45,7 +45,7 @@ class FavoritsController extends GetxController {
           contador++;
           rowChildren.add(
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+              padding: const EdgeInsets.fromLTRB(5, 0, 5, 15),
               child: AnimalCard(
                 pet: pets[j],
                 onPressed: () {
@@ -61,7 +61,7 @@ class FavoritsController extends GetxController {
         contador = 0;
         rows.add(
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: rowChildren,
           ),
         );
@@ -86,7 +86,7 @@ class FavoritsPage extends StatelessWidget {
             extendBodyBehindAppBar: true,
             appBar: AppBar(
               forceMaterialTransparency: true,
-              toolbarHeight: 85,
+              toolbarHeight: MediaQuery.of(context).size.height * 0.1,
               leading: GestureDetector(
                 onTap: () {
                   Get.back();
@@ -94,6 +94,7 @@ class FavoritsPage extends StatelessWidget {
                 child: Icon(Icons.arrow_back_ios, color: const Color.fromARGB(255, 255, 255, 255)),
               ),
             ),
+
             body: FutureBuilder(
               future: favoritsController.alteraLista(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -149,11 +150,11 @@ class FavoritsPage extends StatelessWidget {
                         ),
                         Expanded(
                           child: SizedBox(
+                 
                             width: double.infinity,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -168,10 +169,12 @@ class FavoritsPage extends StatelessWidget {
                                     ],
                                   ),
                                   Expanded(
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width - 40,
+                                    child: Container(
+                            
+                                      width: MediaQuery.of(context).size.width,
                                       child: SingleChildScrollView(
                                         child: Column(
+                                      
                                           children: favoritsController.mostraFeed(),
                                         ),
                                       ),

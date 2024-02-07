@@ -66,7 +66,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '78643950643',
     projectId: 'app-pets-4ac92',
     storageBucket: 'app-pets-4ac92.appspot.com',
-    iosBundleId: 'com.example.replicaGoogleClassroom',
+    iosBundleId: 'com.allan_miller.replicaGoogleClassroom',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -75,6 +75,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '78643950643',
     projectId: 'app-pets-4ac92',
     storageBucket: 'app-pets-4ac92.appspot.com',
-    iosBundleId: 'com.example.replicaGoogleClassroom.RunnerTests',
+    iosBundleId: 'com.allan_miller.replicaGoogleClassroom.RunnerTests',
   );
 }

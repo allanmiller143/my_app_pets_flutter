@@ -179,89 +179,81 @@ class AnimalInsertPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: (){
-                                  Get.toNamed('/ongProfilePage',arguments: [animalDetailPageController.ongPetInfo]);
-                                },
-                                child: Card(
-                                  elevation: 8,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width * 0.86,
-                                    height: 80,
-                                    decoration: BoxDecoration(
-                                      borderRadius:BorderRadius.all(Radius.circular(15)),   
-                                    ),
+                        GestureDetector(
+                          onTap: (){
+                            Get.toNamed('/ongProfilePage',arguments: [animalDetailPageController.ongPetInfo]);
+                          },
+                          child: Card(
+                            elevation: 8,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: Container(
+                              
+                              height: 80,
+                              decoration: BoxDecoration(
+                                borderRadius:BorderRadius.all(Radius.circular(15)),   
+                              ),
+                              child: Row(
+                                mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Row(
-                                      mainAxisAlignment:MainAxisAlignment.spaceBetween,
                                       children: [
+                                        Container(
+                                          width: 60,
+                                          height: 60,
+                                          decoration: BoxDecoration(
+                                            color: Color.fromARGB(255, 211, 248, 247),   
+                                            borderRadius: BorderRadius.all(Radius.circular(50),),
+                                            image: DecorationImage(
+                                              image: AssetImage('assets/menu-lateral.png'),fit: BoxFit.cover,),
+                                          ),
+                                        ),
                                         Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
+                                          padding:const EdgeInsets.fromLTRB(10, 0, 0, 0),    
+                                          child: Column(
+                                            crossAxisAlignment:CrossAxisAlignment.start,
+                                            mainAxisAlignment:MainAxisAlignment.spaceEvenly,        
                                             children: [
-                                              Container(
-                                                width: 60,
-                                                height: 60,
-                                                decoration: BoxDecoration(
-                                                  color: Color.fromARGB(255, 211, 248, 247),   
-                                                  borderRadius: BorderRadius.all(Radius.circular(50),),
-                                                  image: DecorationImage(
-                                                    image: AssetImage('assets/menu-lateral.png'),fit: BoxFit.cover,),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:const EdgeInsets.fromLTRB(10, 0, 0, 0),    
-                                                child: Column(
-                                                  crossAxisAlignment:CrossAxisAlignment.start,
-                                                  mainAxisAlignment:MainAxisAlignment.spaceEvenly,        
-                                                  children: [
-                                                    Text(
-                                                        Get.arguments[0]['Nome ong'],
-                                                        style: TextStyle(fontFamily:'AsapCondensed-Bold',fontSize: 13)),      
-                                                    Text(
-                                                        Get.arguments[0]['E-mail'],
-                                                        style: TextStyle(fontFamily:'AsapCondensed-Medium',fontSize: 13)),    
-                                                    Row(
-                                                      children: [
-                                                        Icon(Icons.verified,size: 15,),
-                                                        Text('verificado',style: TextStyle( fontFamily:'AsapCondensed-Medium',fontSize: 13))       
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
+                                              Text(
+                                                  Get.arguments[0]['Nome ong'],
+                                                  style: TextStyle(fontFamily:'AsapCondensed-Bold',fontSize: 13)),      
+                                              Text(
+                                                  Get.arguments[0]['E-mail'],
+                                                  style: TextStyle(fontFamily:'AsapCondensed-Medium',fontSize: 13)),    
+                                              Row(
+                                                children: [
+                                                  Icon(Icons.verified,size: 15,),
+                                                  Text('verificado',style: TextStyle( fontFamily:'AsapCondensed-Medium',fontSize: 13))       
+                                                ],
+                                              )
                                             ],
                                           ),
                                         ),
-                                        IconButton(
-                                            onPressed: () async {
-                                              var chatRoomId = animalDetailPageController.getChatRoomByUserName(animalDetailPageController.meuControllerGlobal.usuario['Id'], animalDetailPageController.ongPetInfo['Id']); // quem envia e quem recebe 
-                                              Map<String, dynamic> chatRoomInfoMap = {
-                                                'users' : [animalDetailPageController.meuControllerGlobal.usuario['Id'],animalDetailPageController.ongPetInfo['Id']],
-                                              };
-
-                                              await BancoDeDados.criaChatRoom(chatRoomId, chatRoomInfoMap);
-                                              Get.toNamed('/chatConversa',arguments: [animalDetailPageController.ongPetInfo['Id'], animalDetailPageController.ongPetInfo['Nome']]);
-
-                                            },
-                                            icon: Icon(
-                                              Icons.message,
-                                              color: Color.fromARGB(
-                                                  255, 252, 116, 5),
-                                            ))
                                       ],
                                     ),
                                   ),
-                                ),
+                                  IconButton(
+                                      onPressed: () async {
+                                        var chatRoomId = animalDetailPageController.getChatRoomByUserName(animalDetailPageController.meuControllerGlobal.usuario['Id'], animalDetailPageController.ongPetInfo['Id']); // quem envia e quem recebe 
+                                        Map<String, dynamic> chatRoomInfoMap = {
+                                          'users' : [animalDetailPageController.meuControllerGlobal.usuario['Id'],animalDetailPageController.ongPetInfo['Id']],
+                                        };
+
+                                        await BancoDeDados.criaChatRoom(chatRoomId, chatRoomInfoMap);
+                                        Get.toNamed('/chatConversa',arguments: [animalDetailPageController.ongPetInfo['Id'], animalDetailPageController.ongPetInfo['Nome']]);
+
+                                      },
+                                      icon: Icon(
+                                        Icons.message,
+                                        color: Color.fromARGB(
+                                            255, 252, 116, 5),
+                                      ))
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                         Row(
@@ -278,8 +270,7 @@ class AnimalInsertPage extends StatelessWidget {
                                           fontSize: 16)),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(5, 0, 0, 5),
+                                  padding:const EdgeInsets.fromLTRB(5, 0, 0, 5),    
                                   child: SizedBox(
                                     width: MediaQuery.of(context).size.width * 0.875,
                                     child: Text(

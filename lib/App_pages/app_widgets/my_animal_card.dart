@@ -30,11 +30,11 @@ class AnimalCard extends StatelessWidget {
     return Obx(
       () => GestureDetector(
         onTap: onPressed,
-        child: Card(
+        child: Material(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
           ),
-          elevation: 8,
+          elevation: 15,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.4,
             decoration: BoxDecoration(

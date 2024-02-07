@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:random_string/random_string.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 
 class SignUpController extends GetxController {
@@ -18,7 +19,7 @@ class SignUpController extends GetxController {
 
   validarLogin(context) async {
       if(senha.text.isNotEmpty && senha.text == confirmaSenha.text){
-      print('entrei aqui');
+      showLoad(context);
       try{
         String id = randomAlphaNumeric(10);
         UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email.text, password: senha.text);
@@ -36,18 +37,11 @@ class SignUpController extends GetxController {
         meuControllerGlobal.usuario = userInfoMap;
         await BancoDeDados.addUsuarioDetalhes(userInfoMap, id);
         
-        ScaffoldFeatureController<SnackBar, SnackBarClosedReason> controller = ScaffoldMessenger.of(context)
-        .showSnackBar(  
-          const SnackBar(
-            content: Text('Login bem sucedido'),
-            backgroundColor: Color.fromARGB(155, 33, 250, 0),
-          ),
-        );
 
-        await controller.closed;
-
+        Get.back();
         Get.toNamed('/whoAreYouPage');
       }on FirebaseAuthException catch(e){
+        Get.back();
         if(e.code == 'weak-password'){
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Senha fraca, por favor tente outra mais forte'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
         }
@@ -142,7 +136,7 @@ class MySignUpPage extends StatelessWidget {
                                       padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                                       color: const Color.fromRGBO(126, 129, 60, 0.397),
                                       height: 380,
-                                      width: 400,
+                                      width: double.infinity,
                                       child: BackdropFilter(
                                         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                         child: Column(

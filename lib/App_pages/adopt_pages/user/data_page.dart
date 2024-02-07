@@ -123,9 +123,11 @@ class UserDataPage extends StatelessWidget {
                         'Hora adoção': FieldValue.serverTimestamp(),
                         'Status': 'Aguardando avalição dos dados'
                       };
+                      Get.back();Get.back();
                       await BancoDeDados.adotar(id, info);
 
-                      //Get.toNamed('/principalAppPage');
+                      
+
                     },
                     width: 250,
                     alinhamento: MainAxisAlignment.center,

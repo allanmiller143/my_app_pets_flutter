@@ -239,7 +239,7 @@ class UsuarioAdocoesPage extends StatelessWidget {
                            child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: usuarioAdocoesController.listaAdocoes
-                                                 ),
+                                              ),
                          ),
                        ): const SizedBox()
                     );

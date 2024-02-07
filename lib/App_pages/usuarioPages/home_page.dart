@@ -109,7 +109,7 @@ class HomePage extends StatelessWidget {
                                   children: [
                                     Container(
                                       width: double.infinity,
-                                      height: MediaQuery.of(context).size.width *0.4,
+                                      height: MediaQuery.of(context).size.width *0.35,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
                                         image: DecorationImage(
@@ -188,41 +188,50 @@ class HomePage extends StatelessWidget {
                                         ),
                                         SizedBox(
                                           width: double.infinity,
-                          
+
                                           child: SingleChildScrollView(
                                             scrollDirection: Axis.horizontal,
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                homePageController.pets.isNotEmpty ?
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10.0),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  homePageController.pets.isNotEmpty ?
+                                                Padding(
+                                                  padding: const EdgeInsets.fromLTRB(0,0,10,0),
+                                                  child: AnimalCard(
+                                                    pet: homePageController.pets[0],
+                                                    onPressed: () {
+                                                      Get.toNamed('/animalDetail', arguments: [homePageController.pets[0],homePageController.usuario]);       
+                                                            
+                                                      //Get.toNamed('/animalDetail', arguments: [homePageController.pets[0],homePageController.usuario]);       
+                                                    },
+                                                    meuControllerGlobal: homePageController.meuControllerGlobal,
+                                                            
+                                                  ),
+                                                ): Text('Estamos sem nenhum pet no sistema'),
+                                                homePageController.pets.length > 1 ?
+                                                Padding(
+                                                  padding: const EdgeInsets.fromLTRB(0,0,10,0),
+                                                  child: AnimalCard(
+                                                    pet: homePageController.pets[1],
+                                                    onPressed: () {
+                                                      Get.toNamed('/animalDetail', arguments: [homePageController.pets[1],homePageController.usuario]);
+                                                    },     
+                                                    meuControllerGlobal: homePageController.meuControllerGlobal,
+                                                            
+                                                  ),
+                                                ):SizedBox(),
+                                                homePageController.pets.length > 2 ?
                                                 AnimalCard(
-                                                pet: homePageController.pets[0],
-                                                onPressed: () {
-                                                  Get.toNamed('/animalDetail', arguments: [homePageController.pets[0],homePageController.usuario]);       
-                                                        
-                                                  //Get.toNamed('/animalDetail', arguments: [homePageController.pets[0],homePageController.usuario]);       
-                                                },
-                                                meuControllerGlobal: homePageController.meuControllerGlobal,
-                                                        
-                                              ): Text('Estamos sem nenhum pet no sistema'),
-                                              homePageController.pets.length > 1 ?
-                                              AnimalCard(
-                                                pet: homePageController.pets[1],
-                                                onPressed: () {
-                                                  Get.toNamed('/animalDetail', arguments: [homePageController.pets[1],homePageController.usuario]);
-                                                },     
-                                                meuControllerGlobal: homePageController.meuControllerGlobal,
-                                                        
-                                              ):SizedBox(),
-                                              homePageController.pets.length > 2 ?
-                                              AnimalCard(
-                                                pet: homePageController.pets[2],
-                                                onPressed: () {
-                                                  Get.toNamed('/animalDetail', arguments: [homePageController.pets[2],homePageController.usuario]);    
-                                                },
-                                                meuControllerGlobal: homePageController.meuControllerGlobal,
-                                              ):SizedBox()
-                                              ],
+                                                  pet: homePageController.pets[2],
+                                                  onPressed: () {
+                                                    Get.toNamed('/animalDetail', arguments: [homePageController.pets[2],homePageController.usuario]);    
+                                                  },
+                                                  meuControllerGlobal: homePageController.meuControllerGlobal,
+                                                ):SizedBox()
+                                                ],
+                                              ),
                                             ),
                                             
                                           ),

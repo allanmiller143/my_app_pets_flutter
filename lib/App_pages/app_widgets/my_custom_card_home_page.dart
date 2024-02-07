@@ -32,7 +32,7 @@ class CustomCardHomePage extends StatelessWidget {
           width: 60,
           height: 95,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(30)),
+            borderRadius: const BorderRadius.all(Radius.circular(30)),
             color: containerColor,
           ),
           child: Column(
@@ -55,8 +55,8 @@ class CustomCardHomePage extends StatelessWidget {
                 text,
                 style: TextStyle(
                   color: textColor,
-                  fontSize: 13,
-                  fontFamily: 'AsapCondensed-Light',
+                  fontSize: 11,
+                  fontFamily: 'AsapCondensed-Bold',
                 ),
               )
             ],

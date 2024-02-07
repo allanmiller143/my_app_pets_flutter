@@ -91,7 +91,7 @@ String filtro() {
     for (var petInfo in petsInfo) {
       cards.add(
         Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 15),
           child: AnimalCard(
             pet: petInfo,
             onPressed: () {
@@ -170,6 +170,17 @@ class PetsAuxPage extends StatelessWidget {
         init: PetsAuxController(),
         builder: (_) {
           return Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              forceMaterialTransparency: true,
+              toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+              leading: GestureDetector(
+                onTap: () {
+                  Get.back();
+                },
+                child: Icon(Icons.arrow_back_ios, color: const Color.fromARGB(255, 255, 255, 255)),
+              ),
+            ),
             body:FutureBuilder( // usa-se futureBuilder, pq preciso carregar a lista de pets antes de criar a tela.
             future: petsController.alteraLista(Get.arguments[0],petsController.argumentsUsed), 
             builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -180,95 +191,59 @@ class PetsAuxPage extends StatelessWidget {
                   return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
-                      width: double.infinity,
-                      height: 165,
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      child: Stack(
-                        children: [
                           Container(
                             width: double.infinity,
-                            height: 130,
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 255, 51, 0),
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20)
-                              )
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            height: 165,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            child: Stack(
                               children: [
-                                IconButton(
-                                  iconSize: 20,
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  icon: const Icon(Icons.arrow_back_ios,color: Color.fromARGB(255, 255, 255, 255)), 
-                                ),
                                 Container(
-                                  width: 250,
-                                  height: 60,
+                                  width: double.infinity,
+                                  height: 130,
                                   decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage('assets/5.png'),
-                                        fit: BoxFit.cover)
+                                    color: Color.fromARGB(255, 255, 51, 0),
+                                    borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(20),
+                                        bottomRight: Radius.circular(20)
+                                    )
                                   ),
-                                ),
-                                const SizedBox(width: 48), // Espaço para alinhar o texto "Publicação" no centro
-
-                              ],
-                            )
-                          ),
-                          Positioned(
-                            top: 95,
-                            left: 15,
-                            child: Card(
-                              elevation: 8,
-                              shape: RoundedRectangleBorder(
-                                borderRadius:BorderRadius.all(Radius.circular(30))  
-                              ),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width *0.9,
-                                height: 55,
-                                decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 255, 255, 255),
-                                  borderRadius: BorderRadius.all(Radius.circular(30))     
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                                      child: Text(
-                                        'Filtrar',
-                                        style: TextStyle(fontSize: 20,fontFamily:'AsapCondensed-Light'),         
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 250,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: AssetImage('assets/5.png'),
+                                              fit: BoxFit.cover)
+                                        ),
                                       ),
+                                    ],
+                                  )
+                                ),
+                                Positioned(
+                                  top: 95,
+                                  left: 15,
+                                  child: Card(
+                                    elevation: 8,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:BorderRadius.all(Radius.circular(30))  
                                     ),
-                                    Container(
-                                      width: 55,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *0.9,
                                       height: 55,
                                       decoration: BoxDecoration(
-                                        color:Color.fromARGB(255, 17, 61, 94),
-                                        borderRadius:BorderRadius.circular(40)
-                                      ),     
-                                      child: IconButton(
-                                        onPressed: (){
-                                          petsController.showBottomSheet(context);
-                                          
-                                        },
-                                        icon: Icon(Icons.filter_alt_outlined),
                                         color: Color.fromARGB(255, 255, 255, 255),
+                                        borderRadius: BorderRadius.all(Radius.circular(30))     
                                       ),
-                                    )
-                                  ],
-                                ),
-                              ),
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                    ),
+                          ),
+                    
                     Padding(
                       padding: EdgeInsets.fromLTRB(22, 0, 22, 0),
                       child: Column(
@@ -347,51 +322,55 @@ class PetsAuxPage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                        ],
+                      ),
+                    ),
+                     Expanded(
+                         child: Padding(
+                                padding: const EdgeInsets.fromLTRB(22, 10, 22, 0),
+                                child: Column(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(2, 0, 0, 10), 
-                                      child: Text(
-                                        'Esperando por você',
-                                        style: TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Bold'),   
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(2, 0, 0, 10), 
+                                          child: Text(
+                                            'Esperando por você',
+                                            style: TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Bold'),   
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Expanded(
+                                      child: SizedBox(
+                                        
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            mainAxisAlignment:MainAxisAlignment.spaceBetween,   
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children:[
+                                                  Column(
+                                                    children: petsController.generateAnimalCards(petsController.petsInfo), // Use a função para gerar os cards             
+                                                  ),
+                                                  SizedBox(width: 5,),
+                                                  Column(
+                                                    children: petsController.generateAnimalCards(petsController.petsInfo2) // Gere mais cards conforme necessário               
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  width:MediaQuery.of(context).size.width - 40,
-                                  height: MediaQuery.of(context).size.height * 0.47,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisAlignment:MainAxisAlignment.spaceBetween,   
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children:[
-                                            Column(
-                                              children: petsController.generateAnimalCards(petsController.petsInfo), // Use a função para gerar os cards             
-                                            ),
-                                            Column(
-                                              children: petsController.generateAnimalCards(petsController.petsInfo2) // Gere mais cards conforme necessário               
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                              ),
+                       ),
                   ],
 
                  

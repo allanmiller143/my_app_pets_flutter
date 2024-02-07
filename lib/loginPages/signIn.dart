@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/widgets/load_widget.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,6 +26,7 @@ class SignInController extends GetxController {
 login(context) async{
     if(email.text.isNotEmpty || senha.text.isNotEmpty){
       try{
+        showLoad(context);
         await FirebaseAuth.instance.signInWithEmailAndPassword(email: email.text, password: senha.text);
         QuerySnapshot querySnapshot = await BancoDeDados.getUsuarioPorEmail(email.text);
         // informações das duas contas
@@ -41,6 +43,7 @@ login(context) async{
               'Tipo' : querySnapshot.docs[0]['Tipo'],
 
            };
+           Get.back();
            Get.toNamed('/whoAreYouPage');
         }
         else{
@@ -70,6 +73,7 @@ login(context) async{
               'Bio' : querySnapshot.docs[0]['Bio'],
               'Imagens feed' : imagensFeed
             };  
+            Get.back();
             Get.toNamed('/principalOngAppPage');  
           }
           else{
@@ -108,23 +112,18 @@ login(context) async{
                 'Nome': querySnapshot.docs[0]['Nome'],
                };
             }
+            Get.back();
             Get.toNamed('/principalAppPage');
             
             }
 
 
           }
-          ScaffoldFeatureController<SnackBar, SnackBarClosedReason> controller = ScaffoldMessenger.of(context)
-          .showSnackBar(  
-            SnackBar(
-              content: Text('Login bem sucedido'),
-              backgroundColor: Color.fromARGB(155, 33, 250, 0),
-            ),
-          );
-          await controller.closed;
+
         }
 
        on FirebaseException catch(e){
+        Get.back();
         if(e.code == 'invalid-credential'){
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('E-mail ou senha incorreta'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
         }
@@ -133,7 +132,6 @@ login(context) async{
         }else{
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Ocorreu um erro inesperado, tente novamente mais tarde'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
         }
-        print(e);
       }
     }else{
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Insira Email e senha'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
@@ -144,9 +142,8 @@ login(context) async{
 
   Future<String> func() async {
     meuControllerGlobal = Get.find();
-    email.text = 'ong@gmail.com';
+    email.text = 'ong2@gmail.com';
     senha.text = '32172528';
-  
     return 'a';
   }
 
@@ -255,7 +252,7 @@ class MyEmailPage extends StatelessWidget {
                                         Padding(
                                           padding: const EdgeInsets.fromLTRB(0,0,10,0),
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
                                               GestureDetector(
                                                 onTap: () {
@@ -276,12 +273,12 @@ class MyEmailPage extends StatelessWidget {
                                         SizedBox(height: 10),
                                         SizedBox(
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
                                               Text(
                                                 'Não possui conta?  ',
                                                 style: TextStyle(
-                                                  fontSize: 18,
+                                                  fontSize: 15,
                                                   color: const Color.fromARGB(255, 255, 255, 255),
                                                 ),
                                               ),
@@ -292,7 +289,7 @@ class MyEmailPage extends StatelessWidget {
                                                 child: Text(
                                                   'Cadastre-se',
                                                   style: TextStyle(
-                                                    fontSize: 18,
+                                                    fontSize: 15,
                                                     fontWeight: FontWeight.bold,
                                                     color: const Color.fromARGB(255, 236, 71, 6),
                                                   ),

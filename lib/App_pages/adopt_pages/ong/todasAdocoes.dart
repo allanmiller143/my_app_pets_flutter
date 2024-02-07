@@ -53,17 +53,17 @@ class TodasAdocoesPage extends StatelessWidget {
                   if (snapshot.hasData) {
                     return Center(
                       child: Container(
-                        color: Colors.black12,
                         margin: const EdgeInsets.all(5),
                         child: Center(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                           // crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(height: 10,),
                               const Text('Gerencie suas adoções aqui',style: TextStyle( fontFamily: 'AsapCondensed-Medium',fontWeight: FontWeight.w300,fontSize: 20),),
                               const SizedBox(height: 10,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   GestureDetector(
                                     onTap: (){
@@ -71,6 +71,7 @@ class TodasAdocoesPage extends StatelessWidget {
                                     },
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Container(
                                           height: MediaQuery.of(context).size.width *0.3,
@@ -113,7 +114,7 @@ class TodasAdocoesPage extends StatelessWidget {
                                         ),
                                         SizedBox(
                                           width: MediaQuery.of(context).size.width *0.28,
-                                          height: MediaQuery.of(context).size.width *0.1,
+                                          
                                           child: const Text('Aguardando avaliação',style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontWeight: FontWeight.w300),)
                                           
                                         ),
@@ -166,7 +167,6 @@ class TodasAdocoesPage extends StatelessWidget {
                                         ),
                                         SizedBox(
                                           width: MediaQuery.of(context).size.width *0.28,
-                                          height: MediaQuery.of(context).size.width *0.1,
                                           child:const  Text('Aguardando usuário',style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontWeight: FontWeight.w300),)
                                         
                                         ),
@@ -196,7 +196,7 @@ class TodasAdocoesPage extends StatelessWidget {
                                         ),
                                         SizedBox(
                                           width: MediaQuery.of(context).size.width *0.28,
-                                          height: MediaQuery.of(context).size.width *0.1,
+                                        
                                           child: const Text('Finalizada',style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontWeight: FontWeight.w300),)
                                         ),
                                       ],
@@ -207,6 +207,7 @@ class TodasAdocoesPage extends StatelessWidget {
                               const SizedBox(height: 10,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   GestureDetector(
                                     onTap: (){
@@ -230,7 +231,7 @@ class TodasAdocoesPage extends StatelessWidget {
                                             ),
                                             SizedBox(
                                               width: MediaQuery.of(context).size.width *0.28,
-                                              height: MediaQuery.of(context).size.width *0.1,
+                                            
                                               child: const Text('Todas',style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontWeight: FontWeight.w300),)
                                             
                                             ),
