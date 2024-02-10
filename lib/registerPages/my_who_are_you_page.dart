@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/widgets/load_widget.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 import 'package:get/get.dart';
 //import 'package:replica_google_classroom/load_widget.dart';
@@ -96,6 +97,7 @@ class MyWhoAreYouPage extends StatelessWidget {
                                   label: 'Sou usuário',
                                   
                                       onPressed: () async {
+                                        showLoad(context);
                                         dynamic info = {
                                           'Tipo': "comum",
                                           'Pets preferidos': [],
@@ -105,7 +107,7 @@ class MyWhoAreYouPage extends StatelessWidget {
                                         await BancoDeDados.adicionarInformacoesUsuario(info, userTypeController.meuControllerGlobal.usuario['Id']);
                                         userTypeController.meuControllerGlobal.petsSistema = await BancoDeDados.obterPets();
 
-
+                                        Get.back();
                                         Get.toNamed('/principalAppPage');
                                         //userTypeController.abrirTelaDeDados('/');    
                                     },

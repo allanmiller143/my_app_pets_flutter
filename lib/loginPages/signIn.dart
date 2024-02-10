@@ -142,8 +142,8 @@ login(context) async{
 
   Future<String> func() async {
     meuControllerGlobal = Get.find();
-    email.text = 'ong2@gmail.com';
-    senha.text = '32172528';
+    //email.text = 'ong2@gmail.com';
+    //senha.text = '32172528';
     return 'a';
   }
 

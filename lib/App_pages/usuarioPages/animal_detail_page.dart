@@ -109,214 +109,218 @@ class AnimalInsertPage extends StatelessWidget {
                         topRight: Radius.circular(65),
                       )),
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 25, 20, 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:const EdgeInsets.fromLTRB(5, 0, 5, 0),    
-                                  child: Text(
-                                    animalDetailPageController.ongPetInfo['Nome animal'],
-                                    style: TextStyle(fontFamily: 'AsapCondensed-Bold',fontSize: 28),
-   
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(Icons.place_outlined,color: Color.fromARGB(255, 255, 94, 0),size: 15,),
-                                    Text(animalDetailPageController.localizacao,
-                                    style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontSize: 15))      
-                                  ],
-                                )
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
-                              child: Container(
-                                width: 30,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(animalDetailPageController.imagemFavorito),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                          child: Row(
+                    padding: const EdgeInsets.fromLTRB(20, 25, 20, 0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              CustomCard(
-                                  valor: animalDetailPageController.ongPetInfo['Sexo'],
-                                  campo: 'Sexo',
-                                  backgroundImage: 'assets/card1.png',
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding:const EdgeInsets.fromLTRB(5, 0, 5, 0),    
+                                    child: Text(
+                                      animalDetailPageController.ongPetInfo['Nome animal'],
+                                      style: TextStyle(fontFamily: 'AsapCondensed-Bold',fontSize: 28),
+                         
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.place_outlined,color: Color.fromARGB(255, 255, 94, 0),size: 15,),
+                                      Text(animalDetailPageController.localizacao,
+                                      style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontSize: 15))      
+                                    ],
+                                  )
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
+                                child: Container(
+                                  width: 30,
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(animalDetailPageController.imagemFavorito),
+                                    ),
+                                  ),
                                 ),
-                              
-                              CustomCard(
-                                valor: animalDetailPageController.ongPetInfo['Idade'],
-                                campo: 'Idade',
-                                backgroundImage: 'assets/card2.png',
-                              ),
-                              CustomCard(
-                                valor: animalDetailPageController.ongPetInfo['Porte'],
-                                campo: 'Porte',
-                                backgroundImage: 'assets/card3.png',
-                              ),
-                              CustomCard(
-                                valor: animalDetailPageController.ongPetInfo['Raça'],
-                                campo: 'Raça',
-                                backgroundImage: 'assets/card4.png',
                               ),
                             ],
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: (){
-                            Get.toNamed('/ongProfilePage',arguments: [animalDetailPageController.ongPetInfo]);
-                          },
-                          child: Card(
-                            elevation: 8,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            child: Container(
-                              
-                              height: 80,
-                              decoration: BoxDecoration(
-                                borderRadius:BorderRadius.all(Radius.circular(15)),   
-                              ),
-                              child: Row(
-                                mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 60,
-                                          height: 60,
-                                          decoration: BoxDecoration(
-                                            color: Color.fromARGB(255, 211, 248, 247),   
-                                            borderRadius: BorderRadius.all(Radius.circular(50),),
-                                            image: DecorationImage(
-                                              image: AssetImage('assets/menu-lateral.png'),fit: BoxFit.cover,),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:const EdgeInsets.fromLTRB(10, 0, 0, 0),    
-                                          child: Column(
-                                            crossAxisAlignment:CrossAxisAlignment.start,
-                                            mainAxisAlignment:MainAxisAlignment.spaceEvenly,        
-                                            children: [
-                                              Text(
-                                                  Get.arguments[0]['Nome ong'],
-                                                  style: TextStyle(fontFamily:'AsapCondensed-Bold',fontSize: 13)),      
-                                              Text(
-                                                  Get.arguments[0]['E-mail'],
-                                                  style: TextStyle(fontFamily:'AsapCondensed-Medium',fontSize: 13)),    
-                                              Row(
-                                                children: [
-                                                  Icon(Icons.verified,size: 15,),
-                                                  Text('verificado',style: TextStyle( fontFamily:'AsapCondensed-Medium',fontSize: 13))       
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                          
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomCard(
+                                    valor: animalDetailPageController.ongPetInfo['Sexo'],
+                                    campo: 'Sexo',
+                                    backgroundImage: 'assets/card1.png',
                                   ),
-                                  IconButton(
-                                      onPressed: () async {
-                                        var chatRoomId = animalDetailPageController.getChatRoomByUserName(animalDetailPageController.meuControllerGlobal.usuario['Id'], animalDetailPageController.ongPetInfo['Id']); // quem envia e quem recebe 
-                                        Map<String, dynamic> chatRoomInfoMap = {
-                                          'users' : [animalDetailPageController.meuControllerGlobal.usuario['Id'],animalDetailPageController.ongPetInfo['Id']],
-                                        };
-
-                                        await BancoDeDados.criaChatRoom(chatRoomId, chatRoomInfoMap);
-                                        Get.toNamed('/chatConversa',arguments: [animalDetailPageController.ongPetInfo['Id'], animalDetailPageController.ongPetInfo['Nome']]);
-
-                                      },
-                                      icon: Icon(
-                                        Icons.message,
-                                        color: Color.fromARGB(
-                                            255, 252, 116, 5),
-                                      ))
-                                ],
+                                
+                                CustomCard(
+                                  valor: animalDetailPageController.ongPetInfo['Idade'],
+                                  campo: 'Idade',
+                                  backgroundImage: 'assets/card2.png',
+                                ),
+                                CustomCard(
+                                  valor: animalDetailPageController.ongPetInfo['Porte'],
+                                  campo: 'Porte',
+                                  backgroundImage: 'assets/card3.png',
+                                ),
+                                CustomCard(
+                                  valor: animalDetailPageController.ongPetInfo['Raça'],
+                                  campo: 'Raça',
+                                  backgroundImage: 'assets/card4.png',
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: (){
+                              Get.toNamed('/ongProfilePage',arguments: [animalDetailPageController.ongPetInfo]);
+                            },
+                            child: Card(
+                              elevation: 8,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              child: Container(
+                                
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  borderRadius:BorderRadius.all(Radius.circular(15)),   
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 60,
+                                            height: 60,
+                                            decoration: BoxDecoration(
+                                              color: Color.fromARGB(255, 211, 248, 247),   
+                                              borderRadius: BorderRadius.all(Radius.circular(50),),
+                                              image: DecorationImage(
+                                                image: AssetImage('assets/menu-lateral.png'),fit: BoxFit.cover,),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:const EdgeInsets.fromLTRB(10, 0, 0, 0),    
+                                            child: Column(
+                                              crossAxisAlignment:CrossAxisAlignment.start,
+                                              mainAxisAlignment:MainAxisAlignment.spaceEvenly,        
+                                              children: [
+                                                Text(
+                                                    Get.arguments[0]['Nome ong'],
+                                                    style: TextStyle(fontFamily:'AsapCondensed-Bold',fontSize: 13)),      
+                                                Text(
+                                                    Get.arguments[0]['E-mail'],
+                                                    style: TextStyle(fontFamily:'AsapCondensed-Medium',fontSize: 13)),    
+                                                Row(
+                                                  children: [
+                                                    Icon(Icons.verified,size: 15,),
+                                                    Text('verificado',style: TextStyle( fontFamily:'AsapCondensed-Medium',fontSize: 13))       
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                        onPressed: () async {
+                                          var chatRoomId = animalDetailPageController.getChatRoomByUserName(animalDetailPageController.meuControllerGlobal.usuario['Id'], animalDetailPageController.ongPetInfo['Id']); // quem envia e quem recebe 
+                                          Map<String, dynamic> chatRoomInfoMap = {
+                                            'users' : [animalDetailPageController.meuControllerGlobal.usuario['Id'],animalDetailPageController.ongPetInfo['Id']],
+                                          };
+                      
+                                          await BancoDeDados.criaChatRoom(chatRoomId, chatRoomInfoMap);
+                                          Get.toNamed('/chatConversa',arguments: [animalDetailPageController.ongPetInfo['Id'], animalDetailPageController.ongPetInfo['Nome']]);
+                      
+                                        },
+                                        icon: Icon(
+                                          Icons.message,
+                                          color: Color.fromARGB(
+                                              255, 252, 116, 5),
+                                        ))
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(5, 0, 0, 5),
-                                  child: Text("Detalhes da Raça",
-                                      style: TextStyle(
-                                          fontFamily: 'AsapCondensed-Bold',
-                                          fontSize: 16)),
-                                ),
-                                Padding(
-                                  padding:const EdgeInsets.fromLTRB(5, 0, 0, 5),    
-                                  child: SizedBox(
-                                    width: MediaQuery.of(context).size.width * 0.875,
-                                    child: Text(
-                                        'Os vira-latas são cães sem raça definida, conhecidos por sua inteligência, lealdade e capacvalor de adaptação. São frequentemente encontrados em situações de resgate e fazem companheiros amorosos. Adotar um vira-lata é uma oportunvalor de dar um lar a um cão necessitado e fazer a diferença no mundo dos animais.',
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            fontFamily: 'AsapCondensed-Medium',
-                                            fontSize: 12)),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(5, 0, 0, 5),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      print('veja mais');
-                                    },
-                                    child: Text('Veja Mais',
+                          SizedBox(height: 5,),
+                          Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(5, 0, 0, 5),
+                                    child: Text("Detalhes da Raça",
                                         style: TextStyle(
                                             fontFamily: 'AsapCondensed-Bold',
-                                            fontSize: 14,
-                                            color: Color.fromARGB(
-                                                255, 255, 81, 0))),
+                                            fontSize: 16)),
                                   ),
-                                )
-                                //richText
-                              ],
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomIconButton(
-                              label: 'Adote agora',
-                              onPressed: () {
-                                Get.toNamed('/adoptConfirmPage',arguments: [animalDetailPageController.ongPetInfo]);
-                              },
-                              width: 250,
-                              alinhamento: MainAxisAlignment.center,
-                              raio: 15,
-                            )
-                          ],
-                        )
-                      ],
+                                  Padding(
+                                    padding:const EdgeInsets.fromLTRB(5, 0, 0, 5),    
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.875,
+                                      child: Text(
+                                          'Os vira-latas são cães sem raça definida, conhecidos por sua inteligência, lealdade e capacvalor de adaptação. São frequentemente encontrados em situações de resgate e fazem companheiros amorosos. Adotar um vira-lata é uma oportunvalor de dar um lar a um cão necessitado e fazer a diferença no mundo dos animais.',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontFamily: 'AsapCondensed-Medium',
+                                              fontSize: 12)),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(5, 0, 0, 5),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        print('veja mais');
+                                      },
+                                      child: Text('Veja Mais',
+                                          style: TextStyle(
+                                              fontFamily: 'AsapCondensed-Bold',
+                                              fontSize: 14,
+                                              color: Color.fromARGB(
+                                                  255, 255, 81, 0))),
+                                    ),
+                                  )
+                                  //richText
+                                ],
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomIconButton(
+                                label: 'Adote agora',
+                                onPressed: () {
+                                  Get.toNamed('/adoptConfirmPage',arguments: [animalDetailPageController.ongPetInfo]);
+                                },
+                                width: 250,
+                                alinhamento: MainAxisAlignment.center,
+                                raio: 15,
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),

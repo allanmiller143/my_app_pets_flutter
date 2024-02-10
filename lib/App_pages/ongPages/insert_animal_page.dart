@@ -243,11 +243,8 @@ class InsertAnimalPage extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(30.0, 60, 30.0, 0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Column(
+                              padding: const EdgeInsets.fromLTRB(30.0, 30, 30.0, 0),
+                                  child:Column(
                                     children: [
                                       const Padding(
                                         padding: EdgeInsets.only(bottom: 10),
@@ -278,8 +275,8 @@ class InsertAnimalPage extends StatelessWidget {
                                                     ),
                       
                                                     Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                      crossAxisAlignment:CrossAxisAlignment.start,
+ 
                                                       children: [
                                                         Padding(
                                                           padding:
@@ -444,8 +441,7 @@ class InsertAnimalPage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                ],
-                              ),
+                               
                             ),
                           ],
                         ),

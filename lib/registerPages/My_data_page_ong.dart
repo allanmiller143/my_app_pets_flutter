@@ -132,7 +132,8 @@ Widget buildTextField(String text, TextEditingController controller, {String tec
 
     if (faltaCampo == false) {
       retorno = await ong.validaCampos(cpfRepresentante.text,cnpj.text, cep.text, telefone.text);
-      if (retorno == '') {    
+      if (retorno == '') {   
+        showLoad(context); 
           var usuario = {
               'Pets' : [],
               'Nome ong' : nomeOng.text,
@@ -153,12 +154,12 @@ Widget buildTextField(String text, TextEditingController controller, {String tec
               'Tipo': 'ong'
             };  
             meuControllerGlobal.usuario.addAll(usuario);
-            Get.toNamed('/principalOngAppPage');
+            
 
           await BancoDeDados.adicionarInformacoesUsuario(usuario, meuControllerGlobal.usuario['Id']);
-
-          mySnackBar('Cadastro bem sucedido',true);
+          Get.back();
           Get.toNamed('/principalOngAppPage');
+          mySnackBar('Cadastro bem sucedido',true);
       }
       else{
         mySnackBar(retorno,false);

@@ -15,6 +15,7 @@ class FavoritsController extends GetxController {
     if(meuControllerGlobal.internet.value){
         pets = meuControllerGlobal.petsSistema;
         favoritPetIds = meuControllerGlobal.usuario['Pets preferidos'];
+        print(favoritPetIds);
         return pets;
     }
     
@@ -22,7 +23,7 @@ class FavoritsController extends GetxController {
 
   List<Widget> mostraFeed() {
     List<Widget> rows = [];
-    if (pets.isEmpty) {
+    if (favoritPetIds.isEmpty) {
       rows.add(
         const Padding(
           padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
@@ -37,36 +38,36 @@ class FavoritsController extends GetxController {
       return rows;
     }
     int contador = 0;
-
-    for (int i = 0; i < pets.length; i += 2) {
-      List<Widget> rowChildren = [];
-      for (int j = i; j < i + 2 && j < pets.length; j++) {
-        if (favoritPetIds.contains(pets[j]['Id animal'])) {
+    List<Widget> rowChildren = [];
+    for (int i = 0; i < pets.length; i++) {
+  
+        if (favoritPetIds.contains(pets[i]['Id animal'])) {
           contador++;
           rowChildren.add(
             Padding(
               padding: const EdgeInsets.fromLTRB(5, 0, 5, 15),
               child: AnimalCard(
-                pet: pets[j],
+                pet: pets[i],
                 onPressed: () {
-                  Get.toNamed('/animalDetail', arguments: [pets[j], meuControllerGlobal.usuario]);
+                  Get.toNamed('/animalDetail', arguments: [pets[i], meuControllerGlobal.usuario]);
                 },
                 meuControllerGlobal: meuControllerGlobal,
               ),
             ),
           );
         }
-      }
-      if (contador == 2 || i + 2 >= pets.length) {
-        contador = 0;
-        rows.add(
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: rowChildren,
-          ),
-        );
-      }
+        if(contador == 2 || i + 1 == pets.length ){
+          
+          rows.add(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: rowChildren,
+            ),
+          );
+          rowChildren = [];
+        }    
     }
+
 
     return rows;
   }
