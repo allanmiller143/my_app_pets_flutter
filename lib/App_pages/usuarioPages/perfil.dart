@@ -106,6 +106,7 @@ class PerfilUsuarioPage extends StatelessWidget {
                                   GestureDetector(
                                     onTap: (){
                                       print('Abrir tela de edição de dados');
+                                      Get.toNamed("/exluirAlterarPage");
                                     },
                                     child: Material(
                                       elevation: 5,

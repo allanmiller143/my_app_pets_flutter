@@ -18,47 +18,60 @@ class SignUpController extends GetxController {
   late MeuControllerGlobal meuControllerGlobal;
 
   validarLogin(context) async {
-      if(senha.text.isNotEmpty && senha.text == confirmaSenha.text){
-      showLoad(context);
-      try{
-        String id = randomAlphaNumeric(10);
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email.text, password: senha.text);
-        nome.text = nome.text[0].toUpperCase() + nome.text.substring(1);
-        String tipo = '-1';
-        Map<String,dynamic> userInfoMap = {
-          'Nome' : nome.text,
-          'E-mail': email.text,
-          'Id': id,
-          'Pesquisa': nome.text[0],
-          'ImagemPerfil': '',
-          'Tipo' : tipo,
-        };
-        
-        meuControllerGlobal.usuario = userInfoMap;
-        await BancoDeDados.addUsuarioDetalhes(userInfoMap, id);
-        
+      if(senha.text.isNotEmpty || nome.text.isNotEmpty || confirmaSenha.text.isNotEmpty || email.text.isNotEmpty){
+        if( senha.text == confirmaSenha.text){  
+          showLoad(context);
+          try{
+            String id = randomAlphaNumeric(10);
+            UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email.text, password: senha.text);
+            nome.text = nome.text[0].toUpperCase() + nome.text.substring(1);
+            String tipo = '-1';
+            Map<String,dynamic> userInfoMap = {
+              'Nome' : nome.text,
+              'E-mail': email.text,
+              'Id': id,
+              'Pesquisa': nome.text[0],
+              'ImagemPerfil': '',
+              'Tipo' : tipo,
+            };
+            
+            meuControllerGlobal.usuario = userInfoMap;
+            await BancoDeDados.addUsuarioDetalhes(userInfoMap, id);
+            
 
-        Get.back();
-        Get.toNamed('/whoAreYouPage');
-      }on FirebaseAuthException catch(e){
-        Get.back();
-        if(e.code == 'weak-password'){
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Senha fraca, por favor tente outra mais forte'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
-        }
-        else if(e.code == 'email-already-in-use'){
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Esse email já possui conta'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
+            Get.back();
+            Get.toNamed('/whoAreYouPage');
+          }
+          on FirebaseAuthException catch(e){
+            Get.back();
+            if(e.code == 'weak-password'){
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Senha fraca, por favor tente outra mais forte'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
+            }
+            else if(e.code == 'email-already-in-use'){
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Esse email já possui conta'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
+            }
+            else{
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Erro inesperado'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
+
+            }
+            print(e);
+          }
         }
         else{
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Erro inesperado'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
-
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('As senhas não conferem'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
         }
-        print(e);
-      }
     }
     else{
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Insira todos os campos'),backgroundColor: Color.fromARGB(155, 250, 0, 0),));
     }
-  }
+  
+}
+
+
+
+
+
+
 
   Future<String> func() async {
     meuControllerGlobal = Get.find();

@@ -3,18 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/adopt_pages/user/validar.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
-import 'package:replica_google_classroom/entitites/user.dart';
 import 'package:replica_google_classroom/services/Complete_cep.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
 import 'package:replica_google_classroom/widgets/load_Widget.dart';
 import 'package:replica_google_classroom/widgets/mybutton.dart';
 
-class InsertUserDataPageController extends GetxController {
-  String titulo = Get.arguments[0];
-  String subtitulo = Get.arguments[1];
-  var ongPetInfo = Get.arguments[2];
+class AlterarController extends GetxController {
+
   late MeuControllerGlobal meuControllerGlobal;
-  
   var cpf = TextEditingController();
   var rua = TextEditingController();
   var numero = TextEditingController();
@@ -137,16 +133,13 @@ List<Widget> gerarTextFields() {
       if(!validarCEP(cep.text)){
         mensagemRetorno = '${mensagemRetorno}CEP\n';
       }
-      if(titulo == "Alterar dados" && cpf.text == meuControllerGlobal.usuario['cpf']){
-       
+      if(cpf.text == meuControllerGlobal.usuario['cpf']){
       }
       else{
         if(await BancoDeDados.verificarCpfExistente(cpf.text, 'cpf') ){
           mensagemRetorno = '${mensagemRetorno}cpf ja cadastrado no sistema\n';
         }
       }
-      
-
 
       if(mensagemRetorno == 'Campos ínvalidos:\n'){
         
@@ -166,7 +159,8 @@ List<Widget> gerarTextFields() {
       
         meuControllerGlobal.usuario.addAll(info);
         await BancoDeDados.adicionarInformacoesUsuario(info, meuControllerGlobal.usuario['Id']);
-        Get.toNamed('/userDataPage',arguments: [ongPetInfo]);
+        
+     
         
       }else {
         mySnackBar(mensagemRetorno, false);
@@ -176,18 +170,12 @@ List<Widget> gerarTextFields() {
 
   }
 
-
-
-
-
-
- 
 }
 // ignore: must_be_immutable
-class InsertUserDataPage extends StatelessWidget {
-  InsertUserDataPage({super.key});
+class AlterarPage extends StatelessWidget {
+  AlterarPage({super.key});
 
-  var insertUserDataPageController = Get.put(InsertUserDataPageController());
+  var alterarController = Get.put(AlterarController());
 
   @override
   Widget build(BuildContext context) {
@@ -197,9 +185,9 @@ class InsertUserDataPage extends StatelessWidget {
           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
           backgroundColor: const Color.fromARGB(255, 250, 63, 6),
           centerTitle: true,
-          title: Text (
-            insertUserDataPageController.titulo,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Color.fromARGB(255, 255, 255, 255)),
+          title: const Text (
+            'Alterar dados',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Color.fromARGB(255, 255, 255, 255)),
           ),
           leading: IconButton (
             icon: const Icon(Icons.arrow_back_ios, color: Color.fromARGB(255, 255, 255, 255)),
@@ -216,13 +204,13 @@ class InsertUserDataPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding:const  EdgeInsets.fromLTRB(0,0,0,15),
-                  child: Text(insertUserDataPageController.subtitulo,
-                  style:const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
+               const Padding(
+                  padding:  EdgeInsets.fromLTRB(0,0,0,15),
+                  child: Text('Altere seus dados',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
                 ),
                 Column(
-                  children: insertUserDataPageController.gerarTextFields()
+                  children: alterarController.gerarTextFields()
                 ),
                 Center(
                   child: Padding(
@@ -230,7 +218,7 @@ class InsertUserDataPage extends StatelessWidget {
                     child: CustomIconButton(
                       label: 'Confirmar',
                       onPressed: () {
-                        insertUserDataPageController.validarCampos();
+                        alterarController.validarCampos();
                       },
                       width: 250,
                       alinhamento: MainAxisAlignment.center,

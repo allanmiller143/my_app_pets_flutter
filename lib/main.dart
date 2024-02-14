@@ -16,6 +16,8 @@ import 'package:replica_google_classroom/App_pages/chat/chat_conversa.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/OngInfoEditPage.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/my_principal_ong_page.dart';
 import 'package:replica_google_classroom/App_pages/ongPages/perfilOng.dart';
+import 'package:replica_google_classroom/App_pages/usuarioPages/alterar.dart';
+import 'package:replica_google_classroom/App_pages/usuarioPages/alterar_excluir_dados.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/x.dart';
 import 'package:replica_google_classroom/controller/dependency_injection.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
@@ -98,9 +100,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/todasAdocoes',page: () => TodasAdocoesPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/adocoes',page: () => AdocaoPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/adocoesUsuario',page: () => UsuarioAdocoesPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
-
-
-
+        GetPage(name: '/exluirAlterarPage',page: () => EditarExluirPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        GetPage(name: '/alterarPage',page: () => AlterarPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
 
       ],
     );

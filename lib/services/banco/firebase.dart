@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls
 
 import 'dart:io';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
@@ -93,9 +93,7 @@ class BancoDeDados{
   }
   static Future<void> removerPet(String userId, String petId, String url) async {
     try {
-
       // apagar a foto do storage
-
       Reference oldStorageReference = FirebaseStorage.instance.refFromURL(url);
       await oldStorageReference.delete();
 
@@ -114,6 +112,9 @@ class BancoDeDados{
       print('Erro ao remover pet: $e');
     }
   }
+
+
+
   static Future<void> removerFotoFeed(String userId, String idImagem, String url) async {
     try {
       // apagar a foto do storage
@@ -135,6 +136,10 @@ class BancoDeDados{
       print('Erro ao remover imagem: $e');
     }
   }
+
+
+
+
   static Future<List<Map<String, dynamic>>> obterPetsDoUsuario(String userId) async {
     try {
       QuerySnapshot petsSnapshot = await FirebaseFirestore.instance
@@ -596,6 +601,135 @@ static Future<void> favoritaPet(String idUsuario, bool inserirRetirar, String pe
     });
   }
 }
+
+static Future<void> excluirConta(String idUsuario) async {
+  try {
+    // Excluir usuário do Firebase Authentication
+    
+
+    // Verificar se o usuário tem adoções pendentes
+    QuerySnapshot adocoesSnapshot = await FirebaseFirestore.instance
+        .collection('adocoes')
+        .where('Id usuario', isEqualTo: idUsuario)
+        .get();
+
+    // Verificar se o usuário tem chats
+    QuerySnapshot chatsSnapshot = await FirebaseFirestore.instance
+        .collection('chatrooms')
+        .where('users', arrayContains: idUsuario)
+        .get();
+
+    // Iniciar uma transação Firestore
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+    WriteBatch batch2 = FirebaseFirestore.instance.batch();
+
+    // Atualizar o status das adoções pendentes para "Cancelada por Usuário"
+    adocoesSnapshot.docs.forEach((adocaoDoc) async {
+      // Pegar o ID da ONG e o ID do animal
+      String ongId = adocaoDoc['Id ong'];
+      String petId = adocaoDoc['Id animal'];
+
+      // Alterar o estado do pet para false
+      DocumentReference petReference = FirebaseFirestore.instance
+          .collection('users')
+          .doc(ongId)
+          .collection('pets')
+          .doc(petId);
+
+      batch.update(petReference, {'Em processo de adoção': false});
+
+      // Excluir a adoção
+      batch.delete(adocaoDoc.reference);
+    });
+
+    // Excluir os chats relacionados ao usuário
+    chatsSnapshot.docs.forEach((chatDoc) {
+      batch2.delete(chatDoc.reference);
+    });
+
+    // Executar as transações
+    await batch.commit();
+    await batch2.commit();
+    print(idUsuario);
+    FirebaseFirestore.instance.collection('users').doc(idUsuario).delete();
+    await FirebaseAuth.instance.currentUser?.delete();
+  } catch (e) {
+    print("Erro ao excluir conta: $e");
+    // Lide com erros aqui
+  }
+}
+
+
+static Future<void> excluirContaOng(String idUsuario,imagemPerfil) async {
+  try {
+
+    // Verificar se o usuário tem adoções pendentes
+    QuerySnapshot adocoesSnapshot = await FirebaseFirestore.instance.collection('adocoes').where('Id ong', isEqualTo: idUsuario).get();
+        
+    // Verificar se o usuário tem chats
+    QuerySnapshot chatsSnapshot = await FirebaseFirestore.instance.collection('chatrooms').where('users', arrayContains: idUsuario).get();
+            
+    // verificar se o usuario tem fotos no feed
+    QuerySnapshot feed = await FirebaseFirestore.instance.collection('users').doc(idUsuario).collection('feed').get();
+    QuerySnapshot pets = await FirebaseFirestore.instance.collection('users').doc(idUsuario).collection('pets').get();
+
+    // apagar as fotos do feed    
+    print('--------------------------');  
+    feed.docs.forEach((DocumentSnapshot document) async {
+      var url = document['Imagem']; 
+      print(url);
+      Reference oldStorageReference = FirebaseStorage.instance.refFromURL(url);
+      await oldStorageReference.delete();
+    });
+    print('--------------------------'); 
+
+
+
+    pets.docs.forEach((DocumentSnapshot document) async {
+      
+      var url = document['Imagem']; 
+      print(url);
+      Reference oldStorageReference = FirebaseStorage.instance.refFromURL(url);
+      await oldStorageReference.delete();
+    });
+
+    print('--------------------------');  
+
+
+    // Iniciar uma transação Firestore
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+    WriteBatch batch2 = FirebaseFirestore.instance.batch();
+
+    adocoesSnapshot.docs.forEach((adocaoDoc) async {
+      batch.delete(adocaoDoc.reference);
+    });
+    // Excluir os chats relacionados ao usuário
+    chatsSnapshot.docs.forEach((chatDoc) {
+      batch2.delete(chatDoc.reference);
+    });
+
+    // Executar as transações
+    await batch.commit();
+    await batch2.commit();
+
+    print(imagemPerfil);
+    if(imagemPerfil != ''){
+      Reference oldStorageReference = FirebaseStorage.instance.refFromURL(imagemPerfil);
+      await oldStorageReference.delete();
+
+    }
+    
+
+    FirebaseFirestore.instance.collection('users').doc(idUsuario).delete();
+    await FirebaseAuth.instance.currentUser?.delete();
+  } catch (e) {
+    print("Erro ao excluir conta: $e");
+    // Lide com erros aqui
+  }
+}
+
+
+
 
 
 

@@ -74,6 +74,9 @@ login(context) async{
               'Imagens feed' : imagensFeed
             };  
             Get.back();
+            
+            email.clear();
+            senha.clear();
             Get.toNamed('/principalOngAppPage');  
           }
           else{
@@ -113,6 +116,9 @@ login(context) async{
                };
             }
             Get.back();
+
+            email.clear();
+            senha.clear();
             Get.toNamed('/principalAppPage');
             
             }

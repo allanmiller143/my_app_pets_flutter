@@ -136,7 +136,7 @@ class StatusAdocaoController extends GetxController {
           listaStatus.add(
             const SizedBox(
               width: double.infinity,
-              child: Text('Sua adoção foi negada, infelizmente voçe não pode adotar esse pet'),
+              child: Text('Sua adoção foi negada, infelizmente você não pode adotar esse pet'),
             )
 
           ):

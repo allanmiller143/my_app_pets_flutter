@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_string_interpolations, avoid_print, unnecessary_brace_in_string_interps
-
 import 'dart:core';
 
 import 'package:flutter/material.dart';
@@ -38,7 +36,7 @@ List<Widget> campoEditar(BuildContext context, ) {
       child: ListTile(
           title:Text('$key'), 
           subtitle: Text('${item}'),
-          trailing: const Icon(Icons.arrow_drop_down),
+          trailing: Icon(Icons.arrow_drop_down),
           onTap: (){
             if(petId.isNotEmpty){
               if(key == 'Idade' || key == 'Raça' || key == 'Porte' || key == 'Sexo'){
@@ -74,7 +72,7 @@ List<Widget> campoEditar(BuildContext context, ) {
     );
       
     rows.add(
-      SizedBox(
+      Container(
         width: double.infinity,
         height: (key != 'Endereço' || key != 'Imagem') ? MediaQuery.of(context).size.height * 0.07 : MediaQuery.of(context).size.height * 0.11,
         child: row,
@@ -100,17 +98,6 @@ class OngInfoEditPage extends StatelessWidget {
         init: OngInfoEditPageController(),
         builder: (_) {
           return Scaffold(
-            appBar: AppBar(
-              toolbarHeight: MediaQuery.of(context).size.height * 0.1,
-              backgroundColor: const Color.fromARGB(255, 250, 63, 6),
-              centerTitle: true,
-              title: const Text(
-                'Editar',
-                style: TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Medium', fontWeight: FontWeight.w500, color: Color.fromARGB(255, 255, 255, 255)),
-              ),
-              leading: IconButton(onPressed: () => Get.back(), icon: const Icon(Icons.arrow_back_ios_new,size: 18, color: Color.fromARGB(255, 255, 255, 255))),  
-              
-            ),
             body: FutureBuilder(
               future: ongInfoEditPageController.func(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -119,6 +106,28 @@ class OngInfoEditPage extends StatelessWidget {
                     return Center(
                       child: Column(
                         children: [
+                          Container(
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height * 0.1,
+                            color: const Color.fromARGB(255, 255, 84, 16),
+                            padding: const EdgeInsets.fromLTRB(0,15,0,0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Adicionado alinhamento
+                              children: [
+                                IconButton(
+                                  iconSize: 18,
+                                  onPressed:(){
+                                    Get.back();
+                                  },
+                                  icon: const Icon(Icons.arrow_back_ios,color: Color.fromARGB(255, 255, 255, 255)),                       
+                                ),
+                                const Text('Editar',style: TextStyle(fontSize: 20,color: Color.fromARGB(255, 255, 255, 255)),),
+                                const SizedBox(width: 48), // Espaço para alinhar o texto "Publicação" no centro
+
+                              ],
+                            ),
+
+                          ),
                           Column(
                             children: ongInfoEditPageController.campoEditar(context)
                           )

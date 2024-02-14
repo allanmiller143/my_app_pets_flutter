@@ -15,13 +15,17 @@ class MeuControllerGlobal extends GetxController {
       usuario['Pets preferidos'].add(idPet);
     }
     else{
-      usuario['Pets preferidos'].remove(idPet);
-      
+      usuario['Pets preferidos'].remove(idPet);  
     }
-
     print('lista depois da função: ${usuario['Pets preferidos']}');
-
   }
+
+  void limparTudo(){
+    pets = [];
+    imagensFeed = [];
+    usuario = {};
+  }
+  
 
 
 }

@@ -261,7 +261,6 @@ class TodasAdocoesPage extends StatelessWidget {
                                             ),
                                             SizedBox(
                                               width: MediaQuery.of(context).size.width *0.28,
-                                              height: MediaQuery.of(context).size.width *0.1,
                                               child: const Text('Adoções negadas',style: TextStyle(fontFamily: 'AsapCondensed-Medium',fontWeight: FontWeight.w300),)
                                             
                                             ),

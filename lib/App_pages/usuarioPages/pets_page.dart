@@ -32,9 +32,6 @@ class PetsController extends GetxController {
     petsInfo2 = [];
 
     int tamanhoLista = pets.length;
-    print(tamanhoLista);
-    print(pets);
-
     if (tamanhoLista % 2 != 0) {
       tamanhoLista = tamanhoLista - 1;
     }

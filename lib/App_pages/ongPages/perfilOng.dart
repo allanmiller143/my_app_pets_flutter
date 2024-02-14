@@ -1,5 +1,5 @@
 
-// ignore_for_file: prefer_typing_uninitialized_variables, must_be_immutable, avoid_print
+// ignore_for_file: prefer_typing_uninitialized_variables, must_be_immutable, avoid_print, use_build_context_synchronously
 
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -10,6 +10,7 @@ import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil
 import 'package:replica_google_classroom/App_pages/ongPages/componentesOngPerfil/cardFeed.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/widgets/load_widget.dart';
 
 class SettingsPageController extends GetxController {
   //variaveis 
@@ -45,7 +46,7 @@ class SettingsPageController extends GetxController {
       }
 
       localizacao.value = '${usuario['Cidade']},${usuario['Estado']}'; 
-      nomeOng.value = usuario['Nome'];
+      nomeOng.value = usuario['Nome ong'];
       imagembd = usuario['ImagemPerfil'];
       bio.value = usuario['Bio'];
       info = usuario['Imagens feed'];
@@ -104,7 +105,6 @@ class SettingsPageController extends GetxController {
       builder: (BuildContext context) {
         return SizedBox(
           // Conteúdo do BottomSheet
-          height: 200,
           child: Column(
             children: [
               const ListTile(
@@ -164,6 +164,21 @@ class SettingsPageController extends GetxController {
                 ),
                 onTap: () {
                   Get.toNamed('/ongEditBioProfilePage');
+                },
+              ),
+              ListTile(
+                title: const Text(
+                  'Excluir conta',
+                  style: TextStyle(
+                      color: Color.fromARGB(248, 255, 0, 0),
+                      fontFamily: 'AsapCondensed-Medium'),
+                ),
+                leading:const  Icon(
+                  Icons.delete,
+                  color: Color.fromARGB(255, 255, 16, 16),
+                ),
+                onTap: () {
+                  mostrarDialogoDeConfirmacao(context);
                 },
               ),
             ],
@@ -293,19 +308,53 @@ class SettingsPageController extends GetxController {
         );
       },
     );
-  }  
+  } 
+
+   void mostrarDialogoDeConfirmacao(context) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title:const  Text('Excluir conta'),
+            content: const Text('Tem certeza que deseja excluir a conta? após clicar em confirmar todas as suas informações serão excluídas permanentemente'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); 
+                },
+                child: const Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () async{
+                  
+                  showLoad(context);
+                  await BancoDeDados.excluirContaOng(meuControllerGlobal.usuario['Id'],meuControllerGlobal.usuario['ImagemPerfil']);
+                  meuControllerGlobal.limparTudo();
+                  Get.back();
+                  Navigator.of(context).pop(); // Fecha o dialogo
+                  Get.toNamed('/');
+                },
+                child: const  Text('Confirmar'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+
   
   void pickFeed(ImageSource source,context) async {
-  final imagePicker = ImagePicker();
-  final pickedFile = await imagePicker.pickImage(source: source);
-  if (pickedFile != null) {
-    imageFileFeed = File(pickedFile.path); 
-    
-    await BancoDeDados.saveFeedImageToFirestore(imageFileFeed!,meuControllerGlobal.usuario['Id']);
-    nunmeroDePostagens.value += 1;
-    opcao.value = 1;
-    opcao.value = 0;
-    
+    final imagePicker = ImagePicker();
+    final pickedFile = await imagePicker.pickImage(source: source);
+    if (pickedFile != null) {
+      imageFileFeed = File(pickedFile.path); 
+      
+      await BancoDeDados.saveFeedImageToFirestore(imageFileFeed!,meuControllerGlobal.usuario['Id']);
+      nunmeroDePostagens.value += 1;
+      opcao.value = 1;
+      opcao.value = 0;
+      
   }
 }
 @override
@@ -328,9 +377,26 @@ class SettingsPage extends StatelessWidget {
         init: SettingsPageController(),
         builder: (_) {
           return Scaffold(
+            extendBodyBehindAppBar: true,
+            
             floatingActionButton: settingsPageController.args == false ? FloatingActionButton(onPressed: () async {
               settingsPageController.showBottomSheetFeed(context);
             },child: const Icon(Icons.add,color: Color.fromARGB(255, 55, 98, 227),),): const SizedBox(),
+            
+            appBar:  AppBar(
+              centerTitle: true,
+              title: Container(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                height: MediaQuery.of(context).size.height *0.075,
+                width: MediaQuery.of(context).size.width *0.5,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(image: AssetImage('assets/minhaLogo.png'))
+                ),
+              ),
+              leading: settingsPageController.args ? IconButton(onPressed: (){
+                Get.back();
+              }, icon: const Icon(Icons.arrow_back_ios_new_outlined)):const SizedBox()
+            ),
             body: FutureBuilder(
               future: settingsPageController.func(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -346,34 +412,7 @@ class SettingsPage extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                SizedBox(
-                                  height: MediaQuery.of(context).size.height *0.15,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                        height: MediaQuery.of(context).size.height *0.015,
-
-                                      ),
-                                      GestureDetector(
-                                        onTap: (){
-                                          Get.back();
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                          height: MediaQuery.of(context).size.height *0.075,
-                                          width: MediaQuery.of(context).size.width *0.5,
-                                          decoration: const BoxDecoration(
-                                            
-                                            image: DecorationImage(image: AssetImage('assets/minhaLogo.png'))
-                                          ),
-                                        
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-
-                                ),
+                                
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [

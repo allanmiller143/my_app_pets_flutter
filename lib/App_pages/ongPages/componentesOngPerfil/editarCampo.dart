@@ -105,7 +105,6 @@ class EditarCampoController extends GetxController {
         return false;
       }
       settingsController.usuario['Telefone'] = novoValor.text;
-
       meuControllerGlobal.usuario['Telefone'] = novoValor.text;
 
       Get.back();Get.back();
@@ -138,6 +137,7 @@ class EditarCampoController extends GetxController {
     }else if (chave == 'cpf representante') {
       if (validarCPF(novoValor.text)) {
         settingsController.usuario['cpf representante'] = novoValor.text;
+  
         meuControllerGlobal.usuario['cpf representante'] = novoValor.text;
         Get.back();Get.back();
         await BancoDeDados.adicionarInformacoesUsuario({'cpf representante' : novoValor.text}, meuControllerGlobal.usuario['Id']);
@@ -149,14 +149,14 @@ class EditarCampoController extends GetxController {
     }else if (chave == 'Nome animal') {
       if (novoValor.text.isNotEmpty) {
         for (int i = 0; i < settingsController.usuario['Pets'].length;i++) {
-          if (settingsController.usuario['Pets'][i]['Id animal'] == petId) {
-            settingsController.usuario['Pets'][i]['Nome animal'] = novoValor.text;
-            meuControllerGlobal.usuario['Pets'][i]['Nome animal'] = novoValor.text;
+          if (settingsController.usuario['Pets'][i]['Id'] == petId) {
+            settingsController.usuario['Pets'][i]['Nome'] = novoValor.text;
+            meuControllerGlobal.usuario['Pets'][i]['Nome'] = novoValor.text;
             break;
           }
         }
         Get.back();Get.back();Get.back();
-        await BancoDeDados.alterarPetInfo({'Nome animal': novoValor.text}, meuControllerGlobal.usuario['Id'], petId);
+        await BancoDeDados.alterarPetInfo({'Nome': novoValor.text}, meuControllerGlobal.usuario['Id'], petId);
         return true;     
       }
       return false;
@@ -179,23 +179,37 @@ class EditarCampoPage extends StatelessWidget {
         init: EditarCampoController(),
         builder: (_) {
           return Scaffold(
-            appBar: AppBar(
-              toolbarHeight: MediaQuery.of(context).size.height * 0.1,
-              backgroundColor: const Color.fromARGB(255, 250, 63, 6),
-              centerTitle: true,
-              title: Text(
-                editarCampoController.chave,
-                style: const TextStyle(fontSize: 20,fontFamily: 'AsapCondensed-Medium', fontWeight: FontWeight.w500, color: Color.fromARGB(255, 255, 255, 255)),
-              ),
-              leading: IconButton(onPressed: () => Get.back(), icon: const Icon(Icons.arrow_back_ios_new,size: 18, color: Color.fromARGB(255, 255, 255, 255))),  
-              
-            ),
             body: FutureBuilder(
               future: editarCampoController.func(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
                     return Column(children: [
+                      Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        color: const Color.fromARGB(255, 255, 84, 16),
+                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              iconSize: 18,
+                              onPressed: () {
+                                Get.back();
+                              },
+                              icon: const Icon(Icons.arrow_back_ios,
+                                  color: Color.fromARGB(255, 255, 255, 255)),
+                            ),
+                            Text(editarCampoController.chave,
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Color.fromARGB(255, 255, 255, 255))),
+                            const SizedBox(
+                                width: 48),
+                          ],
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                         child: TextFormField(

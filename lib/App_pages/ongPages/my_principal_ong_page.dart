@@ -60,7 +60,7 @@ class MyPrincipalOngAppPage extends StatelessWidget {
                         label: 'Inserir',
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.settings),
+                        icon: Icon(Icons.chat),
                         label: 'Conversas',
                       ),
                       BottomNavigationBarItem(

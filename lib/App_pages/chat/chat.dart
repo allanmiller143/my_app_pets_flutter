@@ -106,7 +106,7 @@ class ChatController extends GetxController {
                             height: double.infinity,
                           )
                         : Image.asset(
-                            'assets/eu.png',
+                            'assets/perfil.png',
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: double.infinity,
