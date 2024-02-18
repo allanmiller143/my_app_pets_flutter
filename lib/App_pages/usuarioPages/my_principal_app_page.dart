@@ -34,12 +34,7 @@ class MyPrincipalAppPage extends StatelessWidget {
           init: PrincipaAppController(),
           builder: (_) {
             return Scaffold(
-              extendBodyBehindAppBar: true,
-            
-              appBar: AppBar(
-                forceMaterialTransparency: true,
-                toolbarHeight: 85,
-              ),
+             
               bottomNavigationBar: Obx(
                 () => Container(
                   decoration: const BoxDecoration(
@@ -65,10 +60,7 @@ class MyPrincipalAppPage extends StatelessWidget {
                         icon: Icon(Icons.settings),
                         label: 'chat',
                       ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.settings),
-                        label: 'Perfil',
-                      ),
+                   
                     ],
                     selectedItemColor: principaAppController.corItemSelecionado,
                     unselectedItemColor:principaAppController.corItemNaoSelecionado,
@@ -88,8 +80,6 @@ class MyPrincipalAppPage extends StatelessWidget {
                         HomePage(),
                         PetsPage(),
                         ChatPage(),
-                        PerfilUsuarioPage(),
-                        
                       ],
                     ),
                 );

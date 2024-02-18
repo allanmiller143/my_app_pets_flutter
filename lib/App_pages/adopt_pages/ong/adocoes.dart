@@ -47,7 +47,7 @@ class AdocaoController extends GetxController {
           var info = {
             'Nome usuario': user.docs[0]['Nome'],
             'Rua': user.docs[0]['Rua'],
-            'Nome completo': 'Allan Miller Silva Lima',
+            'Nome completo': user.docs[0]['Nome completo'],
             'Bairro': user.docs[0]['Bairro'],
             'Cidade' : user.docs[0]['Cidade'],
             'Numero' : user.docs[0]['Numero'],

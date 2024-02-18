@@ -22,6 +22,7 @@ import 'package:replica_google_classroom/App_pages/usuarioPages/x.dart';
 import 'package:replica_google_classroom/controller/dependency_injection.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/firebase_options.dart';
+import 'package:replica_google_classroom/model.dart';
 import 'App_pages/ongPages/componentesOngPerfil/ImageViewerPage.dart';
 import 'loginPages/signIn.dart';
 import 'loginPages/signUp.dart';
@@ -102,6 +103,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/adocoesUsuario',page: () => UsuarioAdocoesPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/exluirAlterarPage',page: () => EditarExluirPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
         GetPage(name: '/alterarPage',page: () => AlterarPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
+        GetPage(name: '/',page: () => UserProfilPage(),transition: Transition.rightToLeft,transitionDuration: const Duration(milliseconds: 400)),
 
       ],
     );

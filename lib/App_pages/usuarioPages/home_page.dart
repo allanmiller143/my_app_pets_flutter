@@ -1,29 +1,136 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/widgets/load_widget.dart';
 import '../app_widgets/my_custom_card_home_page.dart';
 import '../app_widgets/my_animal_card.dart';
 
 class HomePageController extends GetxController {
   late MeuControllerGlobal meuControllerGlobal;
+  File? imageFile; // imagem para ser coletada e inserida no banco para o perfil 
+  RxInt alterarImagem = 1.obs;
 
   List<Map<String, dynamic>> pets = [];
   dynamic usuario;
 
-
-  alteraLista() async {
+  @override
+  void onInit(){
+    super.onInit();
     meuControllerGlobal = Get.find();
     usuario = meuControllerGlobal.usuario;
+
+  }
+
+
+  alteraLista() async {
     if(meuControllerGlobal.internet.value == true){
-      print('entrei aqui hihi');
       meuControllerGlobal.petsSistema = await BancoDeDados.obterPets();
       pets = meuControllerGlobal.petsSistema;
       return pets;
     }
   }
+
+   void pick(ImageSource source) async {
+    final imagePicker = ImagePicker();
+    final pickedFile = await imagePicker.pickImage(source: source);
+    if (pickedFile != null) {
+      imageFile = File(pickedFile.path);
+      await BancoDeDados.saveImageToFirestore(imageFile!, meuControllerGlobal.usuario['Id'],meuControllerGlobal.usuario['ImagemPerfil']);
+      alterarImagem ++;
+    }
+  }
+  void showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          // Conteúdo do BottomSheet
+          height: 200,
+
+          child: Column(
+            children: [
+              const ListTile(
+                title: Text(
+                  'Inserir uma foto',
+                  style: TextStyle(
+                      fontSize: 25,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      fontFamily: 'AsapCondensed-Medium'),
+                ),
+              ),
+              ListTile(
+                title: const Text(
+                  'Galeria',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      fontFamily: 'AsapCondensed-Medium'),
+                ),
+                leading: const Icon(
+                  Icons.photo,
+                  color: Color.fromARGB(255, 255, 84, 16),
+                ),
+                onTap: () {
+                  pick(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                title: const Text(
+                  'Camera',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      fontFamily: 'AsapCondensed-Medium'),
+                ),
+                leading: const Icon(
+                  Icons.camera_alt,
+                  color: Color.fromARGB(255, 255, 84, 16),
+                ),
+                onTap: () {
+                  pick(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+   void mostrarDialogoDeConfirmacao(context) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title:const  Text('Excluir conta'),
+            content: const Text('Tem certeza que deseja excluir a conta?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); 
+                },
+                child: const Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () async{
+                  await BancoDeDados.excluirConta(meuControllerGlobal.usuario['Id']);
+                  
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop(); // Fecha o dialogo
+
+                  Get.toNamed('/');
+                },
+                child: const  Text('Confirmar'),
+              ),
+            ],
+          );
+        },
+      );
+    }
 }
 
 class HomePage extends StatelessWidget {
@@ -35,7 +142,85 @@ class HomePage extends StatelessWidget {
       home: GetBuilder<HomePageController>(
         init: HomePageController(),
         builder: (_) {
+          
           return Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              forceMaterialTransparency: true,
+              toolbarHeight: 85,
+
+            ),
+            drawer: Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                   UserAccountsDrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 255, 51, 0),
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10) 
+                      )
+                    ),
+                    accountName:  Text(homePageController.meuControllerGlobal.usuario['Nome']),
+                    accountEmail:  Text(homePageController.meuControllerGlobal.usuario['E-mail']),
+                    currentAccountPicture: Obx(
+                      () => homePageController.alterarImagem.value != 0 ? CircleAvatar(
+                        backgroundImage: homePageController.meuControllerGlobal.usuario['ImagemPerfil'] == '' ?
+                          AssetImage('assets/eu.png'):
+                          NetworkImage(homePageController.meuControllerGlobal.usuario['ImagemPerfil'] ) as ImageProvider<Object>,
+                      
+                        radius: 30, // ajuste conforme necessário
+                      ): SizedBox()
+                    ),
+                    currentAccountPictureSize:  Size(60, 60),
+                    
+                  ),
+                  ListTile(
+                    leading:const Icon(Icons.favorite),
+                    title: const Text('Favoritos'),
+                    onTap: () {
+                      Get.toNamed('/favorits');
+                     
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.photo),
+                    title: const Text('Inserir Foto de Perfil'),
+                    onTap: () {
+                      homePageController.showBottomSheet(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.pets),
+                    title: const Text('Suas adoções'),
+                    onTap: () {
+                      Get.toNamed('/adocoesUsuario');
+                     
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.edit),
+                    title: const  Text('Alterar Informações'),
+                    onTap: () {
+                      if(homePageController.meuControllerGlobal.usuario['Data'] == true){
+                        Get.toNamed('/alterarPage');
+                      }
+                      else{
+                        mySnackBar('Você ainda não cadastrou suas informações', false);
+                      }
+                    }
+                  ),
+                  ListTile(
+                    leading:const  Icon(Icons.delete,color: Colors.red,),
+                    title:const  Text('Excluir Conta',style: TextStyle(color: Colors.red),),
+                    onTap: () {
+                      homePageController.mostrarDialogoDeConfirmacao(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
             body:FutureBuilder(
             future: homePageController.alteraLista(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {

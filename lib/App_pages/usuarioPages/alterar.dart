@@ -36,10 +36,11 @@ class AlterarController extends GetxController {
       estado.text = meuControllerGlobal.usuario['Estado'];
       cidade.text = meuControllerGlobal.usuario['Cidade'];
       bairro.text = meuControllerGlobal.usuario['Bairro'];
+      numero.text = meuControllerGlobal.usuario['Numero'];
       rua.text = meuControllerGlobal.usuario['Rua'];
       telefone.text = meuControllerGlobal.usuario['Telefone'];
       cpf.text = meuControllerGlobal.usuario['cpf'];
-      numero.text = meuControllerGlobal.usuario['Numero'];
+      
     }
     super.onInit();
   } 
