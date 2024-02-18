@@ -56,7 +56,7 @@ class MyPrincipalAppPage extends StatelessWidget {
                         label: 'Pets',
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.settings),
+                        icon: Icon(Icons.chat),
                         label: 'chat',
                       ),
                    

@@ -33,6 +33,7 @@ class SignUpController extends GetxController {
               'Pesquisa': nome.text[0],
               'ImagemPerfil': '',
               'Tipo' : tipo,
+              'Token': meuControllerGlobal.token
             };
             
             meuControllerGlobal.usuario = userInfoMap;

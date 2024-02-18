@@ -9,6 +9,7 @@ class MeuControllerGlobal extends GetxController {
   late Map<String,dynamic> usuario;
   double tamanhoTela = 0;
   RxBool internet = true.obs;
+  late String token;
 
   void favoritaPet(idPet,preferido){
     if(preferido){
@@ -17,7 +18,6 @@ class MeuControllerGlobal extends GetxController {
     else{
       usuario['Pets preferidos'].remove(idPet);  
     }
-    print('lista depois da função: ${usuario['Pets preferidos']}');
   }
 
   void limparTudo(){

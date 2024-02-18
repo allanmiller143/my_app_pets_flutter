@@ -44,6 +44,7 @@ class ChatController extends GetxController {
             'ultimaMensagemTs': ds.data()?['ultimaMensagemTs'],
             'Nome': user.docs[0]['Nome'],
             'ImagemPerfil': user.docs[0]['ImagemPerfil'],
+            'Token': user.docs[0]['Token'],
           };
 
           if (!listaDeIds.contains(idContato)) {
@@ -84,7 +85,7 @@ class ChatController extends GetxController {
           };
 
           await BancoDeDados.criaChatRoom(chatRoomId, chatRoomInfoMap);
-          Get.toNamed('/chatConversa', arguments: [info['Id'], info['Nome']]);
+          Get.toNamed('/chatConversa', arguments: [info['Id'], info['Nome'],info['Token']]);
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,

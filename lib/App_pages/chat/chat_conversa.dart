@@ -8,12 +8,14 @@ import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart
 import 'package:replica_google_classroom/App_pages/chat/chat.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase_notification.dart';
 
 class ChatConversaController extends GetxController {
   late MeuControllerGlobal meuControllerGlobal;
   String idMensagem = '';
   String id = Get.arguments[0]; 
   String nome = Get.arguments[1]; 
+  String token = Get.arguments[2];
   var mensagem = TextEditingController();
   List<Widget> listaDeMensagens = [];
   RxInt addSingleMessage = 0.obs;
@@ -85,6 +87,8 @@ class ChatConversaController extends GetxController {
       };
       BancoDeDados.atualizaUltimaMensagem(chatRoomId, ultimaMensagemEnviadaMap);
     });
+
+    await FirebaseNotification().send(token, 'Nova mensagem de: ${meuControllerGlobal.usuario['Nome']}', mensagem);
     idMensagem = '';
 
     }on Exception catch(e){

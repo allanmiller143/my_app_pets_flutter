@@ -2,6 +2,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/adopt_pages/ong/adocoes.dart';
@@ -23,6 +24,7 @@ import 'package:replica_google_classroom/controller/dependency_injection.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/firebase_options.dart';
 import 'package:replica_google_classroom/model.dart';
+import 'package:replica_google_classroom/services/banco/firebase_notification.dart';
 import 'App_pages/ongPages/componentesOngPerfil/ImageViewerPage.dart';
 import 'loginPages/signIn.dart';
 import 'loginPages/signUp.dart';
@@ -41,13 +43,12 @@ import 'App_pages/ongPages/componentesOngPerfil/editarEndereco.dart';
 //import 'exemplo_botao_desativado.dart';
 
 void main() async {
-  //await MongoDataBase.connect(); // esperar conectar com o mongodb
+  Get.put(MeuControllerGlobal());
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
-
-  Get.put(MeuControllerGlobal());
+  await FirebaseNotification().initNotications(); 
   runApp(const MyApp());
   DependencyInjection.init();
 }

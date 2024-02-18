@@ -41,15 +41,28 @@ login(context) async{
               'E-mail' : querySnapshot.docs[0]['E-mail'],
               'ImagemPerfil' :querySnapshot.docs[0]['ImagemPerfil'],
               'Tipo' : querySnapshot.docs[0]['Tipo'],
+              'Token' : querySnapshot.docs[0]['Token'],
+       
 
            };
            Get.back();
            Get.toNamed('/whoAreYouPage');
         }
         else{
+
+     
+          var firstDocumentData = querySnapshot.docs[0].data();
+          if (firstDocumentData != null && firstDocumentData is Map<String, dynamic> && !firstDocumentData.containsKey('Token')) {
+            await BancoDeDados.adicionarInformacoesUsuario({'Token': meuControllerGlobal.token}, querySnapshot.docs[0]['Id']);
+          }
+
           if(tipo == 'ong'){
             var pets = await BancoDeDados.obterPetsDoUsuario(querySnapshot.docs[0]['Id']);
             var imagensFeed =  await BancoDeDados.obterImagensFeedDoUsuario(querySnapshot.docs[0]['Id']);
+
+            
+
+
 
             meuControllerGlobal.usuario = {
               'Nome' : querySnapshot.docs[0]['Nome'],

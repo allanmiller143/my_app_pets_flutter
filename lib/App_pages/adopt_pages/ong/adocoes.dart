@@ -8,6 +8,7 @@ import 'package:replica_google_classroom/App_pages/adopt_pages/ong/todasAdocoes.
 import 'package:replica_google_classroom/App_pages/app_widgets/sem_internet.dart';
 import 'package:replica_google_classroom/controller/userController.dart';
 import 'package:replica_google_classroom/services/banco/firebase.dart';
+import 'package:replica_google_classroom/services/banco/firebase_notification.dart';
 
 class AdocaoController extends GetxController {
   late MeuControllerGlobal meuControllerGlobal;
@@ -67,7 +68,8 @@ class AdocaoController extends GetxController {
             'Id usuario': ds.data()?['Id usuario'],
             'Status': ds.data()?['Status'],
             'Id adoção': ds.data()?['Id adoção'],
-            'Id ong': ds.data()?['Id ong']
+            'Id ong': ds.data()?['Id ong'],
+            'Token': user.docs[0]['Token'],
           };
         
           if(filtro == 'Todas adoções'){
@@ -235,7 +237,7 @@ class AdocaoController extends GetxController {
                             await BancoDeDados.moverPetParaPetsAdotados(info['Id ong'], info['Id animal'], info['Imagem']);
 
                           }
-
+                          await FirebaseNotification().send(info['Token'], 'Atualização de status de adoção', status);
                           await BancoDeDados.AlterarStatusAdocao(id,status);
                         },
                         child: const Text('Confirmar adoção',style: TextStyle(color: Colors.blueAccent)
@@ -251,6 +253,8 @@ class AdocaoController extends GetxController {
                           if(filtro == 'Aguardando avalição dos dados'){
                             status = 'Adoção negada';
                           }
+
+                          await FirebaseNotification().send(info['Token'], 'Atualização de status de adoção', status);
                           await BancoDeDados.AlterarStatusAdocao(id,status);
                           await BancoDeDados.alterarPetInfo({'Em processo de adoção': false}, meuControllerGlobal.usuario['Id'], info['Id animal']);
                         },
