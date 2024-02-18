@@ -143,6 +143,7 @@ class InsertAnimalController extends GetxController {
   }
 }
 
+// ignore: must_be_immutable
 class InsertAnimalPage extends StatelessWidget {
   InsertAnimalPage({super.key});
   var insertAnimalController = Get.put(InsertAnimalController());

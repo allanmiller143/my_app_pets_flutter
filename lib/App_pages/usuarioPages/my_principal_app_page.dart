@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:replica_google_classroom/App_pages/chat/chat.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/home_page.dart';
-import 'package:replica_google_classroom/App_pages/usuarioPages/perfil.dart';
 import 'package:replica_google_classroom/App_pages/usuarioPages/pets_page.dart';
 
 class PrincipaAppController extends GetxController {
