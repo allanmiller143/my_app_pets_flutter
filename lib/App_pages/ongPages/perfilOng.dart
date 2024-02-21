@@ -379,11 +379,13 @@ class SettingsPage extends StatelessWidget {
           return Scaffold(
             extendBodyBehindAppBar: true,
             
+            
             floatingActionButton: settingsPageController.args == false ? FloatingActionButton(onPressed: () async {
               settingsPageController.showBottomSheetFeed(context);
             },child: const Icon(Icons.add,color: Color.fromARGB(255, 55, 98, 227),),): const SizedBox(),
             
             appBar:  AppBar(
+              forceMaterialTransparency: true,
               centerTitle: true,
               title: Container(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),

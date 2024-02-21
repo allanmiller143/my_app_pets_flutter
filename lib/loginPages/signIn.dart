@@ -49,21 +49,10 @@ login(context) async{
            Get.toNamed('/whoAreYouPage');
         }
         else{
-
-     
-          var firstDocumentData = querySnapshot.docs[0].data();
-          if (firstDocumentData != null && firstDocumentData is Map<String, dynamic> && !firstDocumentData.containsKey('Token')) {
-            await BancoDeDados.adicionarInformacoesUsuario({'Token': meuControllerGlobal.token}, querySnapshot.docs[0]['Id']);
-          }
-
+          await BancoDeDados.adicionarInformacoesUsuario({'Token': meuControllerGlobal.token}, querySnapshot.docs[0]['Id']);
           if(tipo == 'ong'){
             var pets = await BancoDeDados.obterPetsDoUsuario(querySnapshot.docs[0]['Id']);
             var imagensFeed =  await BancoDeDados.obterImagensFeedDoUsuario(querySnapshot.docs[0]['Id']);
-
-            
-
-
-
             meuControllerGlobal.usuario = {
               'Nome' : querySnapshot.docs[0]['Nome'],
               'Id' : querySnapshot.docs[0]['Id'],

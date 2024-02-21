@@ -33,7 +33,7 @@ class FirebaseNotification {
 
 
   Future<void> sendNotificationToUser(String recipientToken, String title, String body) async {
-    const String serverKey = 'AAAAEk-LdDM:APA91bEo40LebACmGKBjQtYAt9OAKlYw1L67721nrBnyvYmxi__bBHH9XY-qql6hY0imQpPDsC5g3XKIOLVX9nJCu-6ofKHxEleYlVF1Wnh8RYNOqWozqIJ5BylDf4PS4cgvH61GQtE4'; // Substitua pelo seu servidor Firebase Cloud Messaging (FCM) Key
+    const String serverKey = 'AAAAEk-LdDM:APA91bEQP32Ybm3qk6cXjeG7ndaVfBXacPcpA7etMI1xhG8AEZLDR3M3bw2h0I7IV7xO9bxAeSg0ATZybRP_fHIfZrMPJl2pke3t-OHxye1ZzxIs4j9HFKNkRmXjx61RSF39xJ9Bvfd3'; // Substitua pelo seu servidor Firebase Cloud Messaging (FCM) Key
 
     final Uri url = Uri.parse('https://fcm.googleapis.com/fcm/send');
 

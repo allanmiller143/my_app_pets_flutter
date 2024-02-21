@@ -64,7 +64,7 @@ class MyPrincipalOngAppPage extends StatelessWidget {
                         label: 'Conversas',
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.settings),
+                        icon: Icon(Icons.pending_actions_sharp),
                         label: 'Adoções',
                       ),
                     ],

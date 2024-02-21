@@ -40,7 +40,6 @@ import 'App_pages/ongPages/componentesOngPerfil/editarCampo.dart';
 import 'App_pages/ongPages/componentesOngPerfil/editarIdade.dart';
 import 'App_pages/ongPages/componentesOngPerfil/editarImagem.dart';
 import 'App_pages/ongPages/componentesOngPerfil/editarEndereco.dart';
-//import 'exemplo_botao_desativado.dart';
 
 void main() async {
   Get.put(MeuControllerGlobal());
