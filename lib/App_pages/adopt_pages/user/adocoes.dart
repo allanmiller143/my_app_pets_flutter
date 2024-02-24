@@ -59,6 +59,7 @@ class UsuarioAdocoesController extends GetxController {
             'Status': ds.data()?['Status'],
             'Id adoção':  ds.data()?['Id adoção'],
             'Id ong':  ds.data()?['Id ong'],
+            'Token': user.docs[0]['Token'],
           };
         
 
@@ -125,7 +126,7 @@ class UsuarioAdocoesController extends GetxController {
                               'users' : [meuControllerGlobal.usuario['Id'],info['Id ong']],
                             };
                             await BancoDeDados.criaChatRoom(chatRoomId, chatRoomInfoMap);
-                            Get.toNamed('/chatConversa',arguments: [info['Id ong'], 'Converse com a ong']);
+                            Get.toNamed('/chatConversa',arguments: [info['Id ong'], 'Converse com a ong',info['Token']]);
                           },
                           child :const  Icon(Icons.chat,size: 18,)
                         )

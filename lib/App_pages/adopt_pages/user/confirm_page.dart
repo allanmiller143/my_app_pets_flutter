@@ -101,7 +101,7 @@ class AdoptConfirmPage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(20, 15, 20, 20),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                    Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -110,13 +110,11 @@ class AdoptConfirmPage extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           const Padding(
-                                            padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                            child: Center(
+                                            padding: EdgeInsets.fromLTRB(5, 15, 5, 0),
                                               child: Text(
                                                 'Você está adotando: ',
                                                 style: TextStyle(fontFamily: 'AsapCondensed-Bold', fontSize: 28),
                                               ),
-                                            ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
@@ -135,7 +133,7 @@ class AdoptConfirmPage extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                          const Padding(
-                                            padding:  EdgeInsets.fromLTRB(5, 0, 0, 5),
+                                            padding:  EdgeInsets.fromLTRB(5, 15, 0, 5),
                                             child: Text(
                                               "Importância da adoção",
                                               style: TextStyle(fontFamily: 'AsapCondensed-Bold', fontSize: 20),
@@ -154,7 +152,7 @@ class AdoptConfirmPage extends StatelessWidget {
                                             ),
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.fromLTRB(5, 0, 0, 5),
+                                            padding: const EdgeInsets.fromLTRB(5, 15, 0, 10),
                                             child: GestureDetector(
                                               onTap: () {
                                                 print('veja mais');

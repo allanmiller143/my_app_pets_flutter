@@ -172,7 +172,7 @@ class AdocaoController extends GetxController {
                           'users' : [meuControllerGlobal.usuario['Id'],info['Id usuario']],
                         };
                         await BancoDeDados.criaChatRoom(chatRoomId, chatRoomInfoMap);
-                        Get.toNamed('/chatConversa',arguments: [info['Id usuario'], info['Nome usuario']]);
+                        Get.toNamed('/chatConversa',arguments: [info['Id usuario'], info['Nome usuario'],info['Token']]);
                       }, icon:const  Icon(Icons.chat,size: 18,))
                     ],
                   ),

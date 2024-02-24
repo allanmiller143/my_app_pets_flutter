@@ -110,7 +110,7 @@ class UserDataPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                   child: CustomIconButton(
-                    label: 'Continuar',
+                    label: 'Confirmar adoção',
                     onPressed: () async {
                       String b ='${userDataPageController.ongPetInfo['Id']}-${userDataPageController.ongPetInfo['Id animal']}';
                       String id = userDataPageController.criaIdAdocao(userDataPageController.meuControllerGlobal.usuario['Id'], b);

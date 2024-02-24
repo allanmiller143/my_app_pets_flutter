@@ -34,7 +34,7 @@ class AnimalCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
           ),
-          elevation: 15,
+          elevation: 5,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.4,
             decoration: BoxDecoration(

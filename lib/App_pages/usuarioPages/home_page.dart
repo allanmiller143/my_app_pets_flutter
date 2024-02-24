@@ -377,7 +377,7 @@ class HomePage extends StatelessWidget {
                                           child: SingleChildScrollView(
                                             scrollDirection: Axis.horizontal,
                                             child: Padding(
-                                              padding: const EdgeInsets.all(10.0),
+                                              padding: const EdgeInsets.fromLTRB(10,0,10,10),
                                               child: Row(
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
@@ -414,13 +414,15 @@ class HomePage extends StatelessWidget {
                                                     Get.toNamed('/animalDetail', arguments: [homePageController.pets[2],homePageController.usuario]);    
                                                   },
                                                   meuControllerGlobal: homePageController.meuControllerGlobal,
-                                                ):SizedBox()
+                                                ):SizedBox(),
+
                                                 ],
                                               ),
                                             ),
                                             
                                           ),
                                         ),
+                                        Text('wq')
                                       ],
                                     )
                                   ],
